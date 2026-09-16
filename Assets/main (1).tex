@@ -1,0 +1,271 @@
+\documentclass[sigconf,nonacm]{acmart}
+
+\settopmatter{printacmref=false, printccs=false, printfolios=true}
+\setcopyright{none}
+\acmConference{CS 567: 3D User Interfaces and Human-Centered Spatial AI}{Fall 2026}{Colorado State University}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\begin{document}
+
+%% ---------------------------------------------------------------- title
+\title{Escalate or Answer: Confidence-Triggered Human Escalation in Agentic RAG Improves Expert Trust Calibration and Novice Learning}
+\subtitle{CS567\_Coen\_Cam\_Context\_Not\_Found}
+
+\author{Coen Petto, coenp@colostate.edu $\cdot$ Experimentation host and formalization}
+\author{Cameron Suess, camsuess@colostate.edu $\cdot$ Agentic workflow engineer, corpus manager}
+\affiliation{
+  \institution{Colorado State University}
+  \city{Fort Collins}
+  \state{Colorado}
+  \country{USA}
+}
+
+%% ---------------------------------------------------------------- abstract
+\begin{abstract}
+Retrieval-augmented generation over proprietary corpora answers fluently
+even when retrieval is wrong, and fluency inflates trust independently of
+accuracy. We build one system manipulation and run two experiments on it.
+System A escalates to a human at seeded points of low-confidence or
+contradictory retrieval, with an escalation policy modeled on minimal
+proactivity design patterns; System B never escalates and always answers
+from its top retrieval. Experiment 1 asks whether domain experts grading
+fixed outputs calibrate trust better and choose more defensibly under
+System A. Experiment 2 asks whether novices onboarding to an invented
+internal tool score higher on an unassisted next-step post-test under
+System A. The result tells designers whether visible uncertainty is worth
+its interruption cost in agentic RAG.
+\end{abstract}
+
+\keywords{agentic AI; retrieval-augmented generation; trust calibration; human-in-the-loop; learning assistance}
+
+\maketitle
+\renewcommand{\shortauthors}{Petto and Suess}
+
+%% ---------------------------------------------------------------- body
+\section{Introduction and Motivation}
+\label{sec:intro}
+
+Retrieval-augmented generation (RAG) is a popular way to put a large
+language model (LLM) on top of an organization's private documents. An issue that commonly arises in this setting is the output being a
+confident, well-formed answer built from the wrong context. Proprietary
+corpora is exactly where this is most likely and least detectable (documents contradict each other, deprecated information is left in place, the reader has no external source to check against).
+
+Two different groups handle that failure differently. Domain experts must decide
+how much to trust each output, and agentic reasoning's fluency can raise
+that trust without any change in underlying accuracy~\cite{mohle2026}.
+Novices onboarding with such a system face a second problem: richer training materials inflated participants’nconfidence that they would remember correctly with no change in their
+actual ability to identify the next step~\cite{clegg2022}.
+
+An obvious solution is to let the system stop and ask a human to intervene when its own
+confidence is low. Agentic RAG architectures already describe this as a
+design pattern~\cite{mishra2026}, but whether human intervention actually improves
+expert trust calibration or novice learning is an open empirical question where one must consider the cost of escalation, how much it interrupts the flow, and the fact that it may simply be ignored.
+
+\section{Related Work}
+\label{sec:related}
+
+\textbf{Agentic RAG and human oversight.} Mishra et al.~\cite{mishra2026}
+survey agentic RAG architectures and describe a human-in-the-loop pattern
+in which human oversight is a callable action.“This pattern models human oversight
+as a callable API within the action space. When epistemic uncertainty
+exceeds a defined threshold, the policy pauses execution to request disambiguation or supervision.” They use Expected Calibration Error among the evaluation
+criteria for this system and leave adaptive escalation as an open
+direction. Their non-escalating configuration is the baseline this proposal
+adopts for System B.
+
+\textbf{When and how a system should interrupt.} S\'anchez-Adame and
+Mendoza~\cite{sanchezadame2026} discuss Minimal Proactivity Policies
+(MiPP), a contract for system-initiated interruptions where initiations should
+be bounded and reversible, expose an explicit provenance cue naming
+the source that justified the interruption, and must default to
+silence rather than speculation when required inputs are missing or
+ambiguous. MiPP inspires the policy shape for System A's escalation
+branch.
+
+\textbf{Trust calibration and its measurement.} M\"ohle
+et al.~\cite{mohle2026} define trust calibration as the alignment between a
+user's trust and the system's actual capability on a task. They find that stated accuracy shifts trust more strongly when the accompanying reasoning is convincing. This is therefore not a uniform trust booster but a conditioning cue, which is why this
+proposal measures graded accuracy and revealed choice rather than
+self-reported confidence. Chakraborti et al.~\cite{chakraborti2018} supply
+the procedure: participants took the role of an external commander,
+evaluated plans produced by an internal robot, and rated them optimal or
+suboptimal, with end-of-study trust items on whether the robot could be
+left to work on its own.
+
+\textbf{Measuring the impression of learning.} Clegg
+et al.~\cite{clegg2022} found that multimedia and immersive training materials raised participants' confidence when asked if they would remember how to assemble objects even though their measured ability to identify the critical next step did not improve. This dissociation is the effect a fluent, never-escalating assistant is predicted to produce, and it motivates a task-embedded post-test instead of a declarative quiz.
+
+\textbf{Uncontaminated evaluation corpora.} Kirchenbauer
+et al.~\cite{kirchenbauer2026} generate fictional documents and validate
+them by prompting the generator model blind (no access to fictional context) and then informed (access to fictional context), discarding items answerable without the document. This makes it possible to study retrieval over a "proprietary" corpus without the model's pretraining
+knowledge confounding the result.
+
+\textbf{The gap.} The escalation pattern is documented~\cite{mishra2026}
+and a policy for it is specified~\cite{sanchezadame2026}, but neither has
+been tested as an independent variable against a calibration outcome or a
+learning outcome on a controlled proprietary corpus. That intersection is
+where this project sits.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{hil2.png}
+\caption{The Human-in-the-Loop escalation loop, taken directly from
+Mishra et al. (2026, their Fig.~5). System A's policy for this
+escalation branch is modeled on MiPP (Sánchez-Adame and Mendoza,
+2026); System B disables the branch and always proceeds to Final
+Response.}
+\label{fig:hitl}
+\end{figure}
+
+\section{Approach}
+\label{sec:approach}
+
+We build one manipulation and reuse it across two experiments on the same
+corpus.
+
+\textbf{System A (escalating).} At seeded points of low-confidence or
+contradictory retrieval, System A pauses and requests human confirmation
+before proceeding. Its escalation policy is modeled on MiPP: the pause is
+brief and immediately reversible, it carries an explicit provenance cue
+naming the source that triggered it, and it defaults to silence rather than
+speculation when evidence is
+insufficient~\cite{sanchezadame2026}.
+
+\textbf{System B (non-escalating).} System B always answers from its top
+retrieval, with no pause and no provenance cue, matching the anchor paper's
+non-escalating baseline~\cite{mishra2026}.
+
+These three papers are design guides, not specifications this project is
+bound to reproduce in full; a three-month build-and-run window means each is
+adapted to what two people can implement and run.
+
+The manipulation satisfies the field's chatbot test: a study whose result
+would be unchanged with the agency removed has no independent
+variable~\cite{ortega2026slides}. Here, removing the escalation branch is
+the control condition, so agency is the variable rather than decoration.
+This is an Agentic-AI human-centered computing project: the contribution is
+an empirical result about how an autonomous decision to defer to a human
+changes human trust and human learning, not a language model artifact.
+
+\section{System Vision and Technology}
+\label{sec:vision}
+Both experiments share one interface shell so the escalation policy is the
+only thing that varies. A task pane on the left holds the current item (an
+output to grade in Experiment 1, a checklist step in Experiment 2). The
+center pane holds the assistant's retrieval-and-response output with its
+cited sources. A decision pane on the right collects the participant's
+response and advances the session. Under System A, a seeded low-confidence
+or contradictory retrieval replaces the answer with an escalation prompt
+that names the conflicting source and offers a bounded, reversible choice;
+under System B the same item renders as a direct answer with no pause and
+no provenance cue.
+
+Participants work at a desk on a desktop browser, with printed reference
+documents available in the expert condition. Instruments (forced choice,
+NASA-TLX, free-text justification) appear as full-screen steps between
+tasks rather than inline, so they do not compete with the manipulation.
+The retrieval stack is Python; responses are generated in advance and
+replayed fixed, so both conditions present identical content except at the
+seeded escalation points.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{fig_review_screen.png}
+\caption{Mock-up for System A's digital escalation interface upon mis-retrieval of information for a given question.}
+\label{fig:hitl}
+\end{figure}
+
+\section{Evaluation Plan}
+\label{sec:eval}
+
+\textbf{H1 (Trust).} Among domain experts grading individual
+retrieval-and-response outputs from System A and System B on a shared
+proprietary corpus, (a) experts' grades will track true output accuracy
+more closely for System A than for System B, and (b) when asked at the end
+of the session which system they would choose for an upcoming task and why,
+experts will choose System A more often and justify it by citing verifiable
+evidence rather than confidence or fluency alone.
+
+\textbf{H2 (Learning).} Among novice engineers completing a short
+onboarding checklist for the same proprietary tool with System A or System
+B, System A will produce a higher score on an unassisted, task-embedded
+next-step post-test.
+
+\textbf{Variables.} The independent variable in both experiments is
+escalation policy (System A escalates vs.\ System B never escalates),
+manipulated within subjects with counterbalanced order. The dependent
+variables are, for Experiment 1, the correlation between an expert's grade
+and the output's true accuracy (calibration), plus final forced choice and
+the thematic code of its justification; and for Experiment 2, accuracy on
+the unassisted next-step post-test, plus completion time.
+Table~\ref{tab:experiments} gives the full design (see last page).
+
+\textbf{Analysis.} Paired comparison per experiment (Wilcoxon signed-rank
+or paired $t$-test after a normality check), with effect size and
+confidence interval; thematic analysis of Experiment 1's free-text
+justifications using the course's coding method~\cite{ortega2026slides}.
+
+\textbf{Human participants.} Both experiments involve human participants.
+We will file a CSU IRB protocol covering both, since we intend the results
+to be publishable.
+
+\begin{table*}[t]
+\centering\small
+\begin{tabular}{@{}p{0.12\linewidth}p{0.41\linewidth}p{0.41\linewidth}@{}}
+\toprule
+ & \textbf{Experiment 1: Trust (H1)} & \textbf{Experiment 2: Learning (H2)} \\
+\midrule
+Population & Domain experts grading system output & Novice engineers (new hires) onboarding \\
+Task & Grade a fixed set of retrieval-and-response outputs, half from System A and half from System B & Complete a short onboarding checklist for the invented tool, using System A or System B \\
+Procedure & Blind, randomized-order grading of outputs fixed in advance~\cite{chakraborti2018, mohle2026}; end-of-session forced choice of A or B for an upcoming task, with a free-text reason & Pull-based query loop (Section~\ref{sec:vision}); two or three checklist items seeded with low-confidence or contradictory retrieval \\
+Primary measure & Grade-accuracy correlation per system (calibration) & Unassisted, task-embedded next-step post-test accuracy \\
+Secondary measures & Final choice (A/B); thematic code of the justification (evidence-based vs.\ confidence/fluency-based); competence/benevolence/integrity trust scale~\cite{mohle2026} & Completion time; NASA-TLX (optional) \\
+Design & Within-subjects, counterbalanced order, $N \approx 15$--20 & Within-subjects, two-level independent variable, $N \approx 15$--20 \\
+Session length & $\sim$15--20 min; no live model prototype needed, outputs are pre-recorded & $\sim$30--45 min \\
+\bottomrule
+\end{tabular}
+\caption{The two experiments, sharing System A (escalates, policy modeled
+on MiPP~\cite{sanchezadame2026}) versus System B (never
+escalates~\cite{mishra2026}) on the same proprietary corpus.}
+\label{tab:experiments}
+\end{table*}
+
+\section{Deliverables}
+\label{sec:deliverables}
+
+\begin{itemize}
+  \item A generated proprietary corpus for one invented internal tool
+  (README, changelog, wiki page, deprecated guide) with span-constrained
+  QA pairs and a passed blind-versus-informed contamination check.
+  \item A Python retrieval stack with two configurations, System A
+  (confidence-triggered escalation) and System B
+  (no escalation), and a fixed response set shared by both experiments.
+  \item Experiment 1's static grading interface and Experiment 2's
+  scripted two-arm prototype, both with instrumented logging.
+  \item An approved CSU IRB protocol covering both experiments.
+  \item Logged trial data from $N \approx 15$--20 experts (Experiment 1)
+  and $N \approx 15$--20 novices (Experiment 2), plus coded free-text
+  justifications.
+  \item A paper draft with Method and Results for both experiments, and a
+  demo video of the two conditions side by side.
+\end{itemize}
+
+\section{Conclusion}
+
+We are testing whether an agentic RAG assistant that stops and asks a human
+when its own retrieval is weak produces more trusting experts and
+better-learning novices versus an agentic RAG assistant that always answers regardless of the quality of the context retrieved. The intervention is a single escalation policy, held constant across two experiments on one controlled proprietary corpus, so both results are aligned with the same design decision. The expectation is a working two-condition prototype, an
+uncontaminated corpus, and paired quantitative results.
+
+\section*{Use of AI}
+
+Generative AI was used to assist with literature search, to critique the argument for weaknesses, and for grammar and Latex formatting fixes. 
+
+%% ---------------------------------------------------------------- references
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}
