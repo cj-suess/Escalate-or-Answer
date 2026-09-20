@@ -1,0 +1,18 @@
+https://dl.acm.org/doi/10.1145/3706599.3719985
+ 
+This is an extremely relevant paper that I found, they don't necessary have an interactive loop so we can still build on it. This is another anchoring, relevant work I would say
+ 
+RQ3: What controls or functionality do domain users require from a RAG system? 
+ 
+This data is based on responses to open-ended questions gathered after the study on their preferences to use branching, and provide feedback, and any other capabilities they would want.
+ 
+"• Control Over Sources: Participants desired control over brokerage reports or specific sources. Notably, 15 out of 50 participants highlighted the need to shortlist specific reports and trust certain sources, as evidenced by comments like, "I would personally trust some sources more than others". Additional documents – some participants (3/50) expressed desire to include documents such as annual reports or external sources." our experimented is directly acknowledged as 
+ 
+This paper came from CHI EA '25: Proceedings of the Extended Abstracts of the CHI Conference on Human Factors in Computing Systems
+ 
+From Raw Corpora to Domain Benchmarks: Automated Evaluation of LLM...
+ 
+Here is another corpus benchmarking paper, Fictional QA probably has us covered, but we can read and reference a piece of this that is relevant
+From Raw Corpora to Domain Benchmarks: Automated Evaluation of LLM...
+Accurate domain-specific benchmarking of LLMs is essential, specifically in domains with direct implications for humans, such as law, healthcare, and education. However, existing benchmarks are...
+ 

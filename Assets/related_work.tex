@@ -1,0 +1,107 @@
+\documentclass[sigconf,nonacm]{acmart}
+
+\settopmatter{printacmref=false, printccs=false, printfolios=true}
+\setcopyright{none}
+\acmConference{CS 567: 3D User Interfaces and Human-Centered Spatial AI}{Fall 2026}{Colorado State University}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+\begin{document}
+
+%% ---------------------------------------------------------------- title
+\title{Related Work: Escalate or Answer}
+\subtitle{Confidence-Triggered Human Escalation in Agentic RAG}
+
+\author{Coen Petto, coenp@colostate.edu}
+\author{Cameron Suess, camsuess@colostate.edu}
+\affiliation{
+  \institution{Colorado State University}
+  \city{Fort Collins}
+  \state{Colorado}
+  \country{USA}
+}
+
+\maketitle
+\renewcommand{\shortauthors}{Petto and Suess}
+
+%% ---------------------------------------------------------------- body
+\section{Related Work}
+\label{sec:related}
+
+\textbf{Agentic RAG and human oversight.} Mishra et al.~\cite{mishra2026}
+survey agentic RAG architectures and describe a human-in-the-loop pattern
+in which human oversight is a callable action. ``This pattern models human oversight
+as a callable API within the action space. When epistemic uncertainty
+exceeds a defined threshold, the policy pauses execution to request disambiguation or supervision.'' They use Expected Calibration Error among the evaluation
+criteria for this system and leave adaptive escalation as an open
+direction. Their non-escalating configuration is the baseline this proposal
+adopts for System B.
+
+\textbf{When and how a system should interrupt.} S\'anchez-Adame and
+Mendoza~\cite{sanchezadame2026} discuss Minimal Proactivity Policies
+(MiPP), a contract for system-initiated interruptions where initiations should
+be bounded and reversible, expose an explicit provenance cue naming
+the source that justified the interruption, and must default to
+silence rather than speculation when required inputs are missing or
+ambiguous. MiPP inspires the policy shape for System A's escalation
+branch.
+
+\textbf{Trust calibration and its measurement.} M\"ohle
+et al.~\cite{mohle2026} define trust calibration as the alignment between a
+user's trust and the system's actual capability on a task. They find that stated accuracy shifts trust more strongly when the accompanying reasoning is convincing. This is therefore not a uniform trust booster but a conditioning cue, which is why this
+proposal measures graded accuracy and revealed choice rather than
+self-reported confidence. Chakraborti et al.~\cite{chakraborti2018} supply
+the procedure: participants took the role of an external commander,
+evaluated plans produced by an internal robot, and rated them optimal or
+suboptimal, with end-of-study trust items on whether the robot could be
+left to work on its own.
+
+\textbf{Measuring the impression of learning.} Clegg
+et al.~\cite{clegg2022} found that multimedia and immersive training materials raised participants' confidence when asked if they would remember how to assemble objects even though their measured ability to identify the critical next step did not improve. This dissociation is the effect a fluent, never-escalating assistant is predicted to produce, and it motivates a task-embedded post-test instead of a declarative quiz.
+
+\textbf{Uncontaminated evaluation corpora.} Kirchenbauer
+et al.~\cite{kirchenbauer2026} generate fictional documents and validate
+them by prompting the generator model blind (no access to fictional context) and then informed (access to fictional context), discarding items answerable without the document. This makes it possible to study retrieval over a "proprietary" corpus without the model's pretraining
+knowledge confounding the result. Sharma et al.~\cite{sharma2026} attack a
+related contamination problem from the benchmark side, converting a raw
+domain corpus directly into a completion-style benchmark so that
+``domain-specific words serve as prediction targets,'' which avoids
+depending on another LLM or costly human annotation to certify a corpus as
+uncontaminated. Our contamination check follows Kirchenbauer et al.'s
+blind-versus-informed procedure rather than Sharma et al.'s vocabulary-extraction pipeline, because our corpus is small, invented, and hand-authored rather than a large scraped domain corpus.
+
+\textbf{What domain users actually want from a RAG system.} Ravi and
+Sindhgatta~\cite{ravi2025} run a user study with financial-domain experts
+and report that source transparency, not a bare confidence score, is what
+moved trust: confidence scores alone did not significantly increase trust, while source attribution and highlighted document passages did. Their RQ3
+findings on desired system controls describe experts who want to
+pre-select which sources the system may draw from: ``Control Over
+Sources: Participants desired control over brokerage reports or specific
+sources. Notably, 15 out of 50 participants highlighted the need to
+shortlist specific reports and trust certain sources, as evidenced by
+comments like, `I would personally trust some sources more than others.'''
+Their system is not agentic and does not loop back to the user mid-task;
+control is exercised only before a query is asked, not at points the
+system itself flags as uncertain. This is exactly the gap our escalation
+manipulation is built to fill, and their finding that experts already want
+per-source trust judgments motivates a provenance-cued escalation, rather
+than a bare confidence number, as System A's intervention.
+
+\textbf{The gap.} The escalation pattern is documented~\cite{mishra2026}
+and a policy for it is specified~\cite{sanchezadame2026}; domain experts
+report wanting source-level control over retrieval~\cite{ravi2025}, and
+confidence scores alone are known not to move their trust~\cite{ravi2025}.
+But none of this prior work tests a system-initiated, mid-task escalation
+as an independent variable against a calibration outcome or a learning
+outcome on a controlled, contamination-checked proprietary corpus. That
+intersection, an agentic pause the user did not ask for versus a system
+that never pauses, measured against experts' graded trust and novices'
+task performance rather than self-report, is where this project sits.
+
+%% ---------------------------------------------------------------- references
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

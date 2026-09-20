@@ -1,0 +1,299 @@
+\documentclass[9pt,conference]{IEEEtran}
+
+\usepackage[margin=0.4in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,citecolor=green!40!black,urlcolor=blue!60!black]{hyperref}
+\usepackage{cleveref}
+\usepackage{enumitem}
+\setlist{noitemsep,topsep=1pt,parsep=0pt,partopsep=0pt,leftmargin=*}
+
+\begin{document}
+
+\title{Two Hypotheses for Agentic RAG: Trust Calibration and Learning Outcomes}
+
+\author{
+  \IEEEauthorblockN{Coen Petto \and Cameron Suess}
+}
+
+\maketitle
+
+\begin{abstract}
+One system manipulation, two experiments. System A escalates to a
+human at seeded points of low-confidence or contradictory retrieval,
+its policy modeled on a minimal-proactivity design pattern; System B
+never escalates.
+We state two hypotheses built on this manipulation: H1, that experts
+grading system output calibrate their trust better, and choose more
+defensibly, under System A; and H2, that novices learn more from
+System A. Every clause is grounded and cited by author and year, with
+a side-by-side table of the two drafted experiments, a verified
+quote sheet, and a September through December execution plan.
+\end{abstract}
+
+\section{Two Hypotheses}
+\label{sec:hyp}
+
+Both experiments share one manipulation on the same proprietary
+corpus. System A's escalation policy is modeled on, not a full
+implementation of, Minimal Proactivity Policies (Sánchez-Adame and
+Mendoza, 2026): initiations should be bounded and brief, immediately
+reversible, carry an explicit provenance cue naming the source that
+justified the pause, and default to silence rather than speculation
+when evidence is insufficient. System B always answers from its top
+retrieval, with no pause and no provenance cue, matching the anchor
+paper's non-escalating baseline (Mishra et al., 2026). Because
+agentic reasoning's fluency can inflate trust independent of actual
+accuracy (Möhle et al., 2026), grading and choice, not stated
+confidence, are what Experiment 1 measures. These three papers are
+sources and design guides, not specifications this project is bound
+to reproduce in full; the three-month build-and-run window means each
+is adapted to what two people can actually implement and run.
+
+\begin{quote}\small
+\textbf{H1 (Trust).} Among domain experts who grade individual
+retrieval-and-response outputs from System A and System B on a shared
+proprietary corpus, (a) experts' grades will track true output
+accuracy more closely for System A than System B, and (b) when asked
+at the end of the session which system they would choose for an
+upcoming task, and why, experts will choose System A more often and
+justify the choice by citing verifiable evidence (flagged uncertainty,
+cited passages) rather than confidence or fluency alone.
+\end{quote}
+
+\begin{itemize}
+\item \textbf{``Grade individual outputs from System A and System
+  B''}: directly modeled on a published human-in-the-loop grading
+  study where participants ``assumed the role of the external
+  commander and evaluated plans provided by the internal robot \ldots
+  and rate those plans as optimal or suboptimal'' (Chakraborti,
+  Sreedharan, Grover, and Kambhampati, 2018).
+\item \textbf{``Track true output accuracy''}: this is trust
+  calibration, defined as ``the alignment between users' trust and
+  the system's underlying capability for a given task'' (Möhle et
+  al., 2026), the same quantity named as an evaluation criterion,
+  Expected Calibration Error, for the open problem this project
+  addresses (Mishra et al., 2026).
+\item \textbf{``Citing verifiable evidence rather than confidence or
+  fluency alone''}: Möhle et al. (2026) find a significant
+  interaction where stated accuracy shifts trust more strongly when
+  the accompanying reasoning is convincing, evidence that convincing
+  reasoning is not a generic trust booster but a conditioning cue on
+  how capability claims become trust. System A's provenance
+  requirement (Sánchez-Adame and Mendoza, 2026) gives experts exactly
+  the verifiable evidence that fluency alone does not.
+\item \textbf{Choice plus justification, not a scale alone}: extends
+  the end-of-study items of Chakraborti et al. (2018), ``I trust the
+  robot to work on its own'' and ``my trust in the robot increased
+  during the study,'' into a forced choice with a coded free-text
+  reason, analyzed by the course's thematic-analysis method (CS 567
+  slides, Ortega).
+\end{itemize}
+
+\newpage
+\begin{quote}\small
+\textbf{H2 (Learning).} Among novice engineers completing a short
+onboarding checklist for the same proprietary tool with System A or
+System B, System A will produce a higher score on an unassisted,
+task-embedded next-step post-test than System B.
+\end{quote}
+
+\begin{itemize}
+\item \textbf{``Novice engineers, onboarding checklist, proprietary
+  tool''}: proprietary information is the actual RAG use case and the
+  source of miss-retrieval risk (the project's RAG guide), matching
+  the mission this project was set (the author's project notes).
+  Section~\ref{sec:corpus} gives the corpus construction method;
+  Section~\ref{sec:env} gives the environment and the outcome measure.
+\item \textbf{Agentic manipulation}: System A versus System B
+  satisfies the field's own ``chatbot test'': a study whose result
+  would be unchanged with the agency stripped out has no independent
+  variable (CS 567 slides, Ortega).
+\end{itemize}
+
+\begin{table*}[t]
+\centering\small
+\begin{tabular}{@{}p{0.10\linewidth}p{0.43\linewidth}p{0.43\linewidth}@{}}
+\toprule
+ & \textbf{Experiment 1: Trust (H1)} & \textbf{Experiment 2: Learning (H2)} \\
+\midrule
+Population & Domain experts grading system output & Novice engineers (new hires) onboarding \\
+Task & Grade a fixed set of retrieval-and-response outputs, half from System A and half from System B & Complete a short onboarding checklist for the invented tool, using System A or System B \\
+Procedure & Blind, randomized-order grading of outputs fixed in advance (Chakraborti et al., 2018; Möhle et al., 2026); end-of-session forced choice of A or B for an upcoming task, with a free-text reason & Pull-based query loop (Section~\ref{sec:env}); two or three checklist items seeded with low-confidence or contradictory retrieval \\
+Primary measure & Grade-accuracy correlation per system (calibration) & Unassisted, task-embedded next-step post-test accuracy (Section~\ref{sec:env}) \\
+Secondary measures & Final choice (A/B); thematic code of the justification (evidence-based vs.\ confidence/fluency-based); Competence/Benevolence/Integrity trust scale (Möhle et al., 2026) & Completion time; NASA-TLX (optional) \\
+Design & Within-subjects, counterbalanced order, $N \approx 15$--20 & Within-subjects, two-level independent variable, $N \approx 15$--20 \\
+Session length & $\sim$15--20 min; no live model prototype needed, outputs are pre-recorded & $\sim$30--45 min \\
+\bottomrule
+\end{tabular}
+\caption{The two drafted experiments, sharing System A (escalates, its policy modeled on MiPP) versus System B (never escalates) on the same proprietary corpus.}
+\label{tab:experiments}
+\end{table*}
+
+\section{Experiment 2: Environment and Outcome Measure}
+\label{sec:env}
+
+The participant is framed as a new hire completing a short onboarding
+checklist for an invented internal tool, using the RAG assistant on
+their own initiative; the assistant never contacts the participant
+first. In the System A condition, seeded low-confidence or
+contradictory items trigger a pause and a request to confirm before
+proceeding, shown in Fig.~\ref{fig:hitl}; in the System B condition,
+the same items are answered directly, without a flag.
+
+The outcome measure is task-based, not a declarative quiz: a short,
+unassisted, procedural post-test at the end of the session, given a
+checklist state the participant has not seen answered, what is the
+correct next step. This follows Ortega's own finding that
+self-reported learning and objective task performance dissociate:
+richer training materials inflated participants' confidence that they
+would remember correctly with no change in their actual ability to
+identify the next step (Clegg et al., 2022), exactly the illusion
+System B is predicted to produce. How the assistant should present or
+time an escalation once triggered is left as an open design problem
+this initial study motivates.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{fig5_sok_hitl.png}
+\caption{The Human-in-the-Loop escalation loop, taken directly from
+Mishra et al. (2026, their Fig.~5). System A's policy for this
+escalation branch is modeled on MiPP (Sánchez-Adame and Mendoza,
+2026); System B disables the branch and always proceeds to Final
+Response.}
+\label{fig:hitl}
+\end{figure}
+
+\section{Corpus Construction and Contamination Check}
+\label{sec:corpus}
+\small
+Following Kirchenbauer et al. (2026), the invented tool used by both
+experiments is built in five stages: a short seed premise for the
+tool and its purpose; a fictsheet enumerating its commands, flags,
+and error conditions; multiple document renderings (a README, a
+changelog, an internal wiki page, a deprecated guide left in place to
+seed contradiction); question and answer pairs with span-constrained
+answers for Experiment 2's post-test and Experiment 1's grading set;
+and a blind-versus-informed annotation pass, where the pipeline's own
+generator model is asked each item with no supporting document in
+context, then again with the document supplied. Items the model
+answers correctly blind are discarded as contaminated or guessable;
+items it fails blind and passes informed confirm the corpus is the
+sole source of the fact, satisfying both the corpus-construction and
+the no-prior-knowledge requirements with one procedure.
+
+\section{Verified Reference Sheet}
+\small
+Every quote below was read directly from the cited primary source,
+not taken from a secondary citation.
+
+\begin{itemize}
+\item \textbf{Mishra et al. (2026), HITL pattern:} ``This pattern
+  models human oversight as a callable API within the action space.
+  When epistemic uncertainty exceeds a defined threshold, the policy
+  pauses execution to request disambiguation or supervision.''
+\item \textbf{Möhle et al. (2026), trust calibration:} ``Trust
+  calibration denotes the alignment between users' trust and the
+  system's underlying capability for a given task.''
+\item \textbf{Möhle et al. (2026), key finding:} ``Results show a
+  positive direct effect of stated accuracy on trust and a
+  significant interaction: accuracy shifts trust more strongly when
+  reasoning is convincing.''
+\item \textbf{Sánchez-Adame and Mendoza (2026), MiPP contract, C3:}
+  ``Every initiation must expose an explicit provenance cue
+  indicating the observable source(s) that justified the initiation
+  \ldots enough local information for the user to judge whether the
+  initiation is legitimate in context.''
+\item \textbf{Sánchez-Adame and Mendoza (2026), MiPP contract, C5:}
+  ``When required inputs are missing or ambiguous, the default is
+  non-initiation \ldots rather than `trying anyway' and risking
+  speculative interruptions, the system should defer \ldots or remain
+  silent.''
+\item \textbf{Chakraborti, Sreedharan, Grover, and Kambhampati
+  (2018), Study 2 design:} ``participants assumed the role of the
+  external commander and evaluated plans provided by the internal
+  robot \ldots and rate those plans as optimal or suboptimal based on
+  that explanation.''
+\item \textbf{Chakraborti et al. (2018), end-of-study trust items:}
+  ``I trust the robot to work on its own.'' ``My trust in the robot
+  increased during the study.''
+\item \textbf{CS 567 slides (Ortega), ``the chatbot test'':} ``If
+  your study would come out the same, you are studying a chatbot. The
+  agentic part is decoration, and the proposal has no independent
+  variable.''
+\item \textbf{Clegg et al. (2022), general discussion:}
+  ``participants rated the chances they would remember how to
+  assemble objects as greater than 2/3 of the time on average,
+  whereas their actual ability showed that only about 1/3 of the time
+  were they able to correctly completely identify all the critical
+  information.''
+\item \textbf{Kirchenbauer et al. (2026), verifying no prior
+  knowledge:} ``prompting the same model used in the data generation
+  process to answer the questions in two ways: blind with only the
+  question in context, and informed via in-context access to the
+  fictional document \ldots we try to ensure that the questions are
+  not answerable by a powerful language model that has never even
+  seen the fictional documents.''
+\item \textbf{The author's project notes:} ``Min Docket: Trust in RAG
+  systems. Efficiency in learning with RAG systems.''
+\end{itemize}
+
+\section{Execution Plan (September through December)}
+\small
+\begin{tabular}{@{}p{0.11\linewidth}p{0.85\linewidth}@{}}
+\toprule
+\textbf{Month} & \textbf{Deliverable} \\
+\midrule
+Sept, wks 1-2 & File CSU IRB protocol covering both experiments, since
+  approval precedes recruitment (CS 567 slides); finalize System A's
+  escalation policy and its signal thresholds (Section~\ref{sec:hyp}); read
+  Mishra et al. (2026), Möhle et al. (2026), and Sánchez-Adame and
+  Mendoza (2026) in full as a team. \\
+Sept, wks 3-4 & Build the invented tool and its documents following the
+  FictionalQA pipeline (Section~\ref{sec:corpus}); run the
+  blind-versus-informed contamination check; write the fixed System
+  A/System B response set shared by both experiments so response
+  quality is controlled, not sampled (the project's RAG guide). \\
+Oct, wks 1-2 & Build Experiment 1's grading interface (static outputs,
+  no live model call) and Experiment 2's scripted two-arm prototype;
+  instrument logging before piloting. \\
+Oct, wks 3-4 & Submit final IRB documents and confirm approval; pilot
+  both experiments with 2-3 participants each and fix timing, logging,
+  and instructions. \\
+Nov, wks 1-3 & Run Experiment 1 (target $N \approx 15$--20 experts) and
+  Experiment 2 (target $N \approx 15$--20 novices) in parallel,
+  counterbalanced order. \\
+Nov, wk 4 & Close data collection; compute grade-accuracy correlation
+  and choice/justification codes for Experiment 1, and post-test
+  accuracy for Experiment 2; check normality for both. \\
+Dec, wks 1-2 & Paired-comparison analysis for each experiment (Wilcoxon
+  signed-rank or paired $t$-test depending on the normality check);
+  effect size and confidence interval; thematic coding of Experiment
+  1's justifications. \\
+Dec, wks 3-4 & Write the Method and Results sections of the paper
+  draft for both experiments; internal review; scope the
+  adaptive-escalation follow-up named as the anchor paper's own next
+  step. \\
+\bottomrule
+\end{tabular}
+
+\enlargethispage{\baselineskip}
+\footnotesize
+\textbf{References} (alphabetical by author; cited above by author and year):
+\begin{itemize}
+\item Chakraborti, T., Sreedharan, S., Grover, S., \& Kambhampati, S. (2018). Plan explanations as model reconciliation: An empirical study. arXiv:1802.01013.
+\item Clegg, B. A., Karduna, A., Holen, E., Garcia, J., Rhodes, M. G., \& Ortega, F. R. (2022). Multimedia and immersive training materials influence impressions of learning but not learning outcomes. I/ITSEC 2022.
+\item CS 567 slides, Ortega, F. R. (2026). Research Problems and Experiments. CS 567 course slides, Colorado State University.
+\item Kirchenbauer, J., Mongkolsupawan, N., Wen, Y., Goldstein, T., \& Ippolito, D. (2026). FictionalQA: A dataset for studying memorization and knowledge acquisition. arXiv:2506.05639.
+\item Mishra, S., Niroula, S., Yadav, U., Thakur, D., Gyawali, S., \& Gaire, S. (2026). SoK: Agentic retrieval-augmented generation (RAG): Taxonomy, architectures, evaluation, and research directions. arXiv:2603.07379.
+\item Möhle, M. H., Zall, M., Thorwart-Gumpert, T., Elbert, N., Thiesse, F., \& Flath, C. M. (2026). ``Trust me, Bro!'' On the influence of agentic support on trust calibration in AI-assisted decision making. HCII 2026, pp. 472-488.
+\item Sánchez-Adame, L. M., \& Mendoza, S. (2026). MiPP: Minimal proactivity policies for timely, low-intrusion proactivity. HCII 2026, pp. 363-382.
+\item The project's RAG guide (2026). Evaluating human learning from RAG systems: A literature orientation and design guide. Internal project document.
+\item The author's project notes: Petto, C. (2026). Handwritten project notes.
+\end{itemize}
+
+\end{document}
