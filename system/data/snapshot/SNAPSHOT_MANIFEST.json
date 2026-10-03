@@ -1,0 +1,697 @@
+{
+  "pages": [
+    {
+      "html_file": "data/snapshot/html/p000.html",
+      "page_id": "p000",
+      "retrieved_utc": "2026-10-03T04:38:15+00:00",
+      "section": "home",
+      "sha256_html": "aaab7bd2cd65dcc5e78f97fb7d18b0e6ad6103128af45c0645f9213639884bdf",
+      "sha256_text": "ce2fa419f5b6e677bce9304d08bbed22e82a46940eadbc5f100f1340d85f5020",
+      "url": "https://sna.cs.colostate.edu/"
+    },
+    {
+      "html_file": "data/snapshot/html/p001.html",
+      "page_id": "p001",
+      "retrieved_utc": "2026-10-03T04:38:15+00:00",
+      "section": "contact",
+      "sha256_html": "20491c0f0cf585d1eac95f63fb8cdda08b6db1ee83c3fb62668292d1179521ef",
+      "sha256_text": "883cb3f3fa0dc401c1855a2b5f515fe74c529d75c52daf94c1f7a6f641399e1f",
+      "url": "https://sna.cs.colostate.edu/contact/"
+    },
+    {
+      "html_file": "data/snapshot/html/p002.html",
+      "page_id": "p002",
+      "retrieved_utc": "2026-10-03T04:38:21+00:00",
+      "section": "hpc",
+      "sha256_html": "4dfbd996f9e4266cd9ab2c6f7526f1b72e56726064266c24ec62abc734b61b00",
+      "sha256_text": "346c8437f2e8ac6269ecb6c7a50e11b89e9a839960049be6bfe107dfbb3b500b",
+      "url": "https://sna.cs.colostate.edu/hpc/"
+    },
+    {
+      "html_file": "data/snapshot/html/p003.html",
+      "page_id": "p003",
+      "retrieved_utc": "2026-10-03T04:38:55+00:00",
+      "section": "hpc",
+      "sha256_html": "64486b75b53fa702174b529d5a5a3107967db6e6117e1e0d54372fe9038e395d",
+      "sha256_text": "402489c7c0dd7a4ee2bfafa1d39d57ebfe5a9a2efbfce8c263b424d918d1c5fc",
+      "url": "https://sna.cs.colostate.edu/hpc/faq/"
+    },
+    {
+      "html_file": "data/snapshot/html/p004.html",
+      "page_id": "p004",
+      "retrieved_utc": "2026-10-03T04:38:40+00:00",
+      "section": "hpc",
+      "sha256_html": "68d2fa5359fe9d8c4da116694959fbfba18b4bf9b6292ad59d74af31c7d1ce05",
+      "sha256_text": "ecff78e848d3290a8ff53f987df153b976d436a0172843ccdf7f7d82b73aa2e2",
+      "url": "https://sna.cs.colostate.edu/hpc/getting-started/"
+    },
+    {
+      "html_file": "data/snapshot/html/p005.html",
+      "page_id": "p005",
+      "retrieved_utc": "2026-10-03T04:38:41+00:00",
+      "section": "hpc",
+      "sha256_html": "1d5d7e4155bcf6d275bb9f96c704dd4b0d24e53fe7987ddb17ea1ba4f5baef4a",
+      "sha256_text": "bf5629b6da5dd38cf0eb2fb8b1a75dd1b318726a9ba096469bb531b10a890d07",
+      "url": "https://sna.cs.colostate.edu/hpc/getting-started/accessing/"
+    },
+    {
+      "html_file": "data/snapshot/html/p006.html",
+      "page_id": "p006",
+      "retrieved_utc": "2026-10-03T04:38:40+00:00",
+      "section": "hpc",
+      "sha256_html": "206b3cae50a1a1db91a1994d410359bba95cc74ea719b51c82b0ea3015d148cd",
+      "sha256_text": "f117a61d68a9160df1791f3fccb503f416f161078353c7e7f4e7a73871410be9",
+      "url": "https://sna.cs.colostate.edu/hpc/getting-started/account/"
+    },
+    {
+      "html_file": "data/snapshot/html/p007.html",
+      "page_id": "p007",
+      "retrieved_utc": "2026-10-03T04:38:42+00:00",
+      "section": "hpc",
+      "sha256_html": "6c3526bd1376647a04fa015612f1c0ae683494a890d47ab54ef4614a85312259",
+      "sha256_text": "478bd4e4bb6ece304ccc080a181019e32dbfa9fe39319560df1f0d3ddc9183b3",
+      "url": "https://sna.cs.colostate.edu/hpc/getting-started/conduct/"
+    },
+    {
+      "html_file": "data/snapshot/html/p008.html",
+      "page_id": "p008",
+      "retrieved_utc": "2026-10-03T04:38:41+00:00",
+      "section": "hpc",
+      "sha256_html": "df5179526982d2dc7bb5eed9cf5749ab1e9d8f4c0582884b0808d2cf38c13e1e",
+      "sha256_text": "3490657694eed31559b2550bfde909e7d9ff0e20ed2268b4ff4c335bf95c47a5",
+      "url": "https://sna.cs.colostate.edu/hpc/getting-started/status/"
+    },
+    {
+      "html_file": "data/snapshot/html/p009.html",
+      "page_id": "p009",
+      "retrieved_utc": "2026-10-03T04:38:42+00:00",
+      "section": "hpc",
+      "sha256_html": "bef280a7ef479787d5f2e4d613157aad09b129a8f263638184c1ddb092b7d435",
+      "sha256_text": "cb02b0e2d01decf45a8f201e51c46d08d76ca34b80348284a0d2d118e774dcb5",
+      "url": "https://sna.cs.colostate.edu/hpc/job-handling/"
+    },
+    {
+      "html_file": "data/snapshot/html/p010.html",
+      "page_id": "p010",
+      "retrieved_utc": "2026-10-03T04:38:46+00:00",
+      "section": "hpc",
+      "sha256_html": "507ef1423b56192d3267b7565a9a16ac6f65325a6438e4ef9a318feafc0526ba",
+      "sha256_text": "702c8e2720efc20fe449d5c5fb4a1dd266b2429a9b4215cf16688e605e3a4f27",
+      "url": "https://sna.cs.colostate.edu/hpc/job-handling/checkpointing/"
+    },
+    {
+      "html_file": "data/snapshot/html/p011.html",
+      "page_id": "p011",
+      "retrieved_utc": "2026-10-03T04:38:45+00:00",
+      "section": "hpc",
+      "sha256_html": "2d1dca9c066e9b166aa78730e4142aa70b83ffcaeed9a8d5d15ec9d5852c2c55",
+      "sha256_text": "1de4bfdc2ed7e74e0a7afe1d48c89e5910e42dc16e6d7d91097dd445d938f61e",
+      "url": "https://sna.cs.colostate.edu/hpc/job-handling/deleting-jobs/"
+    },
+    {
+      "html_file": "data/snapshot/html/p012.html",
+      "page_id": "p012",
+      "retrieved_utc": "2026-10-03T04:38:43+00:00",
+      "section": "hpc",
+      "sha256_html": "1c559ddf55b23f4f5427c606f5567ab4109a79804e4fbdddd19dbc33893574ca",
+      "sha256_text": "0ccce041dd7065d702fbcfa930eda63005f7898fefc255d6f736431f64e19517",
+      "url": "https://sna.cs.colostate.edu/hpc/job-handling/limits/"
+    },
+    {
+      "html_file": "data/snapshot/html/p013.html",
+      "page_id": "p013",
+      "retrieved_utc": "2026-10-03T04:38:45+00:00",
+      "section": "hpc",
+      "sha256_html": "528e6745a9652f949fd42536de5e66a827471247ba81a939078930d3415e1a3e",
+      "sha256_text": "ca682e91c7e1e157dc4320b67f2c3956e18ea7934c722f49e13d8535decf16df",
+      "url": "https://sna.cs.colostate.edu/hpc/job-handling/monitoring-jobs/"
+    },
+    {
+      "html_file": "data/snapshot/html/p014.html",
+      "page_id": "p014",
+      "retrieved_utc": "2026-10-03T04:38:43+00:00",
+      "section": "hpc",
+      "sha256_html": "4e33c34cc98d8974baf4ed9cd57e921caab00f7622c849cf5eb9c70747c6f132",
+      "sha256_text": "232b689dbaf740b533bd8d79676aa8ca5432ad79194290a948937d96b589040f",
+      "url": "https://sna.cs.colostate.edu/hpc/job-handling/partitions/"
+    },
+    {
+      "html_file": "data/snapshot/html/p015.html",
+      "page_id": "p015",
+      "retrieved_utc": "2026-10-03T04:38:46+00:00",
+      "section": "hpc",
+      "sha256_html": "fff99fc68510ef90f08a11074dfc1496352193bfa7d8d454373f770ecbc05dfe",
+      "sha256_text": "c8f22eb67319b0a4057b835b79de91b35d923a607e4c087cc13739781e6e2066",
+      "url": "https://sna.cs.colostate.edu/hpc/job-handling/priority/"
+    },
+    {
+      "html_file": "data/snapshot/html/p016.html",
+      "page_id": "p016",
+      "retrieved_utc": "2026-10-03T04:38:44+00:00",
+      "section": "hpc",
+      "sha256_html": "5a1e1e5b026f4c67bf8084fe45a52162b455d21c4e7d15d4ca83cc0ef6461b86",
+      "sha256_text": "6006b12657e0bb545d040ae1d15b30a0cd752fa909a66561ff6efff6a74b3923",
+      "url": "https://sna.cs.colostate.edu/hpc/job-handling/submitting-jobs/"
+    },
+    {
+      "html_file": "data/snapshot/html/p017.html",
+      "page_id": "p017",
+      "retrieved_utc": "2026-10-03T04:38:39+00:00",
+      "section": "hpc",
+      "sha256_html": "3d51ffbbaee9255b4901641f96b590d540cac9b733603a7c456caba581d8c653",
+      "sha256_text": "377db9cb8512c5f9eca3d974795a8c28b60752f60c60d11e6bce839af5c3b44a",
+      "url": "https://sna.cs.colostate.edu/hpc/news/"
+    },
+    {
+      "html_file": "data/snapshot/html/p018.html",
+      "page_id": "p018",
+      "retrieved_utc": "2026-10-03T04:38:39+00:00",
+      "section": "hpc",
+      "sha256_html": "6d34581c4bbcbe8c3e07f06e6e655af9b34b293db91ff6e1e308da1d3359cf41",
+      "sha256_text": "478bd4e4bb6ece304ccc080a181019e32dbfa9fe39319560df1f0d3ddc9183b3",
+      "url": "https://sna.cs.colostate.edu/hpc/policies/"
+    },
+    {
+      "html_file": "data/snapshot/html/p019.html",
+      "page_id": "p019",
+      "retrieved_utc": "2026-10-03T04:38:47+00:00",
+      "section": "hpc",
+      "sha256_html": "6f0ca03a644356e11773327096de3288cd6105dbd64ddd47dd71991f3c43ff23",
+      "sha256_text": "7dca76cbc931e6a47d7a89dd22da3ed6998f62b754c5e54746e0a0fce0e4cb6f",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/"
+    },
+    {
+      "html_file": "data/snapshot/html/p020.html",
+      "page_id": "p020",
+      "retrieved_utc": "2026-10-03T04:38:51+00:00",
+      "section": "hpc",
+      "sha256_html": "019f58535fec8cae482bc9ee1752830fef54128a29155def0707045f82437751",
+      "sha256_text": "10f9c7d39b11e2e4071d289320b2dc4936632751b29a11dbe921fd188daded69",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/"
+    },
+    {
+      "html_file": "data/snapshot/html/p021.html",
+      "page_id": "p021",
+      "retrieved_utc": "2026-10-03T04:38:52+00:00",
+      "section": "hpc",
+      "sha256_html": "caa1f2e2fc303e590d7dbbd5ba46b5343a84e1773860cc639fc6d538dd51747b",
+      "sha256_text": "9312b4639245534f4987c88716b2cdc879b2baf91a8a559f7fffb25cbff4e775",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/cuda/"
+    },
+    {
+      "html_file": "data/snapshot/html/p022.html",
+      "page_id": "p022",
+      "retrieved_utc": "2026-10-03T04:38:52+00:00",
+      "section": "hpc",
+      "sha256_html": "6dc075fc26058c89e99329378d96d66ca6fbdc7073285566facea99a6f54c93a",
+      "sha256_text": "6be6e12bb46a9041fe6b3286059751fa7489fe73211e8b85961965f345dc5bf8",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/matlab/"
+    },
+    {
+      "html_file": "data/snapshot/html/p023.html",
+      "page_id": "p023",
+      "retrieved_utc": "2026-10-03T04:38:53+00:00",
+      "section": "hpc",
+      "sha256_html": "89b3b0200e370ee038d38898d2810504fe8e329b83157f6197e585cf5bd092e2",
+      "sha256_text": "1e61555c6f02890bc33e828aa99e1dca240fe369dfda9872eb7926118ddeda65",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/tf/"
+    },
+    {
+      "html_file": "data/snapshot/html/p024.html",
+      "page_id": "p024",
+      "retrieved_utc": "2026-10-03T04:38:53+00:00",
+      "section": "hpc",
+      "sha256_html": "c5ffa78e2b6417df783d35ba611b870ec64cc289d30b144a6be38c3d50c74515",
+      "sha256_text": "2e2514111c11312de3d230ba348b31244c673bf9bc0a90d3a4b8c65bd7b6d432",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/torch/"
+    },
+    {
+      "html_file": "data/snapshot/html/p025.html",
+      "page_id": "p025",
+      "retrieved_utc": "2026-10-03T04:38:51+00:00",
+      "section": "hpc",
+      "sha256_html": "57faeafb9793cac5bec862fee3f5f61b2370fc39ef52e6e849c2ac7872c343ed",
+      "sha256_text": "832fec3ce66ad0f197c8598403d1d25665b1331074acbf0f9397bd7b862b5a4d",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/hybrid/"
+    },
+    {
+      "html_file": "data/snapshot/html/p026.html",
+      "page_id": "p026",
+      "retrieved_utc": "2026-10-03T04:38:54+00:00",
+      "section": "hpc",
+      "sha256_html": "b8b4ed1f6f9ce858643bd79c6eeaac9f2dfbef0f98ce2ace0ba68c656ddc98a1",
+      "sha256_text": "2687aca3e3a592e65ba286a615e11f2402ef44a3c62983fe0ce5e4f279c9e2ef",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/interactive/"
+    },
+    {
+      "html_file": "data/snapshot/html/p027.html",
+      "page_id": "p027",
+      "retrieved_utc": "2026-10-03T04:38:50+00:00",
+      "section": "hpc",
+      "sha256_html": "0af84a6733a1d6f7ecdd0a230a59b49194991aab680656bb6e35456bc81640ca",
+      "sha256_text": "3d7ecec9bfb40db75815b1d3d52c449d425f38efefed533b26efb03c04d507fb",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/mpi/"
+    },
+    {
+      "html_file": "data/snapshot/html/p028.html",
+      "page_id": "p028",
+      "retrieved_utc": "2026-10-03T04:38:48+00:00",
+      "section": "hpc",
+      "sha256_html": "3ca0464a666eea00dc3219901692716ef9a13455f2b3b3849fabbb1dbb0847b3",
+      "sha256_text": "0828ffea0ad3f274b0a431ff6cc4af2297d858446eaec54e4d341301daba710e",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/multithreaded/"
+    },
+    {
+      "html_file": "data/snapshot/html/p029.html",
+      "page_id": "p029",
+      "retrieved_utc": "2026-10-03T04:38:48+00:00",
+      "section": "hpc",
+      "sha256_html": "3ca591cc25a3957a0f79db7f32f1af64f284ab4914b20764aff7bc9e9de87dbd",
+      "sha256_text": "5e1266452ec5df94fb92115a59f699d17eac61bcf7704bc165564b66c574aa95",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/multithreaded/matlab/"
+    },
+    {
+      "html_file": "data/snapshot/html/p030.html",
+      "page_id": "p030",
+      "retrieved_utc": "2026-10-03T04:38:49+00:00",
+      "section": "hpc",
+      "sha256_html": "01b899428e4c492dbdec7116dad2e717e5cf85b912c30bab98faa0435862b5af",
+      "sha256_text": "211e76a6226395326a1363ea5c8b979f7e42391a309b6834c199b1ee2f025bcc",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/multithreaded/openmp/"
+    },
+    {
+      "html_file": "data/snapshot/html/p031.html",
+      "page_id": "p031",
+      "retrieved_utc": "2026-10-03T04:38:49+00:00",
+      "section": "hpc",
+      "sha256_html": "0955811086b065276898f2ede57a4ff222368729fa2b1a4731aff021c044f774",
+      "sha256_text": "7c2fa43ef17defa6fbb0902067f1f420ccdd75f6ef12273f05c95931fc723358",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/multithreaded/python/"
+    },
+    {
+      "html_file": "data/snapshot/html/p032.html",
+      "page_id": "p032",
+      "retrieved_utc": "2026-10-03T04:38:47+00:00",
+      "section": "hpc",
+      "sha256_html": "8aab8eec3eab86ac24055ba5f438d55b9f4ac88f11309fe1105b3f95e81305c1",
+      "sha256_text": "5d43d1aca654c98c94cbca4436263efcb8bced18a88a0eff2da8a8df5a705772",
+      "url": "https://sna.cs.colostate.edu/hpc/samples/serial/"
+    },
+    {
+      "html_file": "data/snapshot/html/p033.html",
+      "page_id": "p033",
+      "retrieved_utc": "2026-10-03T04:38:54+00:00",
+      "section": "hpc",
+      "sha256_html": "ec9198a929c10b1cde9d17ffed915962541d2b1eb566100f712463b1810745fa",
+      "sha256_text": "692623ec7864e87b24642a08b9bdf8c657604cb246ab73795d9bdca0972adbb4",
+      "url": "https://sna.cs.colostate.edu/hpc/support/"
+    },
+    {
+      "html_file": "data/snapshot/html/p034.html",
+      "page_id": "p034",
+      "retrieved_utc": "2026-10-03T04:38:16+00:00",
+      "section": "new-user",
+      "sha256_html": "0cd90636969237ca89833c48785dfbdaa37b3517e964c33afa0730f2e67bb70d",
+      "sha256_text": "fdaf77c767b2e7703867830714db51d84905bc44aa9f954595ec9500e2d6b4b9",
+      "url": "https://sna.cs.colostate.edu/new-user/"
+    },
+    {
+      "html_file": "data/snapshot/html/p035.html",
+      "page_id": "p035",
+      "retrieved_utc": "2026-10-03T04:38:20+00:00",
+      "section": "policies",
+      "sha256_html": "27f52ee771dbb7a161bdcea5ec483da0b2be0ac60ec8581c8cbf6364a61bcc5d",
+      "sha256_text": "bc21265b0de879480053363a4cbc5dc7396c77d807101bd7de2df09067464b51",
+      "url": "https://sna.cs.colostate.edu/policies/"
+    },
+    {
+      "html_file": "data/snapshot/html/p036.html",
+      "page_id": "p036",
+      "retrieved_utc": "2026-10-03T04:38:36+00:00",
+      "section": "policies",
+      "sha256_html": "e5f8b986c444bf2a2e3b1f3ae505981684b5009a989da126606c330b1cd1aeac",
+      "sha256_text": "35665f7eb9ecf58864518cc4dd07c05e408052f5f1bf280bf9cc0ab91724c161",
+      "url": "https://sna.cs.colostate.edu/policies/accounts/"
+    },
+    {
+      "html_file": "data/snapshot/html/p037.html",
+      "page_id": "p037",
+      "retrieved_utc": "2026-10-03T04:38:36+00:00",
+      "section": "policies",
+      "sha256_html": "477a905aead8b6114b133587108d12d11ffe39f44c564ba11d873ec016f688e1",
+      "sha256_text": "2ed9e76690511ea79158838a9d7fb908eded6385b75ec49ecfc5da08f06c5f27",
+      "url": "https://sna.cs.colostate.edu/policies/backup/"
+    },
+    {
+      "html_file": "data/snapshot/html/p038.html",
+      "page_id": "p038",
+      "retrieved_utc": "2026-10-03T04:38:37+00:00",
+      "section": "policies",
+      "sha256_html": "dc26c329417dd2bb2782fe4069b4fbd42b75cfde752eb223edb517dc59cad9b8",
+      "sha256_text": "26423ae855aecbf17bcd80f845cae884c7cd2de9c50620e366f1d276b65ca957",
+      "url": "https://sna.cs.colostate.edu/policies/jobs/"
+    },
+    {
+      "html_file": "data/snapshot/html/p039.html",
+      "page_id": "p039",
+      "retrieved_utc": "2026-10-03T04:38:37+00:00",
+      "section": "policies",
+      "sha256_html": "bd07afbbc972ff63d0a70f284177e4404b267637d7ea5754c0e7a47ead34b73a",
+      "sha256_text": "20caf1e731cec52083ace95eafd9f1b0e202b953b3d16f04dca44f72100604a9",
+      "url": "https://sna.cs.colostate.edu/policies/printers/"
+    },
+    {
+      "html_file": "data/snapshot/html/p040.html",
+      "page_id": "p040",
+      "retrieved_utc": "2026-10-03T04:38:38+00:00",
+      "section": "policies",
+      "sha256_html": "e4fc9c6a2085d21b39787d9844db14c8ebe78e4fa556aacf80c75ab10ff93b4d",
+      "sha256_text": "47e9a2f71f463c688cd67f5b772bb961b3b74e7f025bd6c7a93c93d2362b8474",
+      "url": "https://sna.cs.colostate.edu/policies/software-upgrades/"
+    },
+    {
+      "html_file": "data/snapshot/html/p041.html",
+      "page_id": "p041",
+      "retrieved_utc": "2026-10-03T04:38:22+00:00",
+      "section": "policies",
+      "sha256_html": "9e4004d429444cca6a419df791fb481d5ca3d89f226d4b358c9f660e4c17d963",
+      "sha256_text": "37468a6f04a5c604b5dd86229f082297994fe9a5ecbbe51f3a08e733abc71ac3",
+      "url": "https://sna.cs.colostate.edu/policies/systems/"
+    },
+    {
+      "html_file": "data/snapshot/html/p042.html",
+      "page_id": "p042",
+      "retrieved_utc": "2026-10-03T04:38:18+00:00",
+      "section": "printing",
+      "sha256_html": "d772e6de7c836917b20278b72e53e2117ba42c34895d695f390f732b4e60ba3e",
+      "sha256_text": "94364cc7c0657225ea1fba6ece6043f63062fe006981c944e8cddec52adbcc78",
+      "url": "https://sna.cs.colostate.edu/printing/"
+    },
+    {
+      "html_file": "data/snapshot/html/p043.html",
+      "page_id": "p043",
+      "retrieved_utc": "2026-10-03T04:38:19+00:00",
+      "section": "remote-connection",
+      "sha256_html": "01e18cea66ed63bdd97aa0a9e6d194fdbfc59794e84c9ddce559e35541f68d71",
+      "sha256_text": "8243426940a0af48e4c701e7e445e58f4deafb9b9f6dd7980af079b79b0de779",
+      "url": "https://sna.cs.colostate.edu/remote-connection/"
+    },
+    {
+      "html_file": "data/snapshot/html/p044.html",
+      "page_id": "p044",
+      "retrieved_utc": "2026-10-03T04:38:35+00:00",
+      "section": "remote-connection",
+      "sha256_html": "f0e162800e9e680ba9c2612123c205944692ac0f46f4c266587122a818e3e5e5",
+      "sha256_text": "04c52ad27b30b03a623b6bc584d51edf892a1a98397197f8d59e9943123f41df",
+      "url": "https://sna.cs.colostate.edu/remote-connection/gui/"
+    },
+    {
+      "html_file": "data/snapshot/html/p045.html",
+      "page_id": "p045",
+      "retrieved_utc": "2026-10-03T04:38:35+00:00",
+      "section": "remote-connection",
+      "sha256_html": "776eb7c205a9f994fb1e8039b128b37f76c661189dd506941b086fd2ea0d2a7b",
+      "sha256_text": "1ea2add78f5e3101f9d91dfd105b9c3bcf82f0869a18ea5d01ade814a261f134",
+      "url": "https://sna.cs.colostate.edu/remote-connection/scp/"
+    },
+    {
+      "html_file": "data/snapshot/html/p046.html",
+      "page_id": "p046",
+      "retrieved_utc": "2026-10-03T04:38:34+00:00",
+      "section": "remote-connection",
+      "sha256_html": "f851a7439beffbcf7ae4ce28db9ce1386f2702da7d085dc731dc7d566cd0997c",
+      "sha256_text": "62c9a47e337929a2a9b7a16b1ef42365cb36bd6a9e19abc6414a24814b8582d3",
+      "url": "https://sna.cs.colostate.edu/remote-connection/ssh/"
+    },
+    {
+      "html_file": "data/snapshot/html/p047.html",
+      "page_id": "p047",
+      "retrieved_utc": "2026-10-03T04:38:23+00:00",
+      "section": "remote-connection",
+      "sha256_html": "40b9526d73f0d96b632ef96d2d9790002a787efd99a42a3f92880dfec094c2d0",
+      "sha256_text": "20a6cb4d72bf0acb0c1250a772808232fff7376946e8f20852ed35b151bcc3ef",
+      "url": "https://sna.cs.colostate.edu/remote-connection/ssh/keybased/"
+    },
+    {
+      "html_file": "data/snapshot/html/p048.html",
+      "page_id": "p048",
+      "retrieved_utc": "2026-10-03T04:38:34+00:00",
+      "section": "remote-connection",
+      "sha256_html": "55f56ea36c8dd388d0a3c618ed82d6be8f3bd6fd9212cb5b238a80db8082737a",
+      "sha256_text": "83b8139ad09fb7f9aca4803060e1534f3cd38bf90a180b514597a80c21f309ec",
+      "url": "https://sna.cs.colostate.edu/remote-connection/vpn/"
+    },
+    {
+      "html_file": "data/snapshot/html/p049.html",
+      "page_id": "p049",
+      "retrieved_utc": "2026-10-03T04:38:17+00:00",
+      "section": "software",
+      "sha256_html": "395518cf93796b4c14352f2da7d333a2094c1184d599c09c2d7c54f3b5dca14a",
+      "sha256_text": "dadabe9b4e5846af6a9855bf8501c216a5746cdd436996ac0686cba897f8d274",
+      "url": "https://sna.cs.colostate.edu/software/"
+    },
+    {
+      "html_file": "data/snapshot/html/p050.html",
+      "page_id": "p050",
+      "retrieved_utc": "2026-10-03T04:38:27+00:00",
+      "section": "software",
+      "sha256_html": "369d586671fc2fc13144002eda13dfb46b070902c573db6792f040ec0857811a",
+      "sha256_text": "facc96f9765e11330c70415ec1a6beb9e27d7c8bfe5b4f6ab2b8ed82ee78a662",
+      "url": "https://sna.cs.colostate.edu/software/bashrc-guide/"
+    },
+    {
+      "html_file": "data/snapshot/html/p051.html",
+      "page_id": "p051",
+      "retrieved_utc": "2026-10-03T04:38:25+00:00",
+      "section": "software",
+      "sha256_html": "fe0bc30564e2c749a1f775278c464b1fe09a781e7f87eb3e22aac04fc564d1b5",
+      "sha256_text": "81e0808fd163d1557b517e89732bb2aad410ce8ebaae65b6e82c1128683dfeb0",
+      "url": "https://sna.cs.colostate.edu/software/cuda/"
+    },
+    {
+      "html_file": "data/snapshot/html/p052.html",
+      "page_id": "p052",
+      "retrieved_utc": "2026-10-03T04:38:29+00:00",
+      "section": "software",
+      "sha256_html": "963356f96b6431db28a2271558278ce30f6c8497a2831322413f81bb5518bf99",
+      "sha256_text": "670b979707203d63672e1eb5f7de4a037ea568ffa9cd79d19e5d8121f52c2150",
+      "url": "https://sna.cs.colostate.edu/software/eclipse/"
+    },
+    {
+      "html_file": "data/snapshot/html/p053.html",
+      "page_id": "p053",
+      "retrieved_utc": "2026-10-03T04:38:24+00:00",
+      "section": "software",
+      "sha256_html": "50b739688a85502efb56df782dda9482d5b69aa2380c312f1bb9adbaedccbea8",
+      "sha256_text": "2fd0679573408a22f80ce6d4f7db2cb0c224c32d442bce8af6544b9add2bfc76",
+      "url": "https://sna.cs.colostate.edu/software/environment-modules/"
+    },
+    {
+      "html_file": "data/snapshot/html/p054.html",
+      "page_id": "p054",
+      "retrieved_utc": "2026-10-03T04:38:27+00:00",
+      "section": "software",
+      "sha256_html": "09fbfee006a60e95bc380731dc9afb235e5b7ece27cb7840378d60403fc97154",
+      "sha256_text": "67a671d7343ba55db8298d591377c0aba73125204775fbd2f0662e37dfa2ae26",
+      "url": "https://sna.cs.colostate.edu/software/environment-variables/"
+    },
+    {
+      "html_file": "data/snapshot/html/p055.html",
+      "page_id": "p055",
+      "retrieved_utc": "2026-10-03T04:38:25+00:00",
+      "section": "software",
+      "sha256_html": "148087b24301810108cd1f82b2d91dfa102ccdd3ee54fe0cca93f89b3a731051",
+      "sha256_text": "344f103be135708d401957055fd523e2ca086376fe3b5daa5d78b3d26e63b56f",
+      "url": "https://sna.cs.colostate.edu/software/gcc/"
+    },
+    {
+      "html_file": "data/snapshot/html/p056.html",
+      "page_id": "p056",
+      "retrieved_utc": "2026-10-03T04:38:28+00:00",
+      "section": "software",
+      "sha256_html": "9d020b840fe1293c7476a5297875d1200cd2b2666cecdbf71aa8a77d483aabba",
+      "sha256_text": "cae7f713f6fcf7fe90262bd083bfaf9d8af47ba60d1d3c1b099428b8b8d99250",
+      "url": "https://sna.cs.colostate.edu/software/install-sw/"
+    },
+    {
+      "html_file": "data/snapshot/html/p057.html",
+      "page_id": "p057",
+      "retrieved_utc": "2026-10-03T04:38:26+00:00",
+      "section": "software",
+      "sha256_html": "7ff4ef2e83433e29ea8fe1d8d493726d91a162c7619fc0661445803528ce22ba",
+      "sha256_text": "59405fd8de1c8b8cbc2bf4858d7e6cc704a0f5d486858a5f72a6d1a3992de28d",
+      "url": "https://sna.cs.colostate.edu/software/java/"
+    },
+    {
+      "html_file": "data/snapshot/html/p058.html",
+      "page_id": "p058",
+      "retrieved_utc": "2026-10-03T04:38:29+00:00",
+      "section": "software",
+      "sha256_html": "c3a919e83a7b07cc2ba94e18e5bca85f21aac63e722f160e534e86bab964d6f2",
+      "sha256_text": "0fea44faf79fc5eecc2d523b72703c6ecae1e4979025880046c11cc08c403f3e",
+      "url": "https://sna.cs.colostate.edu/software/jupyter/"
+    },
+    {
+      "html_file": "data/snapshot/html/p059.html",
+      "page_id": "p059",
+      "retrieved_utc": "2026-10-03T04:38:28+00:00",
+      "section": "software",
+      "sha256_html": "9f58aeb85774236f36a409c1f9921cd1e8d461183482583500afde3f8a001a82",
+      "sha256_text": "ef7041d58f866fb0470597e14288b290dd69a607e82eede7899229d00b0b9ac4",
+      "url": "https://sna.cs.colostate.edu/software/python-libraries/"
+    },
+    {
+      "html_file": "data/snapshot/html/p060.html",
+      "page_id": "p060",
+      "retrieved_utc": "2026-10-03T04:38:30+00:00",
+      "section": "software",
+      "sha256_html": "e11b0a2715d09c4266c1a973d8e314f098f4877f006f47bd4e08e39bf0f22f1f",
+      "sha256_text": "99816a558a3ccff9156d4ff42bc693818b4f89f13fff6ab6894858e6ec74b0ea",
+      "url": "https://sna.cs.colostate.edu/software/tensorflow/"
+    },
+    {
+      "html_file": "data/snapshot/html/p061.html",
+      "page_id": "p061",
+      "retrieved_utc": "2026-10-03T04:38:23+00:00",
+      "section": "software",
+      "sha256_html": "c795fffbfcceb1eeede8cc89b268fd2a3b72e5a8ee578e66db15caf59e6532d1",
+      "sha256_text": "38f7ca5bdc8e94764079acc50a316b439188ba395d0383d478a68be6ebb7a52e",
+      "url": "https://sna.cs.colostate.edu/software/usr-local/"
+    },
+    {
+      "html_file": "data/snapshot/html/p062.html",
+      "page_id": "p062",
+      "retrieved_utc": "2026-10-03T04:38:26+00:00",
+      "section": "software",
+      "sha256_html": "b6bc704594d428afa8fae846c71e41aa4b8171c517e32d7720ea3a96a32e7698",
+      "sha256_text": "bd58d0f92c40a7db41a79476c019057b326a7fecdad493baccc78dfd2a846eb0",
+      "url": "https://sna.cs.colostate.edu/software/vscode/"
+    },
+    {
+      "html_file": "data/snapshot/html/p063.html",
+      "page_id": "p063",
+      "retrieved_utc": "2026-10-03T04:38:17+00:00",
+      "section": "storage",
+      "sha256_html": "3262ffa5757d4f43dcaa55ef68d700472eed3d0b076c9aefc274c2952d40e97c",
+      "sha256_text": "ee9c169dc419366a19c20454c218a68e2339cb02a2c238689f89469b89c46464",
+      "url": "https://sna.cs.colostate.edu/storage/"
+    },
+    {
+      "html_file": "data/snapshot/html/p064.html",
+      "page_id": "p064",
+      "retrieved_utc": "2026-10-03T04:38:32+00:00",
+      "section": "storage",
+      "sha256_html": "12d1cb48f2a30f2b20a7e108abe9a50d604cbbfde8d9774b76c426ca98dfaa15",
+      "sha256_text": "6a0d0447d563b541004a755e2098116d9491aa17a7213f9a1b33abf4a34ef9dc",
+      "url": "https://sna.cs.colostate.edu/storage/cleanup-home/"
+    },
+    {
+      "html_file": "data/snapshot/html/p065.html",
+      "page_id": "p065",
+      "retrieved_utc": "2026-10-03T04:38:31+00:00",
+      "section": "storage",
+      "sha256_html": "3639e71ae461f271606c26fc42bb3ae718b6d9ff0cd551f5969616345d8d4c3b",
+      "sha256_text": "862a40ffbabf60c461d4e237d7c05a9b519f05eb946cbe6485f9525898b59ae7",
+      "url": "https://sna.cs.colostate.edu/storage/home-dirs/"
+    },
+    {
+      "html_file": "data/snapshot/html/p066.html",
+      "page_id": "p066",
+      "retrieved_utc": "2026-10-03T04:38:32+00:00",
+      "section": "storage",
+      "sha256_html": "ec23ae035ec7bf9a577658df1bc39c28d49239dcf88f30c202b7510f0ddbceea",
+      "sha256_text": "2d2c5d568f652ae1c30c26c040212edadc43026bab8bd65c0ad161fd5a060634",
+      "url": "https://sna.cs.colostate.edu/storage/local-disks/"
+    },
+    {
+      "html_file": "data/snapshot/html/p067.html",
+      "page_id": "p067",
+      "retrieved_utc": "2026-10-03T04:38:33+00:00",
+      "section": "storage",
+      "sha256_html": "3826b46fd97b5ed9c308c3454b4f726900a3699a1951a35f87860dfa0ea20699",
+      "sha256_text": "2f008c2357d0c0a9a8c1f7a99397c5492387eba0845ac74529c7d17037cad65d",
+      "url": "https://sna.cs.colostate.edu/storage/project-dirs/"
+    },
+    {
+      "html_file": "data/snapshot/html/p068.html",
+      "page_id": "p068",
+      "retrieved_utc": "2026-10-03T04:38:30+00:00",
+      "section": "storage",
+      "sha256_html": "9615f182e6c9652bf1a2b57dbcc29959c8e8419726a531d1dd3640ed7baedb01",
+      "sha256_text": "54a1b1370e24b1fd241c4e5f840e40b0162d899b9bfe0b0979dff40428a08ca7",
+      "url": "https://sna.cs.colostate.edu/storage/temp-storage/"
+    },
+    {
+      "html_file": "data/snapshot/html/p069.html",
+      "page_id": "p069",
+      "retrieved_utc": "2026-10-03T04:38:19+00:00",
+      "section": "system-info",
+      "sha256_html": "59ce18c52b7e6c496ba6f3276062b56e8dbf7814fae813a136fa1b710e13e9bc",
+      "sha256_text": "8df4f06dbd24664e07ce99303b9931f77d5bd198dd074b5094ed81ccbbfd7db2",
+      "url": "https://sna.cs.colostate.edu/system-info/"
+    },
+    {
+      "html_file": "data/snapshot/html/p070.html",
+      "page_id": "p070",
+      "retrieved_utc": "2026-10-03T04:38:16+00:00",
+      "section": "user-accounts",
+      "sha256_html": "7731822fe28611ecd08007bab202c8e768687b2cbf23b29505cf76ea3f34c977",
+      "sha256_text": "3c61bd4fe55c0946171b908ae7a8b2cc3b9e45a00561b75bc242a61d4a3bbf61",
+      "url": "https://sna.cs.colostate.edu/user-accounts/"
+    },
+    {
+      "html_file": "data/snapshot/html/p071.html",
+      "page_id": "p071",
+      "retrieved_utc": "2026-10-03T04:38:22+00:00",
+      "section": "virtual-machines",
+      "sha256_html": "40ab787dfdbb8a276558fde19999b5ede68be45e16f4fe2d4dadb6922616657f",
+      "sha256_text": "d6f12fc67775a2f4c12b845c51bd4e099a14bca1d6858ffcf949861c22548278",
+      "url": "https://sna.cs.colostate.edu/virtual-machines/"
+    },
+    {
+      "html_file": "data/snapshot/html/p072.html",
+      "page_id": "p072",
+      "retrieved_utc": "2026-10-03T04:38:55+00:00",
+      "section": "virtual-machines",
+      "sha256_html": "f07a6c2726731d96a5cf30acc31ea7e180281c0696b0c2027ca779a71ffd8d6c",
+      "sha256_text": "4f7d64017689437e6d93f5724f3f797054f3935d98a13148025b616b8db8fb2c",
+      "url": "https://sna.cs.colostate.edu/virtual-machines/centos/"
+    },
+    {
+      "html_file": "data/snapshot/html/p073.html",
+      "page_id": "p073",
+      "retrieved_utc": "2026-10-03T04:38:56+00:00",
+      "section": "virtual-machines",
+      "sha256_html": "c24291ec165e506df095772134f6929d927a396bf3310484fd68766208755263",
+      "sha256_text": "421ebd83929fea50f1eca3974f62073b6ac213c6e8a4e1b9d2dcfe7fb381af95",
+      "url": "https://sna.cs.colostate.edu/virtual-machines/ubuntu/"
+    },
+    {
+      "html_file": "data/snapshot/html/p074.html",
+      "page_id": "p074",
+      "retrieved_utc": "2026-10-03T04:38:33+00:00",
+      "section": "virtual-machines",
+      "sha256_html": "ebd9cb2033b78eeff6d946476314e152842e6d1cda3d8b8a7095e1964d4618a0",
+      "sha256_text": "6739af304f12edd14bda5875f568c71982abdcd7a4628fa45f8b1be7f0d00d84",
+      "url": "https://sna.cs.colostate.edu/virtual-machines/windows/"
+    },
+    {
+      "html_file": "data/snapshot/html/p075.html",
+      "page_id": "p075",
+      "retrieved_utc": "2026-10-03T04:38:20+00:00",
+      "section": "websites",
+      "sha256_html": "337ec05ce57f53fcb59642327c305187d3b018fa80323d29f80920b0400c10a5",
+      "sha256_text": "79ccb8d6e3c543f532b007fe1a339958688d021240dff27e3f23f856ded8db5a",
+      "url": "https://sna.cs.colostate.edu/websites/"
+    },
+    {
+      "html_file": "data/snapshot/html/p076.html",
+      "page_id": "p076",
+      "retrieved_utc": "2026-10-03T04:38:21+00:00",
+      "section": "windows",
+      "sha256_html": "1a3867c14fb33469fe60b7b29bdac0e74aba37594059c97036b415db147466dc",
+      "sha256_text": "e5b2c7a1e5fd3af60501eb8c5b3945b24d2d8151595d1a73cba9f1be9e38d28d",
+      "url": "https://sna.cs.colostate.edu/windows/"
+    }
+  ]
+}

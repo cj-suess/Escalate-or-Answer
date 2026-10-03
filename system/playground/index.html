@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Escalate or Answer · Playground</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">Escalate or Answer <span>playground</span></div>
+  <nav class="tabs">
+    <button data-tab="study" class="on">Study task</button>
+    <button data-tab="agent">Agent (live)</button>
+    <button data-tab="corpus">Corpus &amp; QA</button>
+  </nav>
+  <div id="status" class="status">checking…</div>
+</header>
+
+<!-- ============================================================ study (proposal v4) -->
+<section id="tab-study" class="tab on">
+  <div class="expbar">
+    <span class="exp-label">Experimenter</span>
+    <label>Participant <input id="pcode" value="P00" size="5"></label>
+    <label>Form
+      <select id="form">
+        <option value="S1">S1 modal stop</option>
+        <option value="S2">S2 inline warning</option>
+        <option value="S3">S3 provenance-only</option>
+      </select>
+    </label>
+    <label>Task set <select id="setPick"></select></label>
+    <label>Order group
+      <select id="orderGroup">
+        <option value="1">1: S1 S2 S3</option><option value="2">2: S1 S3 S2</option>
+        <option value="3">3: S2 S1 S3</option><option value="4">4: S2 S3 S1</option>
+        <option value="5">5: S3 S1 S2</option><option value="6">6: S3 S2 S1</option>
+      </select>
+    </label>
+    <label>Pace
+      <select id="pace">
+        <option value="1">study pace (3–5 s per line)</option>
+        <option value="0.4">pilot (faster)</option>
+        <option value="0.1">debug (very fast)</option>
+      </select>
+    </label>
+    <button id="startBlock" class="primary">Start block</button>
+    <span id="progress" class="muted"></span>
+  </div>
+
+  <div class="study">
+    <aside class="lpane">
+      <div class="card sheet">
+        <h4>Spec sheet</h4>
+        <div id="sheetTitle" class="sheet-title">Start a block to see the assignment.</div>
+        <ul id="sheetLines"></ul>
+      </div>
+      <div class="card taskcard">
+        <h4 id="taskNo">Task</h4>
+        <p id="taskQ" class="taskq muted">—</p>
+        <h4>Answer</h4>
+        <div id="answer" class="answer empty">&nbsp;</div>
+        <div class="row">
+          <button id="accept" class="primary" disabled>Accept</button>
+          <button id="reject" disabled>Reject</button>
+        </div>
+        <div id="picker" class="picker hidden"></div>
+        <div id="taskMsg" class="muted small"></div>
+      </div>
+    </aside>
+
+    <main class="rpane">
+      <h4>Assistant</h4>
+      <div class="querybox">
+        <div><span class="muted small">Your query</span><div id="qtext" class="qtext">—</div></div>
+        <button id="send" class="primary" disabled>Send</button>
+      </div>
+      <div id="traceBox" class="trace-lines"></div>
+      <div id="forkModal" class="fork-modal hidden"></div>
+      <div id="srcOverlay" class="src-overlay hidden"></div>
+    </main>
+  </div>
+
+  <div id="blockSummary"></div>
+</section>
+
+<!-- ============================================================ agent (live) -->
+<section id="tab-agent" class="tab">
+  <div class="row">
+    <label>Query <input id="aq" value="Which GPU partition should I submit this job to?" size="60"></label>
+    <button id="arun" class="primary">Run agent</button>
+    <button id="freeze" disabled>Freeze record</button>
+    <span id="freezeMsg" class="muted"></span>
+  </div>
+  <p class="muted small">Runs the drafting loop locally (plan → retrieve → fork check → answer). Previously run queries replay from the committed cache.</p>
+  <div id="atrace" class="trace"></div>
+</section>
+
+<!-- ============================================================ corpus -->
+<section id="tab-corpus" class="tab">
+  <div class="stats" id="stats"></div>
+  <div class="row">
+    <input id="searchQ" placeholder="Search the index, e.g. how do I connect from home" size="60">
+    <button id="searchBtn">Search</button>
+  </div>
+  <div id="hits"></div>
+  <div class="row">
+    <label>QA filter
+      <select id="qaFilter">
+        <option value="kept">kept (fails blind, passes informed)</option>
+        <option value="answerable_blind">answerable blind (discarded)</option>
+        <option value="failed_informed">failed informed (discarded)</option>
+        <option value="all">all</option>
+      </select>
+    </label>
+    <span id="qaCount" class="muted"></span>
+  </div>
+  <table class="qa"><thead><tr><th>Question</th><th>Gold</th><th>Blind</th><th>Informed</th><th>Chunk</th></tr></thead>
+  <tbody id="qaBody"></tbody></table>
+</section>
+
+<script src="/static/common.js"></script>
+<script src="/static/study.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

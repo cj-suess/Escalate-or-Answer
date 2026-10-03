@@ -1,0 +1,32 @@
+{
+  "1": {
+    "assignment": "Fine-tune an image model on Falcon in stages.",
+    "name": "Job submission",
+    "tasks": [
+      "J1a",
+      "J1b",
+      "J2a",
+      "J2b"
+    ]
+  },
+  "2": {
+    "assignment": "Set up and run the course project from your laptop and the CS labs.",
+    "name": "Access and remote connection",
+    "tasks": [
+      "R3a",
+      "R3b",
+      "R6a",
+      "R6b"
+    ]
+  },
+  "3": {
+    "assignment": "Prepare the data and software environment for the project.",
+    "name": "Storage and software",
+    "tasks": [
+      "S1a",
+      "S1b",
+      "S2a",
+      "S2b"
+    ]
+  }
+}

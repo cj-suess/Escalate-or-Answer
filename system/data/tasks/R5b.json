@@ -1,0 +1,110 @@
+{
+  "contamination_probe": {
+    "blind": "The CS Lab in Lory Student Center.",
+    "blind_correct": false,
+    "gold": "Lab 120",
+    "informed": "Lab 120",
+    "informed_correct": true,
+    "question": "In which lab are the CS Linux machines that accept Remote Desktop (RDP) connections at Colorado State?",
+    "survives": true
+  },
+  "deciding_fact": "whether you need a graphical desktop or only a terminal",
+  "exclusivity": "documented condition both ways",
+  "fork_check": {
+    "fired_on_authored_fork": false,
+    "judge_yes": true,
+    "margin": 0.0488,
+    "margin_small": true,
+    "matched_options": 0,
+    "query_attempts": 2
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S2",
+  "is_correct": true,
+  "item_id": "R5b",
+  "key": "SSH from a terminal",
+  "key_logic": "RDP is the documented way to get the Linux GUI remotely (SSH gives a terminal). For terminal-only work the RDP page itself says it 'is not intended as a replacement to SSH'.",
+  "options": [
+    "Remote Desktop (RDP) to a Lab 120 machine",
+    "SSH from a terminal"
+  ],
+  "pair_id": "R5",
+  "question": "How do you run the command-line scripts from home?",
+  "recommendation_correct": true,
+  "recommendation_correctness": "correct",
+  "recommended_option": "SSH from a terminal",
+  "scripted_query": "How should I connect remotely to a CS lab machine?",
+  "selected": false,
+  "set": "2",
+  "source_a": {
+    "chunk_id": "p046-c00",
+    "heading": "How do I connect to the CS machines via SSH?",
+    "highlight": "Most recent operating systems have a built-in SSH client.",
+    "label": "A",
+    "page_text": "##### How do I connect to the CS machines via SSH?\n\nMost recent operating systems have a built-in SSH client. There would be slight differences depending on the operating system on your laptop. Follow the instructions for Linux, MacOS and Windows in the respective tabs, to open the SSH client, and then follow the commands later.\n\nTo use this service from off-campus you must be connected to the CSU’s VPN.\n\nMore information here: https://sna.cs.colostate.edu/remote-connection/vpn/\n\n##### Step 1: Open a terminal on your laptop.\n\nFire up a terminal. Depending on your Linux distribution and desktop environment, it could be named differently. On CentOS running XFCE desktop environment, one can find the terminal application from the Apps menu:\nApplications –> System –> Xfce Terminal\n\nNow proceed with Step 2.\n\nFrom the Launchpad, search for Terminal\n\nOpen the Terminal app and you should see a terminal window, as shown below.\n\nNow proceed with Step 2.\n\nStart searching for “command” in the Windows Start Menu. You should see a result with the Command Prompt app.\n\nOpen the Command Prompt app and you should see a terminal window, as shown below.\n\nNow proceed with Step 2.\n\n##### Step 2: Find a CS machine to connect to.\n\nIf you know what machine you want to connect to, skip this step.\nOtherwise, open the CS Machine Stats webpage (https://www.cs.colostate.edu/machinestats) in your browser. The list is sorted in ascending order by the “load average” in real time. Pick up any machine from the top of this list.\n\n##### Step 3: SSH into the CS machine.\n\nUse the following command to connect:\n\n```\nssh your-netid@machine-name.cs.colostate.edu\n```\n\nFor example, if you are connecting to the machine named montpelier, use the command:\n\n```\nssh your-netid@montpelier.cs.colostate.edu\n```\n\nIf it is the first time you are connecting to this machine, you might see a warning like below.\n\n```\nThe authenticity of host 'montpelier (129.82.44.158)' can't be established.\nECDSA key fingerprint is SHA256:ZAo+o73OPux05Sf8ASMra1Wbd9l1byA94xYtttXsbr8.\nAre you sure you want to continue connecting (yes/no)?\n```\n\nIf you see the above warning AND this is NOT the first time you are connecting to this machine, contact us!\n\nSay yes to the prompt, the host key for this CS machine would saved on your laptop, and you will be asked your CS password.\n\n```\nWarning: Permanently added 'montpelier,129.82.44.158' (ECDSA) to the list of known hosts.\nyour-netid@montpelier's password:\n```\n\nOnce you provide your CS account’s password, you will be shown a banner and land up on the CS machine’s shell:\n\n```\nyour-netid@montpelier's password:\n\n-------------------------------------------------------------------------\nFor system policies, information, and answers to frequently asked\nquestions see:\n\n    http://www.cs.colostate.edu/~info/faq.html\n\nFor a list of installed software packages and their locations see\n\n    http://www.cs.colostate.edu/~info/software\n\nTo report systems problems or to request the recovery of accidentally\ndeleted files, see:\n\n    http://www.cs.colostate.edu/cgi-bin/trouble.pl\n\nTo change your Linux password, log into any CS network linux machine and\nrun /usr/bin/passwd.  (Note: this does not affect your Windows password.)\n-------------------------------------------------------------------------\n\nmontpelier:~$\n```\n\nThe banner contains links useful and important information.\nThe name of machine in the shell prompt confirms you have successfully logged in.\n\nFor setting up password-less SSH see the Passwordless SSH page..",
+    "path": "/remote-connection/ssh/",
+    "title": "Terminal Connection (SSH)",
+    "updated": "2021-03-01",
+    "url": "https://sna.cs.colostate.edu/remote-connection/ssh/"
+  },
+  "source_b": {
+    "chunk_id": "p044-c00",
+    "heading": "Overview",
+    "highlight": "We use the Remote Desktop Protocol (RDP) for remote GUI connections to CS Linux machines.",
+    "label": "B",
+    "page_text": "##### Overview\n\nWe use the Remote Desktop Protocol (RDP) for remote GUI connections to CS Linux machines. This provides remote access to a Linux system’s graphical user interface.\n\nTo use this service from off-campus you must be connected to the CSU’s VPN.\n\nMore information here: https://sna.cs.colostate.edu/remote-connection/vpn/\n\nIf you disconnect from a RDP session, you can reconnect to the same session in the next 48 hours. To completely end a session you need to log out inside of your RDP session, using the Linux desktop environment’s logout menu option, instead of interrupting the connection. All sessions, which are not connected for over 48 hours, are automatically terminated.\n\nIf you are facing issues, please read the Troubleshooting section at the end.\n\nRDP for Linux machines originated as a courtesy service during the pandemic. At present, it is available only on the machines in Lab 120. This service is not intended as a replacement to SSH.\n\n##### Connection Process\n\nFirst choose a CS machine for remote connection.\nThe webpage https://www.cs.colostate.edu/machinestats/ provides\na list of machines which are labeled for general use. The list is\nsorted in ascending order by the “load average” in real time. Pick up any\nmachine from the top of this list which has the least number of connected RDP sessions.\n\nIn this example, we are using the CS machine named “tallahassee”.\n\nNow follow the guide below based on the OS on your laptop\n\nMost Linux distributions have a RDP client software installed. If it is not already installed on your system, install your favorite RDP client (rdesktop, vinagre, remmina, etc).\n\nHere we will show how to use the Remote Desktop Viewer software, which is available on all CS Linux machines. Start the application from:\nApplications –> Internet –> Remote Desktop Viewer\n\nIn the next window select the RDP protocol and enter the CS machine’s fully qualified domain name, under the Host field. Use other values as shown in the screenshot below, and hit Connect.\n\nAccept the certificate warning by clicking on Connect.\n\nNow you should see a login screen where you can log in with your CS Linux account credentials.\n\nAfter logging in you will be presented with a full desktop\nsession. This starts a GNOME session by default. If you want another desktop environment please read the corresponding section on this page at the end.\n\n##### Pausing a remote connection\n\nIf you would like to keep the session running and come back to it later, you can pause it by simply closing the RDP window (by hitting on the “X” in the window title bar).\n\n##### Terminating a remote connection\n\nIf you would like to terminate the session completely, you need to log out inside of your RDP session, using the logout menu item of the desktop environment.\n\nGo to the AppStore and search for ‘Microsoft Remote Desktop’.  Install and start it.\nClick “Add PC” to add a RDP connection.\n\nIn the next window enter the CS machine’s fully qualified domain name, under the PC Name. Use other values as shown in the screenshot below, and hit Add.\n\nYou will now see this connection in your list of saved connections with the name you specified as the Friendly Name above.\n\nClick on this connection and you will be prompted for your credentials. Provide your CS Linux account credentials and hit Continue.\n\nAccept the certificate warning by clicking on Continue.\n\nAfter logging in you will be presented with a full desktop\nsession. This starts a GNOME session by default. If you want another desktop environment please read the corresponding section on this page at the end.\n\n##### Pausing a remote connection\n\nIf you would like to keep the session running and come back to it later, you can pause it by simply disconnecting the RDP connection. To do this, go to the Microsoft Remote Desktop application. Click the three dots on the saved connection icon to bring up a context menu. Click on Disconnect.\n\n##### Terminating a remote connection\n\nIf you would like to terminate the session completely, you need to log out inside of your RDP session, using the logout menu item of the desktop environment.\n\nWindows OS comes with a remote desktop client pre-installed. In the Windows search menu search for ‘remote’. You will find an app named “Remote Desktop Connection”. Open it and use the screenshots below as a reference.\n\nIn the next window enter the CS machine’s fully qualified domain name. Under options you can change various things like the display size. Though the standard setting works well, if the performance is too low, try reducing the display size and adjusting for your network connection speed in the options.\n\nYou can say “Yes” to the certificate warning in the next promt.\n\nNow you should see a login screen where you can log in with your CS Linux account credentials.\n\nAfter logging in you will be presented with a full desktop\nsession. This starts a GNOME session by default. If you want another desktop environment please read the corresponding section on this page at the end.\n\n##### Pausing a remote connection\n\nIf you would like to keep the session running and come back to it later, you can pause it by simply closing the RDP window (by hitting on the “X” in the window title bar).\n\n##### Terminating a remote connection\n\nIf you would like to terminate the session completely, you need to log out inside of your RDP session, using the logout menu item of the desktop environment.\n\n##### Changing Desktop Environment\n\nThe GNOME desktop environment is the default. But this can be changed to other available desktop environments. The desktop environment is set in the contents of the file `.xsession` in your home directory of your CS Linux account. If this file does not exist in your account, you can create it manually.\nTo choose another desktop environment, edit the contents of this file as per the list below:\n\n- GNOME: gnome-session\n\n- KDE Plasma: startkde\n\n- XFCE: startxfce4\n\n- Cinnamon: cinnamon-session\n\nFor example, if you would like to set XFCE as your default RDP desktop environment, the contents of the `.xsession` file should be:\n\n```\nstartxfce4\n```\n\nMake sure the permissions on this file are set to 700. This can be done by the command:\n\n```\nchmod 700 ~/.xsession\n```\n\n#### Troubleshooting\n\nRDP is a resource intensive service and requires a decent amount of compute, memory, graphics and network resources on your laptop.\nA good bandwidth Internet connection is crucial for a lag-free experience.\nIssues concerning with “black screen”, session freezes or laggy response are most likely because of inadequate bandwidth.\n\nMake sure you meet the following requirements at your end:\n\n- You are using a decent machine with enough CPU, memory and graphics resources.\n\n- You are not running resource intensive tasks in the background.\n\n- Your upload and download speeds are of the same order of magnitude and not too low.\n\n- You are not sharing your Internet bandwidth with other devices in your home (for example, someone streaming Netflix in another room).\n\n- Your ISP does not throttle down RDP traffic. Some ISPs use traffic shaping to throttle certain kinds of traffic like VoIP, RDP, games, video meetings, etc.\n\nIf you meet all the requirements above but are still experiencing problems, consider following these tips for a better experience:\n\n- Adjust your RDP client to use a lower resolution. Select as small a resolution as is needed for your task.\n\n- Do not run RDP on full screen, especially if you have a high-resolution monitor.\n\n- Use XFCE desktop environment.\n\n- If your RDP client supports optimization for connection speed, choose a slow connection speed.\n\n- Again, if your RDP client supports it, choose a lower color depth.\n\n- Do not enable remote audio.\n\n- Do not use local resources on the RDP connection (like printers etc.).",
+    "path": "/remote-connection/gui/",
+    "title": "Remote Desktop (GUI)",
+    "updated": "2021-01-06",
+    "url": "https://sna.cs.colostate.edu/remote-connection/gui/"
+  },
+  "spec_sheet_line": "You only need to run command-line scripts from home.",
+  "task_id": "R5b",
+  "trace": [
+    {
+      "delay_ms": 3271,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 4851,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 4547,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Terminal Connection (SSH) › How do I connect to the CS machines via SSH?"
+    },
+    {
+      "delay_ms": 3304,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Remote Desktop (GUI) › Overview"
+    },
+    {
+      "delay_ms": 4530,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 3170,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests SSH from a terminal.",
+      "text": "Use SSH from a terminal (Source A)"
+    },
+    {
+      "delay_ms": 4642,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: SSH from a terminal. Filling the answer field."
+    }
+  ]
+}

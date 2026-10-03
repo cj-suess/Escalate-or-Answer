@@ -1,0 +1,25 @@
+{
+  "expected_page": "/hpc/job-handling/partitions/",
+  "passed": true,
+  "query": "What is the time limit of the gpu_short QoS?",
+  "top3": [
+    {
+      "chunk_id": "p014-c01",
+      "heading": "QoS",
+      "path": "/hpc/job-handling/partitions/",
+      "score": 0.7519
+    },
+    {
+      "chunk_id": "p012-c00",
+      "heading": "CPU Partition Limits",
+      "path": "/hpc/job-handling/limits/",
+      "score": 0.681
+    },
+    {
+      "chunk_id": "p012-c01",
+      "heading": "GPU Partition Limits",
+      "path": "/hpc/job-handling/limits/",
+      "score": 0.6723
+    }
+  ]
+}

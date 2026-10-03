@@ -1,0 +1,111 @@
+{
+  "contamination_probe": {
+    "blind": "NVLink-C2C",
+    "blind_correct": false,
+    "gold": "a100-sxm4-80gb",
+    "informed": "--gres=gpu:a100-sxm4-80gb:1",
+    "informed_correct": true,
+    "question": "What --gres type string does Falcon use for the A100 80GB GPU?",
+    "survives": true
+  },
+  "deciding_fact": "GPU memory the model needs on an A100",
+  "exclusivity": "hard one way, policy rule the other way",
+  "fork_check": {
+    "fired_on_authored_fork": false,
+    "judge_yes": true,
+    "margin": 0.0163,
+    "margin_small": true,
+    "matched_options": 0,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S1",
+  "is_correct": true,
+  "item_id": "J4b",
+  "key": "--gres=gpu:a100-sxm4-80gb:1",
+  "key_logic": "60 GB exceeds a 40 GB A100 (hard); 30 GB fits both, and the Policies page says not to over-request.",
+  "options": [
+    "--gres=gpu:nvidia_a100_3g.40gb:1",
+    "--gres=gpu:a100-sxm4-80gb:1"
+  ],
+  "pair_id": "J4",
+  "question": "Which GPU request line goes in the Stage 2 script (60 GB)?",
+  "recommendation_correct": true,
+  "recommendation_correctness": "correct",
+  "recommended_option": "--gres=gpu:a100-sxm4-80gb:1",
+  "scripted_query": "Which GPU type should I request in my job script?",
+  "selected": false,
+  "set": "1",
+  "source_a": {
+    "chunk_id": "p020-c01",
+    "heading": "How to use GPUs",
+    "highlight": "#SBATCH --gres=gpu:a100-sxm4-80gb:1",
+    "highlight_extra": "#SBATCH --gres=gpu:nvidia_a100_3g.40gb:1",
+    "label": "A",
+    "page_text": "GPUs are available on the peregrine  and kestrel nodes through the `peregrine-gpu` and `kestrel-gpu` partitions.\nThere are three types of GPUs on these nodes:\n\nperegrine-gpu\n\n- Nvidia A100 80GB - 6 available\n\n- Nvidia A100 40GB - 4 available\n\nkestrel-gpu\n\n- Nvidia GeForce RTX 3090 24GB - 12 available\n\n#### How to use GPUs\n\nTo use GPUs in your SLURM job:\n\n-\n\nAdd an additional SBATCH statement: `#SBATCH --gres=gpu:<type>:<number_of_gpus>` to your job script.\n\n  - For A100 80GB, use\n\n```\n#SBATCH --gres=gpu:a100-sxm4-80gb:1\n```\n\n  - For A100 40GB, use\n\n```\n#SBATCH --gres=gpu:nvidia_a100_3g.40gb:1\n```\n\n  - For RTX 3090 24GB, use\n\n```\n#SBATCH --gres=gpu:3090:1\n```\n\n-\n\nSubmit to the `peregrine-gpu` partition for A100s or `kestrel-gpu` partition for the 3090s.\n\n-\n\nNote that the number at the end of the SBATCH statement is the quantity of GPUs. In the statements above, we have requested for 1 GPU.\n\nAdding the `--gres` option to a Slurm script for a CPU-only code WILL NOT magically speed-up your code.\n\nOnly software/code that has been explicitly written to run on GPUs can benefit from GPUs.\n\nRequesting a GPU for a CPU-only code will waste resources and might as well lower down the priority of your future jobs.\n\nThe GPU type must be specified in the SLURM script.\n\nIt is not possible to mix and match GPU types in a single job.\n\nDo not ask for multiple GPUs if your codes is only written to use a single GPU.\n\nDoing so will waste resources and might as well lower down the priority  of your future jobs.\n\n#### CPU-GPU ratio\n\nOn the peregrine nodes, the ratio of CPUs to GPUs is 6:1.\nSo, your job can request 6 CPU cores for 1 GPU.\n\n#### Monitor GPU Usage\n\nAfter you submit your GPU job via `sbatch` command, you can monitor the GPU usage to check the memory usage of one or more GPUs in your job.\nUse the following command to get GPU usage of your job:\n\n```\nsgpu <your-jobid-here>\n```\n\nThe above command runs within your job’s resource allocation. Though the resources required for this task are not too high, and should not impact your job performance, it is recommened to use this on an “as needed” basis, and not in a script which runs it in a loop.",
+    "path": "/hpc/samples/gpu-jobs/",
+    "title": "GPU Jobs",
+    "updated": "2022-09-02",
+    "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/"
+  },
+  "source_b": {
+    "chunk_id": "p020-c03",
+    "heading": "Monitor GPU Usage",
+    "highlight": "",
+    "label": "B",
+    "page_text": "GPUs are available on the peregrine  and kestrel nodes through the `peregrine-gpu` and `kestrel-gpu` partitions.\nThere are three types of GPUs on these nodes:\n\nperegrine-gpu\n\n- Nvidia A100 80GB - 6 available\n\n- Nvidia A100 40GB - 4 available\n\nkestrel-gpu\n\n- Nvidia GeForce RTX 3090 24GB - 12 available\n\n#### How to use GPUs\n\nTo use GPUs in your SLURM job:\n\n-\n\nAdd an additional SBATCH statement: `#SBATCH --gres=gpu:<type>:<number_of_gpus>` to your job script.\n\n  - For A100 80GB, use\n\n```\n#SBATCH --gres=gpu:a100-sxm4-80gb:1\n```\n\n  - For A100 40GB, use\n\n```\n#SBATCH --gres=gpu:nvidia_a100_3g.40gb:1\n```\n\n  - For RTX 3090 24GB, use\n\n```\n#SBATCH --gres=gpu:3090:1\n```\n\n-\n\nSubmit to the `peregrine-gpu` partition for A100s or `kestrel-gpu` partition for the 3090s.\n\n-\n\nNote that the number at the end of the SBATCH statement is the quantity of GPUs. In the statements above, we have requested for 1 GPU.\n\nAdding the `--gres` option to a Slurm script for a CPU-only code WILL NOT magically speed-up your code.\n\nOnly software/code that has been explicitly written to run on GPUs can benefit from GPUs.\n\nRequesting a GPU for a CPU-only code will waste resources and might as well lower down the priority of your future jobs.\n\nThe GPU type must be specified in the SLURM script.\n\nIt is not possible to mix and match GPU types in a single job.\n\nDo not ask for multiple GPUs if your codes is only written to use a single GPU.\n\nDoing so will waste resources and might as well lower down the priority  of your future jobs.\n\n#### CPU-GPU ratio\n\nOn the peregrine nodes, the ratio of CPUs to GPUs is 6:1.\nSo, your job can request 6 CPU cores for 1 GPU.\n\n#### Monitor GPU Usage\n\nAfter you submit your GPU job via `sbatch` command, you can monitor the GPU usage to check the memory usage of one or more GPUs in your job.\nUse the following command to get GPU usage of your job:\n\n```\nsgpu <your-jobid-here>\n```\n\nThe above command runs within your job’s resource allocation. Though the resources required for this task are not too high, and should not impact your job performance, it is recommened to use this on an “as needed” basis, and not in a script which runs it in a loop.",
+    "path": "/hpc/samples/gpu-jobs/",
+    "title": "GPU Jobs",
+    "updated": "2022-09-02",
+    "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/"
+  },
+  "spec_sheet_line": "Stage 2 needs about 60 GB of GPU memory on an A100.",
+  "task_id": "J4b",
+  "trace": [
+    {
+      "delay_ms": 4814,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3795,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 3238,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: GPU Jobs › How to use GPUs"
+    },
+    {
+      "delay_ms": 3239,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: GPU Jobs › Monitor GPU Usage"
+    },
+    {
+      "delay_ms": 4095,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 3394,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests --gres=gpu:a100-sxm4-80gb:1.",
+      "text": "Use --gres=gpu:a100-sxm4-80gb:1 (Source A)"
+    },
+    {
+      "delay_ms": 3152,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: --gres=gpu:a100-sxm4-80gb:1. Filling the answer field."
+    }
+  ]
+}

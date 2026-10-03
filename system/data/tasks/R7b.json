@@ -1,0 +1,111 @@
+{
+  "contamination_probe": {
+    "blind": "Go to MyCS, then to Change My Password.",
+    "blind_correct": false,
+    "gold": "NetID password on CSU’s EID/NetID management web portal",
+    "informed": "Change NetID on CSU’s EID/NetID management web portal.",
+    "informed_correct": true,
+    "question": "How do you change your Windows lab password in the Colorado State CS department?",
+    "survives": true
+  },
+  "deciding_fact": "whether the password is for the Linux machines or the Windows machines",
+  "exclusivity": "hard both ways",
+  "fork_check": {
+    "fired_on_authored_fork": false,
+    "judge_yes": true,
+    "margin": 0.1381,
+    "margin_small": false,
+    "matched_options": 2,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S2",
+  "is_correct": false,
+  "item_id": "R7b",
+  "key": "change your NetID password on CSU's EID/NetID portal",
+  "key_logic": "'The Linux and Windows platforms have distinct password domains', so each method changes only its own password.",
+  "options": [
+    "run passwd on a department Linux machine",
+    "change your NetID password on CSU's EID/NetID portal"
+  ],
+  "pair_id": "R7",
+  "question": "How do you change the Windows lab password?",
+  "recommendation_correct": false,
+  "recommendation_correctness": "wrong",
+  "recommended_option": "run passwd on a department Linux machine",
+  "scripted_query": "How do I change my password?",
+  "selected": false,
+  "set": "2",
+  "source_a": {
+    "chunk_id": "p070-c00",
+    "heading": "How do I change my password?",
+    "highlight": "In Linux, you can change your password using the `passwd` command on any department linux machine.",
+    "highlight_extra": "To change your Windows password, you would have to change your NetID password on CSU’s EID/NetID management web portal.",
+    "label": "A",
+    "page_text": "##### How do I change my password?\n\nThe Linux and Windows platforms have distinct password domains. This means that you will need to change your passwords separately for Linux and Windows:\n\nIn Linux, you can change your password using the `passwd` command on any department linux machine. The command assists you in choosing a secure password, thereby enhancing security for everybody.\n\nTo change your Windows password, you would have to change your NetID password on CSU’s EID/NetID management web portal.\n\n##### How can I change my default shell?\n\nSend mail to `sna@cs.colostate.edu` to request that your shell be changed. The change cannot be performed with chsh because of incompatibilities among various machines' implementation of the NIS protocol. The available shells are listed below:\n\n```\nbash (the default)\ntcsh\ncsh\nksh\nsh\nzsh\n```\n\n##### How can I change my name in the finger information?\n\nSend mail to `sna@cs.colostate.edu` to request that your finger information be changed. The change cannot be performed with chfn because of incompatibilities among various machines' implementation of the NIS protocol.\n\n##### Where can I find a set of startup (or dot) files (.login, .cshrc, .xsession, etc) which are known to work?\n\nThe default startup files (which are provided in the home directories of newly created accounts) may be copied from `~info/dot.files`. These files provide a basic template which works in our environment, and may serve as a starting point for your own individual modifications.\n\n##### How long may I keep my account?\n\nGenerally speaking, your account will remain active as long as you are either enrolled as a Computer Science major or as another major taking CS classes. Other student accounts are removed twice annually, at the beginning of the Fall and Spring semesters. E-mail will be sent to accounts about to expire, several weeks before they are disabled.\n\n##### Is it ok to let my friends use my account?\n\nNo. Your account is for your use only. Accounts used by anyone other than the designated user may be suspended or revoked.\n\n##### How can I make ssh work across CS department machines without requiring a password each time?\n\nCreate a public/private key pair using the following commands, and leave the pass-phrase empty when ssh-keygen prompts for it:\n\n```\ncd ~/.ssh\nssh-keygen -t rsa\ncat id_rsa.pub >> authorized_keys\n```\n\nWARNING: If you change your password because you think your account has been compromised, you should also run these commands again. (The attacker may have stolen your ssh keys.)\n\nFor further information on password-less SSH see the Passwordless SSH page..",
+    "path": "/user-accounts/",
+    "title": "User Accounts",
+    "updated": "2021-09-07",
+    "url": "https://sna.cs.colostate.edu/user-accounts/"
+  },
+  "source_b": {
+    "chunk_id": "p070-c02",
+    "heading": "How can I change my name in the finger information?",
+    "highlight": "",
+    "label": "B",
+    "page_text": "##### How do I change my password?\n\nThe Linux and Windows platforms have distinct password domains. This means that you will need to change your passwords separately for Linux and Windows:\n\nIn Linux, you can change your password using the `passwd` command on any department linux machine. The command assists you in choosing a secure password, thereby enhancing security for everybody.\n\nTo change your Windows password, you would have to change your NetID password on CSU’s EID/NetID management web portal.\n\n##### How can I change my default shell?\n\nSend mail to `sna@cs.colostate.edu` to request that your shell be changed. The change cannot be performed with chsh because of incompatibilities among various machines' implementation of the NIS protocol. The available shells are listed below:\n\n```\nbash (the default)\ntcsh\ncsh\nksh\nsh\nzsh\n```\n\n##### How can I change my name in the finger information?\n\nSend mail to `sna@cs.colostate.edu` to request that your finger information be changed. The change cannot be performed with chfn because of incompatibilities among various machines' implementation of the NIS protocol.\n\n##### Where can I find a set of startup (or dot) files (.login, .cshrc, .xsession, etc) which are known to work?\n\nThe default startup files (which are provided in the home directories of newly created accounts) may be copied from `~info/dot.files`. These files provide a basic template which works in our environment, and may serve as a starting point for your own individual modifications.\n\n##### How long may I keep my account?\n\nGenerally speaking, your account will remain active as long as you are either enrolled as a Computer Science major or as another major taking CS classes. Other student accounts are removed twice annually, at the beginning of the Fall and Spring semesters. E-mail will be sent to accounts about to expire, several weeks before they are disabled.\n\n##### Is it ok to let my friends use my account?\n\nNo. Your account is for your use only. Accounts used by anyone other than the designated user may be suspended or revoked.\n\n##### How can I make ssh work across CS department machines without requiring a password each time?\n\nCreate a public/private key pair using the following commands, and leave the pass-phrase empty when ssh-keygen prompts for it:\n\n```\ncd ~/.ssh\nssh-keygen -t rsa\ncat id_rsa.pub >> authorized_keys\n```\n\nWARNING: If you change your password because you think your account has been compromised, you should also run these commands again. (The attacker may have stolen your ssh keys.)\n\nFor further information on password-less SSH see the Passwordless SSH page..",
+    "path": "/user-accounts/",
+    "title": "User Accounts",
+    "updated": "2021-09-07",
+    "url": "https://sna.cs.colostate.edu/user-accounts/"
+  },
+  "spec_sheet_line": "You must reset the password you use on the Windows lab machines.",
+  "task_id": "R7b",
+  "trace": [
+    {
+      "delay_ms": 4724,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3454,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 4637,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: User Accounts › How do I change my password?"
+    },
+    {
+      "delay_ms": 3451,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: User Accounts › How can I change my name in the finger information?"
+    },
+    {
+      "delay_ms": 4332,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 4535,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests run passwd on a department Linux machine.",
+      "text": "Use run passwd on a department Linux machine (Source A)"
+    },
+    {
+      "delay_ms": 3555,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: run passwd on a department Linux machine. Filling the answer field."
+    }
+  ]
+}

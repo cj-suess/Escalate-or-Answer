@@ -1,0 +1,88 @@
+{
+  "fork_line_index": null,
+  "form_tied_to": "none",
+  "is_correct": true,
+  "item_id": "P1",
+  "key": "sbatch job.sh",
+  "options": [
+    "sbatch job.sh"
+  ],
+  "pair_id": null,
+  "question": "Which command submits job.sh?",
+  "recommendation_correct": true,
+  "recommendation_correctness": "practice",
+  "recommended_option": "sbatch job.sh",
+  "scripted_query": "How do I submit my job script?",
+  "selected": true,
+  "set": "practice",
+  "source_a": {
+    "chunk_id": "p016-c01",
+    "heading": "Submit your Job",
+    "highlight": "submit the job via the `sbatch` command",
+    "label": "A",
+    "page_text": "##### The Job Script\n\nTo submit jobs on a cluster, one needs to allocate resources and then run the executable over these resources.\nThis is usually done by writing a job script. In this job script, you specify a partition, the resources your job needs (CPUs, memory, GPUs, etc) and a\nQoS.\n\nRefer to the Sample Job Scripts section for help on writing job scripts.\n\n##### Submit your Job\n\nAfter you have your job script written in a file (say `job.sh`), submit the job via the `sbatch` command as shown below:\n\n```\nsbatch job.sh\n```\n\nOn successful submission, you would see an output similar to\n\n```\nSubmitted batch job 1025\n```\n\nWhere that number `1025` is the job id number. This is job id number is needed for troubleshooting, so make a note of it.\n\nYou can then monitor the status of your job, refer to the Monitoring Jobs section.",
+    "path": "/hpc/job-handling/submitting-jobs/",
+    "title": "Submitting Jobs",
+    "updated": "2022-08-27",
+    "url": "https://sna.cs.colostate.edu/hpc/job-handling/submitting-jobs/"
+  },
+  "source_b": {
+    "chunk_id": "p032-c00",
+    "heading": "",
+    "highlight": "sbatch helloworld-python.sh",
+    "label": "B",
+    "page_text": "Serial jobs use only a single CPU-core.\n\nFirst, let us write a simple Python program.\n\n```\n# This program prints Hello, world!\n\nprint('Hello, World!')\n```\n\nSave it as `hello.py`.\n\nNow we will write a SLURM script to run our serial Python code as a job:\n\n```\n#!/bin/bash\n#SBATCH --job-name=\"Hello World\" \t# a name for your job\n#SBATCH --partition=peregrine-cpu\t# partition to which job should be submitted\n#SBATCH --qos=cpu_debug\t\t\t    # qos type\n#SBATCH --nodes=1                \t# node count\n#SBATCH --ntasks=1               \t# total number of tasks across all nodes\n#SBATCH --cpus-per-task=1        \t# cpu-cores per task\n#SBATCH --mem-per-cpu=2G         \t# memory per cpu-core\n#SBATCH --time=00:01:00          \t# total run time limit (HH:MM:SS)\n\nmodule purge\nmodule load python/anaconda\nsrun python3 hello.py\n```\n\nSave it as `helloworld-python.sh` and submit using the command\n\n```\nsbatch helloworld-python.sh\n```\n\nThe result will be saved in a file named `slurm-####.out` and should look like\n\n```\nHello, World!\n```",
+    "path": "/hpc/samples/serial/",
+    "title": "Serial Jobs",
+    "updated": "2022-09-06",
+    "url": "https://sna.cs.colostate.edu/hpc/samples/serial/"
+  },
+  "spec_sheet_line": "Your job script is saved as job.sh.",
+  "task_id": "P1",
+  "trace": [
+    {
+      "delay_ms": 4156,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3068,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 3468,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Submitting Jobs › Submit your Job"
+    },
+    {
+      "delay_ms": 4478,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Serial Jobs"
+    },
+    {
+      "delay_ms": 3910,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 3386,
+      "index": 6,
+      "kind": "answer",
+      "text": "Both sources agree: sbatch job.sh"
+    },
+    {
+      "delay_ms": 3379,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: sbatch job.sh. Filling the answer field."
+    }
+  ]
+}

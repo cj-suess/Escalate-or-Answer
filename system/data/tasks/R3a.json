@@ -1,0 +1,110 @@
+{
+  "contamination_probe": {
+    "blind": "443",
+    "blind_correct": false,
+    "gold": "9090",
+    "informed": "9090",
+    "informed_correct": true,
+    "question": "Which port does the CS department Jupyter SSH-tunnel guide use with --no-browser?",
+    "survives": true
+  },
+  "deciding_fact": "whether you are at the machine (or in remote desktop) or connected over SSH from a laptop",
+  "exclusivity": "hard one way, documented-condition the other way",
+  "fork_check": {
+    "fired_on_authored_fork": true,
+    "judge_yes": true,
+    "margin": 0.0533,
+    "margin_small": true,
+    "matched_options": 2,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S2",
+  "is_correct": false,
+  "item_id": "R3a",
+  "key": "jupyter-notebook",
+  "key_logic": "A browser window cannot open through a plain SSH session (hard); at the console the page documents plain jupyter-notebook.",
+  "options": [
+    "jupyter-notebook",
+    "jupyter-notebook --no-browser --port=9090 with an SSH tunnel"
+  ],
+  "pair_id": "R3",
+  "question": "How do you start Jupyter at the lab machine?",
+  "recommendation_correct": false,
+  "recommendation_correctness": "wrong",
+  "recommended_option": "jupyter-notebook --no-browser --port=9090 with an SSH tunnel",
+  "scripted_query": "How do I run Jupyter Notebook on a CS machine?",
+  "selected": true,
+  "set": "2",
+  "source_a": {
+    "chunk_id": "p058-c01",
+    "heading": "How do I use JupyterNotebook remotely?",
+    "highlight": "jupyter-notebook --no-browser --port=9090",
+    "label": "A",
+    "page_text": "##### How do I use JupyterNotebook ?\n\nYou may use either Anaconda, or the modules bundle for Python 3.6/3.8/3.9.\nConfigure your environment as shown in the Python Libraries section.\nAfter you have configured it, you can use JupyterNotebook as:\n\n```\njupyter-notebook\n```\n\nNote that this command starts the JupyterNotebook server on port 8888 and opens a browser window. This works if you are logged into a physical session on the machine, or through a remote desktop connection.\n\n##### How do I use JupyterNotebook remotely?\n\nYou can either use the remote desktop connection to connect to a CS machine via a GUI session and start JupyterNotebook as explained above, or use SSH tunneling.\n\nSSH tunneling is explained below:\n\n- Connect to a CS machine via SSH (follow this guide)\n\n- Set up your environment with either Anaconda, or the modules bundle for Python 3.6/3.8\nas shown in the Python Libraries section.\n\n- Start JupyterNotebook without opening the browser (that’s the key), via the command:\n\n```\njupyter-notebook --no-browser --port=9090\n```\n\n- Now set up an SSH tunnel to a CS machine, from your laptop. Type this command in a terminal on your laptop (and not on the CS machine):\n\n```\nssh -N -L 9090:localhost:9090 your-eid@cs-machine-name.cs.colostate.edu\n```\n\nReplace your-eid with your CS username and cs-machine-name with an actual name of a CS machine.\n\n- Now on your laptop, open this URL in a browser: `http://localhost:9090/`",
+    "path": "/software/jupyter/",
+    "title": "Using JupyterNotebook",
+    "updated": "2021-03-01",
+    "url": "https://sna.cs.colostate.edu/software/jupyter/"
+  },
+  "source_b": {
+    "chunk_id": "p058-c00",
+    "heading": "How do I use JupyterNotebook ?",
+    "highlight": "This works if you are logged into a physical session on the machine, or through a remote desktop connection.",
+    "label": "B",
+    "page_text": "##### How do I use JupyterNotebook ?\n\nYou may use either Anaconda, or the modules bundle for Python 3.6/3.8/3.9.\nConfigure your environment as shown in the Python Libraries section.\nAfter you have configured it, you can use JupyterNotebook as:\n\n```\njupyter-notebook\n```\n\nNote that this command starts the JupyterNotebook server on port 8888 and opens a browser window. This works if you are logged into a physical session on the machine, or through a remote desktop connection.\n\n##### How do I use JupyterNotebook remotely?\n\nYou can either use the remote desktop connection to connect to a CS machine via a GUI session and start JupyterNotebook as explained above, or use SSH tunneling.\n\nSSH tunneling is explained below:\n\n- Connect to a CS machine via SSH (follow this guide)\n\n- Set up your environment with either Anaconda, or the modules bundle for Python 3.6/3.8\nas shown in the Python Libraries section.\n\n- Start JupyterNotebook without opening the browser (that’s the key), via the command:\n\n```\njupyter-notebook --no-browser --port=9090\n```\n\n- Now set up an SSH tunnel to a CS machine, from your laptop. Type this command in a terminal on your laptop (and not on the CS machine):\n\n```\nssh -N -L 9090:localhost:9090 your-eid@cs-machine-name.cs.colostate.edu\n```\n\nReplace your-eid with your CS username and cs-machine-name with an actual name of a CS machine.\n\n- Now on your laptop, open this URL in a browser: `http://localhost:9090/`",
+    "path": "/software/jupyter/",
+    "title": "Using JupyterNotebook",
+    "updated": "2021-03-01",
+    "url": "https://sna.cs.colostate.edu/software/jupyter/"
+  },
+  "spec_sheet_line": "You are sitting at a CS lab machine.",
+  "task_id": "R3a",
+  "trace": [
+    {
+      "delay_ms": 4334,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3971,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 4482,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Using JupyterNotebook › How do I use JupyterNotebook remotely?"
+    },
+    {
+      "delay_ms": 3937,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Using JupyterNotebook › How do I use JupyterNotebook ?"
+    },
+    {
+      "delay_ms": 4454,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 4665,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests jupyter-notebook --no-browser --port=9090 with an SSH tunnel.",
+      "text": "Use jupyter-notebook --no-browser --port=9090 with an SSH tunnel (Source A)"
+    },
+    {
+      "delay_ms": 4270,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: jupyter-notebook --no-browser --port=9090 with an SSH tunnel. Filling the answer field."
+    }
+  ]
+}

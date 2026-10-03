@@ -1,0 +1,111 @@
+{
+  "contamination_probe": {
+    "blind": "10 hours",
+    "blind_correct": false,
+    "gold": "24 hours",
+    "informed": "24 hours",
+    "informed_correct": true,
+    "question": "On the Falcon cluster at Colorado State CS, what is the time limit of the gpu_short QoS?",
+    "survives": true
+  },
+  "deciding_fact": "how long the GPU job runs",
+  "exclusivity": "hard one way (30 h), policy rule the other way (10 h)",
+  "fork_check": {
+    "fired_on_authored_fork": true,
+    "judge_yes": true,
+    "margin": 0.0825,
+    "margin_small": true,
+    "matched_options": 2,
+    "query_attempts": 4
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S1",
+  "is_correct": false,
+  "item_id": "J1b",
+  "key": "gpu_medium",
+  "key_logic": "A 30 h job under gpu_short (24 h limit) is terminated at its time limit (FAQ: 'runs until it ... reaches its time limit, at which point the scheduler terminates it'), so gpu_medium is the only valid option. A 10 h job fits both; the Policies page ('do not over-request resources') makes gpu_short the documented answer.",
+  "options": [
+    "gpu_short",
+    "gpu_medium"
+  ],
+  "pair_id": "J1",
+  "question": "Which QoS do you use for the Stage 2 training run?",
+  "recommendation_correct": false,
+  "recommendation_correctness": "wrong",
+  "recommended_option": "gpu_short",
+  "scripted_query": "Which QoS do I use for a GPU job, and what are the time limits?",
+  "selected": true,
+  "set": "1",
+  "source_a": {
+    "chunk_id": "p014-c01",
+    "heading": "QoS",
+    "highlight": "| [peregrine,kestrel]-gpu | gpu_short | 24 hours |",
+    "highlight_extra": "| [peregrine,kestrel]-gpu | gpu_medium | 3 days |",
+    "label": "A",
+    "page_text": "Falcon cluster provides different CPU and GPU architectures.\nAlso, there are different queues for different job priorities and limitations.\n\nWe use the following control techniques for specifying queues and resources:\n\n- Partitions\n\n- Quality of Service (QoS)\n\nAt present there are 3 partitions,  peregrine-cpu is the default:\n\n| Partition | Job Type CPU / GPU | CPU Memory / GPU memory |\n| peregrine-cpu | single and multi-core | 1 TB / NA |\n| peregrine-gpu | GPU | 1 TB / 640 GB |\n| kestrel-gpu | GPU | 360 GB / 288 GB |\n\n##### QoS\n\nWe use QoS to classify different jobs based on limits. In each partition there is a default QoS (bold below).\nEach QoS has specific limits:\n\n| Partition | QoS | Time Limit |\n| peregrine-cpu | cpu_debug | 30 min |\n| peregrine-cpu | cpu_short | 24 hours |\n| peregrine-cpu | cpu_medium | 3 days |\n| peregrine-cpu | cpu_long | 10 days |\n|  |  |  |\n| [peregrine,kestrel]-gpu | gpu_debug | 30 min |\n| [peregrine,kestrel]-gpu | gpu_short | 24 hours |\n| [peregrine,kestrel]-gpu | gpu_medium | 3 days |\n| [peregrine,kestrel]-gpu | gpu_long | 10 days |",
+    "path": "/hpc/job-handling/partitions/",
+    "title": "Partitions",
+    "updated": "2022-08-27",
+    "url": "https://sna.cs.colostate.edu/hpc/job-handling/partitions/"
+  },
+  "source_b": {
+    "chunk_id": "p018-c03",
+    "heading": "Resource Usage",
+    "highlight": "Only request the resources which your job needs, do not over-request resources.",
+    "label": "B",
+    "page_text": "On this page, we outline specific requirements from your side and best practices that are essential for maintaining a productive shared working experience.\nThese policies are in addition to the CS computing policies described here.\n\n##### General\n\n- A basic knowledge of Linux command line and shell scripting is expected. Consider going through some Linux tutorials first if you have never used the command line.\n\n- Make use of the documentation on the SNA website before seeking assistance. Everything required to write and submit jobs for many applications is described here.\n\n##### Jobs\n\n- Submit jobs to the appropriate partition, and with the correct QOS.\n\n- Please make sure correctness of your code/algorithm by testing on a smaller dataset/time frame.\n\n- Verify that your job completes successfully before submitting it several times.\n\n- Make sure paths referenced in the job script are valid.\n\n- Using checkpointing mechanisms is highly recommended.\n\n##### Resource Usage\n\n- Jobs should not be run directly on the login nodes, also known as submit or user nodes.\n\n- Only request the resources which your job needs, do not over-request resources.",
+    "path": "/hpc/policies/",
+    "title": "Policies and Conduct",
+    "updated": "2022-08-05",
+    "url": "https://sna.cs.colostate.edu/hpc/policies/"
+  },
+  "spec_sheet_line": "Stage 2, training: about 30 h of wall time on 1 GPU.",
+  "task_id": "J1b",
+  "trace": [
+    {
+      "delay_ms": 3072,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 4445,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 3058,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Partitions › QoS"
+    },
+    {
+      "delay_ms": 4794,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Policies and Conduct › Resource Usage"
+    },
+    {
+      "delay_ms": 4092,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 4511,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests gpu_short.",
+      "text": "Use gpu_short (Source A)"
+    },
+    {
+      "delay_ms": 3209,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: gpu_short. Filling the answer field."
+    }
+  ]
+}

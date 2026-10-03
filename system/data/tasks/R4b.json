@@ -1,0 +1,111 @@
+{
+  "contamination_probe": {
+    "blind": "Yes, WinSCP is available for macOS.",
+    "blind_correct": false,
+    "gold": "no",
+    "informed": "No.",
+    "informed_correct": true,
+    "question": "Is WinSCP available for macOS?",
+    "survives": true
+  },
+  "deciding_fact": "the operating system of your laptop",
+  "exclusivity": "hard one way only; weak",
+  "fork_check": {
+    "fired_on_authored_fork": true,
+    "judge_yes": true,
+    "margin": 0.0017,
+    "margin_small": true,
+    "matched_options": 2,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S2",
+  "is_correct": true,
+  "item_id": "R4b",
+  "key": "CyberDuck",
+  "key_logic": "WinSCP is Windows-only (hard for the Mac twin); on Windows both work, so this pair is weak and kept only as a backup.",
+  "options": [
+    "WinSCP",
+    "CyberDuck"
+  ],
+  "pair_id": "R4",
+  "question": "Which transfer program do you install (Mac)?",
+  "recommendation_correct": true,
+  "recommendation_correctness": "correct",
+  "recommended_option": "CyberDuck",
+  "scripted_query": "Which program should I use to transfer files to a CS machine?",
+  "selected": false,
+  "set": "2",
+  "source_a": {
+    "chunk_id": "p045-c00",
+    "heading": "How do I transfer files from my laptop to the CS machines via GUI?",
+    "highlight": "CyberDuck: MacOS & Windows",
+    "highlight_extra": "WinSCP: Windows",
+    "label": "A",
+    "page_text": "##### How do I transfer files from my laptop to the CS machines via GUI?\n\nTo use this service from off-campus you must be connected to the CSU’s VPN.\n\nMore information here: https://sna.cs.colostate.edu/remote-connection/vpn/\n\nYou would need to use the SCP protocol for transferring files back and forth via GUI. There are many free software available which let you do SCP/SFTP file transfer.\n\n- FileZilla: Linux, MacOS & Windows\n\n- CyberDuck: MacOS & Windows\n\n- WinSCP: Windows\n\nBrowse through the tabs for more information on setting up each one of these.\n\nFileZilla is available for all major platforms: Linux, MacOS and Windows. Download and install the software for your OS open it. Click on Site Manager to create a new site.\n\nHit Connect. If you are connecting to this CS machine for the first time, you might see a warning like below.\n\nIf you see the above warning AND this is NOT the first time you are connecting to this machine, contact us!\n\nClick on Ok and you would be shown the contents of your CS account’s home directory.\n\nThe left pane is your local laptop and the right pane is the remote machine (your CS unix home directory). Now you can drag and drop files from one pane to the other to transfer files back and forth. You can also create or delete files.\n\nCyberDuck is supported on both MacOS and Windows. Download the software for your OS and open it. Click on Open Connection and fill in all the details, you may refer to the screenshot below.\n\nHit Connect. If you are connecting to this CS machine for the first time, you might see a warning like below.\n\nIf you see the above warning AND this is NOT the first time you are connecting to this machine, contact us!\n\nClick on Allow and you would be shown the contents of your CS account’s home directory.\n\nNow you can drag and drop files from Finder into this window to transfer files back and forth. You can also create or delete files.\n\nWinSCP is supported only on Windows. Download and install the software and open it.\nCreate a new site configuration as shown in the screenshot below.\n\nIf you are connecting to this CS machine for the first time, you might see a warning like below.\n\nIf you see the above warning AND this is NOT the first time you are connecting to this machine, contact us!\n\nClick on Yes and you would be shown the contents of your CS account’s home directory.\n\nThe left pane is your local laptop and the right pane is the remote machine (your CS unix home directory). Now you can drag and drop files from one pane to the other to transfer files back and forth. You can also create or delete files.",
+    "path": "/remote-connection/scp/",
+    "title": "Transfer Files",
+    "updated": "2021-03-01",
+    "url": "https://sna.cs.colostate.edu/remote-connection/scp/"
+  },
+  "source_b": {
+    "chunk_id": "p045-c02",
+    "heading": "How do I transfer files from my laptop to the CS machines via GUI?",
+    "highlight": "",
+    "label": "B",
+    "page_text": "##### How do I transfer files from my laptop to the CS machines via GUI?\n\nTo use this service from off-campus you must be connected to the CSU’s VPN.\n\nMore information here: https://sna.cs.colostate.edu/remote-connection/vpn/\n\nYou would need to use the SCP protocol for transferring files back and forth via GUI. There are many free software available which let you do SCP/SFTP file transfer.\n\n- FileZilla: Linux, MacOS & Windows\n\n- CyberDuck: MacOS & Windows\n\n- WinSCP: Windows\n\nBrowse through the tabs for more information on setting up each one of these.\n\nFileZilla is available for all major platforms: Linux, MacOS and Windows. Download and install the software for your OS open it. Click on Site Manager to create a new site.\n\nHit Connect. If you are connecting to this CS machine for the first time, you might see a warning like below.\n\nIf you see the above warning AND this is NOT the first time you are connecting to this machine, contact us!\n\nClick on Ok and you would be shown the contents of your CS account’s home directory.\n\nThe left pane is your local laptop and the right pane is the remote machine (your CS unix home directory). Now you can drag and drop files from one pane to the other to transfer files back and forth. You can also create or delete files.\n\nCyberDuck is supported on both MacOS and Windows. Download the software for your OS and open it. Click on Open Connection and fill in all the details, you may refer to the screenshot below.\n\nHit Connect. If you are connecting to this CS machine for the first time, you might see a warning like below.\n\nIf you see the above warning AND this is NOT the first time you are connecting to this machine, contact us!\n\nClick on Allow and you would be shown the contents of your CS account’s home directory.\n\nNow you can drag and drop files from Finder into this window to transfer files back and forth. You can also create or delete files.\n\nWinSCP is supported only on Windows. Download and install the software and open it.\nCreate a new site configuration as shown in the screenshot below.\n\nIf you are connecting to this CS machine for the first time, you might see a warning like below.\n\nIf you see the above warning AND this is NOT the first time you are connecting to this machine, contact us!\n\nClick on Yes and you would be shown the contents of your CS account’s home directory.\n\nThe left pane is your local laptop and the right pane is the remote machine (your CS unix home directory). Now you can drag and drop files from one pane to the other to transfer files back and forth. You can also create or delete files.",
+    "path": "/remote-connection/scp/",
+    "title": "Transfer Files",
+    "updated": "2021-03-01",
+    "url": "https://sna.cs.colostate.edu/remote-connection/scp/"
+  },
+  "spec_sheet_line": "Your laptop is a MacBook.",
+  "task_id": "R4b",
+  "trace": [
+    {
+      "delay_ms": 3820,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 4017,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 4003,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Transfer Files › How do I transfer files from my laptop to the CS machines via GUI?"
+    },
+    {
+      "delay_ms": 4158,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Transfer Files › How do I transfer files from my laptop to the CS machines via GUI?"
+    },
+    {
+      "delay_ms": 3555,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 3881,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests CyberDuck.",
+      "text": "Use CyberDuck (Source A)"
+    },
+    {
+      "delay_ms": 3231,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: CyberDuck. Filling the answer field."
+    }
+  ]
+}
