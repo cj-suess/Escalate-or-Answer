@@ -39,7 +39,9 @@ The two tasks from one fork ("twins") share the same query, trace, sources and r
 
 Each trace line carries a fixed delay of 3.0–5.0 s, drawn from a hash of the task id and line number. The pacing is stored in the record, so every participant sees identical timing. A trace takes 26–30 s, so a task takes about 60–90 s and a block of four takes about 5–7 minutes, which fits v4's 9-minute blocks. Between lines a typing indicator shows. The playground has *pilot* and *debug* speeds for the experimenter; study pace is the default.
 
-## Where v4 must change to match the corpus and the pipeline
+## Where v4 was changed to match the corpus and the pipeline
+
+Items 1 to 6 below were applied to `new_proposal_v4.tex` on 6 October 2026. Item 7 (the set-by-form confound) is a design choice that remains open.
 
 1. **Flag syntax and limits** (v4 TODO, Section 1). There is no `-short` / `-medium` flag. The QoS names are `cpu_short` (24 h) / `cpu_medium` (3 days) for CPU jobs and `gpu_short` (24 h) / `gpu_medium` (3 days) for GPU jobs, set with `#SBATCH --qos=...` (Partitions page; Serial Jobs sample).
 2. **"Default configuration suggests `-short`"** is not true of the documentation. The page's bold default QoS is `cpu_debug` / `gpu_debug` (30 min). The records use the neutral "Source A suggests `<option>`." Alternatively, keep a "default" framing only where the page really states a default.

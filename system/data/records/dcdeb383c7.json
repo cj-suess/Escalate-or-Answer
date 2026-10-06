@@ -1,0 +1,217 @@
+{
+  "card": {
+    "key": "Send a request to sna@cs.colostate.edu with an endorsement from your research advisor.",
+    "options": [
+      "Send a request to sna@cs.colostate.edu with an endorsement from your research advisor.",
+      "Send a request to sna@cs.colostate.edu."
+    ],
+    "prefill": "Send a request to sna@cs.colostate.edu with an endorsement from your research advisor.",
+    "scored_field": "CS faculty endorsement"
+  },
+  "created": "2026-10-03T02:21:35+00:00",
+  "escalation_step": 0,
+  "flagged": true,
+  "provenance": {
+    "embed": "nomic-embed-text",
+    "embed_digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "llm": "qwen2.5:7b-instruct",
+    "llm_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+    "llm_options": {
+      "num_ctx": 4096,
+      "repeat_penalty": 1.0,
+      "seed": 567,
+      "temperature": 0,
+      "top_k": 1,
+      "top_p": 1.0
+    },
+    "ollama_version": "0.35.1"
+  },
+  "question": "How do I get access to the Falcon cluster?",
+  "record_id": "dcdeb383c7",
+  "situation": "You are an undergraduate, not faculty.",
+  "steps": [
+    {
+      "cites": [
+        "p006-c00"
+      ],
+      "escalation": {
+        "attribute": "CS faculty endorsement",
+        "default": {
+          "applies_when": "CS student",
+          "chunk_id": "p006-c00",
+          "value": "Send a request to sna@cs.colostate.edu with an endorsement from your research advisor."
+        },
+        "options": [
+          {
+            "applies_when": "CS student",
+            "chunk_id": "p006-c00",
+            "value": "Send a request to sna@cs.colostate.edu with an endorsement from your research advisor."
+          },
+          {
+            "applies_when": "CS faculty",
+            "chunk_id": "p006-c00",
+            "value": "Send a request to sna@cs.colostate.edu."
+          }
+        ]
+      },
+      "fork_check": {
+        "attribute": "CS faculty endorsement",
+        "depends_on_user": true,
+        "options": [
+          {
+            "applies_when": "CS student",
+            "chunk_id": "p006-c00",
+            "value": "Send a request to sna@cs.colostate.edu with an endorsement from your research advisor."
+          },
+          {
+            "applies_when": "CS faculty",
+            "chunk_id": "p006-c00",
+            "value": "Send a request to sna@cs.colostate.edu."
+          }
+        ]
+      },
+      "goal": "Identify the necessary permissions and account type",
+      "grounded_options": [
+        {
+          "applies_when": "CS student",
+          "chunk_id": "p006-c00",
+          "value": "Send a request to sna@cs.colostate.edu with an endorsement from your research advisor."
+        },
+        {
+          "applies_when": "CS faculty",
+          "chunk_id": "p006-c00",
+          "value": "Send a request to sna@cs.colostate.edu."
+        }
+      ],
+      "margin": 0.0225,
+      "query": "Falcon cluster account types and permissions",
+      "retrieved": [
+        {
+          "chunk_id": "p006-c00",
+          "heading": "",
+          "score": 0.7626,
+          "title": "Requesting Access",
+          "updated": "2022-08-28",
+          "url": "https://sna.cs.colostate.edu/hpc/getting-started/account/"
+        },
+        {
+          "chunk_id": "p002-c02",
+          "heading": "Cluster Nodes",
+          "score": 0.7401,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        },
+        {
+          "chunk_id": "p002-c01",
+          "heading": "System overview",
+          "score": 0.7304,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        },
+        {
+          "chunk_id": "p005-c00",
+          "heading": "",
+          "score": 0.7252,
+          "title": "Connecting to Falcon",
+          "updated": "2022-08-28",
+          "url": "https://sna.cs.colostate.edu/hpc/getting-started/accessing/"
+        }
+      ],
+      "text": "Send a request to sna@cs.colostate.edu with an endorsement from your research advisor."
+    },
+    {
+      "cites": [
+        "p006-c00"
+      ],
+      "escalation": null,
+      "fork_check": null,
+      "goal": "Create or request an account",
+      "grounded_options": [],
+      "margin": 0.0206,
+      "query": "How to create or request a Falcon cluster account",
+      "retrieved": [
+        {
+          "chunk_id": "p006-c00",
+          "heading": "",
+          "score": 0.8078,
+          "title": "Requesting Access",
+          "updated": "2022-08-28",
+          "url": "https://sna.cs.colostate.edu/hpc/getting-started/account/"
+        },
+        {
+          "chunk_id": "p005-c00",
+          "heading": "",
+          "score": 0.7872,
+          "title": "Connecting to Falcon",
+          "updated": "2022-08-28",
+          "url": "https://sna.cs.colostate.edu/hpc/getting-started/accessing/"
+        },
+        {
+          "chunk_id": "p002-c01",
+          "heading": "System overview",
+          "score": 0.7587,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        },
+        {
+          "chunk_id": "p004-c00",
+          "heading": "",
+          "score": 0.7547,
+          "title": "Getting Started",
+          "updated": "2022-08-28",
+          "url": "https://sna.cs.colostate.edu/hpc/getting-started/"
+        }
+      ],
+      "text": "Send an access request to sna@cs.colostate.edu with your research explanation and advisor endorsement."
+    },
+    {
+      "cites": [
+        "p006-c00"
+      ],
+      "escalation": null,
+      "fork_check": null,
+      "goal": "Verify account creation and access",
+      "grounded_options": [],
+      "margin": 0.0157,
+      "query": "Falcon cluster account verification process",
+      "retrieved": [
+        {
+          "chunk_id": "p006-c00",
+          "heading": "",
+          "score": 0.7119,
+          "title": "Requesting Access",
+          "updated": "2022-08-28",
+          "url": "https://sna.cs.colostate.edu/hpc/getting-started/account/"
+        },
+        {
+          "chunk_id": "p002-c01",
+          "heading": "System overview",
+          "score": 0.6962,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        },
+        {
+          "chunk_id": "p005-c00",
+          "heading": "",
+          "score": 0.6785,
+          "title": "Connecting to Falcon",
+          "updated": "2022-08-28",
+          "url": "https://sna.cs.colostate.edu/hpc/getting-started/accessing/"
+        },
+        {
+          "chunk_id": "p002-c00",
+          "heading": "Description",
+          "score": 0.6593,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        }
+      ],
+      "text": "Send an email to sna@cs.colostate.edu with your research plan and advisor's endorsement."
+    }
+  ]
+}

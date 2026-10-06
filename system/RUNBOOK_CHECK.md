@@ -117,6 +117,8 @@ The first run of this test exposed three problems, all fixed:
 
 ## Still to build before a pilot
 
+The agreed changes, including crossing task set with form and the instrument screens, are specified in `PLANNED_CHANGES.md`.
+
 1. The instrument screens (NASA-TLX, intrusion, manipulation check, closing ranking) and their tables.
 2. Automatic session flow: assign an order group, then run practice and the three blocks in order with instruments between them.
 3. Task-set matching statistics.

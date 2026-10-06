@@ -59,7 +59,7 @@ The **Study task** tab runs a block as a participant sees it:
 Every event is written to `data/sessions/events.sqlite`, which is git-ignored because it holds participant data. Logged events include each source's open and close with its duration. A per-task summary row records:
 - the final value and whether it is correct
 - whether the participant followed the recommendation
-- whether they opened any source
+- whether they viewed any source for at least 3 s of summed dwell (raw opens and dwell are logged too)
 - which sources they opened (recommended only, the other only, both, or neither)
 - dwell time on Source A and on Source B
 - decision time and total time

@@ -7,6 +7,7 @@ const Study = (() => {
   let block = null;         // current block state
   let task = null;          // current task state
   let token = 0;            // cancels an in-flight trace when a new block starts
+  const MIN_DWELL_S = 3;    // a source counts as viewed only after 3 s of summed dwell (proposal v4, DV (a))
 
   // ---------------------------------------------------------------- utilities
   function seeded(str) {    // deterministic PRNG (mulberry32) seeded from a string
@@ -175,8 +176,11 @@ const Study = (() => {
     log("accept", task.value);
     const t = now();
     const rec = task.rec;
-    const opened = task.opens.A + task.opens.B;
-    const pattern = task.opens.A && task.opens.B ? "both" : task.opens.A ? "recommended only" : task.opens.B ? "non-recommended only" : "neither";
+    // A source counts as viewed only when its summed dwell reaches MIN_DWELL_S;
+    // raw opens and dwell are still logged so the threshold can be re-analyzed.
+    const viewedA = task.dwell.A >= MIN_DWELL_S, viewedB = task.dwell.B >= MIN_DWELL_S;
+    const opened = (viewedA ? 1 : 0) + (viewedB ? 1 : 0);
+    const pattern = viewedA && viewedB ? "both" : viewedA ? "recommended only" : viewedB ? "non-recommended only" : "neither";
     const summary = {
       participant_code: block.pcode, session_id: block.session_id, block_order_group: block.orderGroup,
       block_index: block.index, form: block.form, item_id: rec.task_id, recommendation_correctness: rec.fork_line_index ? (rec.recommendation_correct ? "correct" : "wrong") : "practice",

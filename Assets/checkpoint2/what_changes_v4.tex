@@ -1,0 +1,324 @@
+\documentclass[9pt,letterpaper]{extarticle}
+\usepackage[margin=0.7in,top=0.65in,bottom=0.7in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{helvet}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{colortbl}
+\newcommand{\rowsep}{\noalign{\vskip 1.5pt}\arrayrulecolor{black!35}\hline\arrayrulecolor{black}\noalign{\vskip 1.5pt}}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{needspace}
+
+%% ---------------------------------------------------------------- palette
+\definecolor{accent}{HTML}{1F5F8B}   % deep blue
+\definecolor{accentlight}{HTML}{E8F0F7}
+\definecolor{warn}{HTML}{9A3B1C}     % rust
+\definecolor{warnlight}{HTML}{F8ECE6}
+\definecolor{keep}{HTML}{2E6B3A}     % green
+\definecolor{keeplight}{HTML}{E9F3EB}
+\definecolor{ink}{HTML}{222222}
+\definecolor{muted}{HTML}{666666}
+
+\color{ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+%% ---------------------------------------------------------------- headings
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+  {-10pt \@plus -2pt \@minus -1pt}{3pt}%
+  {\sffamily\bfseries\large\color{accent}}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {-8pt \@plus -2pt \@minus -1pt}{2pt}%
+  {\sffamily\bfseries\color{accent}}}
+\makeatother
+
+%% ---------------------------------------------------------------- boxes
+\newtcolorbox{callout}[2][]{enhanced, breakable, colback=accentlight, colframe=accent,
+  boxrule=0.6pt, arc=2pt, left=7pt, right=7pt, top=4pt, bottom=4pt,
+  fonttitle=\sffamily\bfseries, coltitle=white, colbacktitle=accent,
+  title={#2}, #1}
+\newtcolorbox{answerbox}[2][]{enhanced, breakable, colback=warnlight, colframe=warn,
+  boxrule=0.6pt, arc=2pt, left=7pt, right=7pt, top=4pt, bottom=4pt,
+  fonttitle=\sffamily\bfseries, coltitle=white, colbacktitle=warn,
+  title={#2}, #1}
+\newtcolorbox{keepbox}[2][]{enhanced, breakable, colback=keeplight, colframe=keep,
+  boxrule=0.6pt, arc=2pt, left=7pt, right=7pt, top=4pt, bottom=4pt,
+  fonttitle=\sffamily\bfseries, coltitle=white, colbacktitle=keep,
+  title={#2}, #1}
+
+%% What / Why / How table (longtable breaks across pages)
+\setlength{\LTpre}{4pt}
+\setlength{\LTpost}{2pt}
+\setlength{\arrayrulewidth}{0.3pt}
+
+\newcommand{\hd}[1]{\textbf{#1}}
+\let\oldsection\section
+\renewcommand{\section}{\needspace{7\baselineskip}\oldsection}
+\newcommand{\wwh}{\toprule
+\sffamily\bfseries\color{accent} What & \sffamily\bfseries\color{accent} Why & \sffamily\bfseries\color{accent} How \\
+\midrule}
+\newenvironment{wwhtable}{\footnotesize
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\linewidth}>{\raggedright\arraybackslash}p{0.355\linewidth}>{\raggedright\arraybackslash}p{0.355\linewidth}@{}}
+\wwh}{\bottomrule\end{longtable}}
+
+\begin{document}
+
+%% ---------------------------------------------------------------- title
+{\sffamily
+{\Large\bfseries\color{accent} What changed, why, and how}\\[3pt]
+{\large Checkpoint-2 memo for \emph{Escalate or Answer} (design v3 $\rightarrow$ v4)}\\[2pt]
+{\color{muted} For Coen Petto and Cameron Suess \,$\cdot$\, CS 567, Fall 2026 \,$\cdot$\, prepared 29 September 2026}
+}
+
+\vspace{4pt}
+\noindent{\color{accent}\rule{\linewidth}{1.2pt}}
+
+\begin{callout}{Bottom line}
+This is a narrower pass than v2$\to$v3: same population, same corpus
+family, same literature, same RQ and MiPP anchor, so nothing here touches
+Related Work or the bibliography. What changed is the worked example (now
+a real, already-verified Falcon \texttt{-short}/\texttt{-medium} flag
+instead of an invented GPU-memory fork), the interaction (a single scored
+answer field autofilled after a scripted, paced retrieval trace, accepted
+or rejected, instead of a dropdown run card behind a separate source
+panel), and the task load (4 forked items per block, no unforked control
+items, 12 measured instead of 18). Measures gained a richer per-source,
+timed component without giving up the binary H1 test. One tradeoff is
+accepted rather than fixed: task set and escalation form are now perfectly
+confounded, and that is stated as a limitation, not patched with a Latin
+square, for this checkpoint. The proposal is \texttt{new\_proposal\_v4.pdf},
+nearer 5.5 pages than v3's five because of a new formal IV/DV/design
+statement in the Evaluation Plan; this memo explains each change and what
+still needs hand verification.
+\end{callout}
+
+\section{Framing and example}
+\begin{wwhtable}
+Replace the invented GPU-memory fork with a real, already-documented one. &
+v3's running example (kestrel-gpu vs.\ peregrine-gpu by model memory) was
+plausible but invented for the proposal. The team already had verified
+documentation on the Falcon cluster's QoS flag from prior work, and a real,
+pre-checked fork is stronger than one built to order. &
+The primary worked example is now the Falcon \texttt{-short} vs.\
+\texttt{-medium} submission flag, keyed to job wall time, drawn from the
+Submitting Jobs page. The abstract, RQ, Section~\ref{sec:fork} analogue and
+Figure~1 mock-up all use it; the GPU-partition fork survives only as a
+secondary task in the item table. \\
+\rowsep
+Keep the fork logic, change only the concrete stakes. &
+The mechanism (two passages, both right for someone, deciding fact withheld
+from the assistant) did not need to change, only which real system it is
+grounded in. &
+Same definition of a context-dependent fork; same reason the ``newer page
+wins'' rule stays dropped; same reason the agent cannot ask up front. \\
+\end{wwhtable}
+
+\section{Interaction model}
+\begin{wwhtable}
+Replace the dropdown run card and separate source panel with a scripted
+chat trace and one scored answer field. &
+Four dropdowns (one scored, the rest uncontested decoys) behind a card was
+harder to build and to explain to a participant as ``one decision.'' A
+single field that the assistant fills, which the participant then accepts
+or rejects, makes the accept/reject act itself the primary logged behavior
+instead of a submitted card. &
+The assistant prints a persistent, scripted thinking-and-retrieval trace,
+paced 3--5\,s per line, that names \emph{Source A} and \emph{Source B} as
+clickable chips; a scripted decision line fills the one answer field; the
+participant clicks \textbf{Accept} or \textbf{Reject} (Reject opens a
+two-option picker to pick the alternate, which doubles as one-step undo). \\
+\rowsep
+Fold the source panel into the trace; no separate panel. &
+A right-hand source panel duplicated what the trace already cited, and
+having two places to look at sources made it harder to say precisely where
+verification happens. &
+Clicking a chip opens that passage in an overlay over the trace with the
+relevant lines highlighted; closing it returns to the trace. The trace is
+now the only place a source can be opened, so ``verified'' is unambiguous:
+opened a source from the trace between Send and Accept. \\
+\rowsep
+Rename the forms to match the new mechanic. &
+``Run card of dropdowns'' and ``the card is pre-filled'' language no longer
+described anything; the forms still need the same announced/blocking
+definition. &
+S1 modal stop (trace freezes, participant must pick), S2 inline warning
+(trace continues, assistant decides, glyph plus recommendation shown), S3
+provenance-only (trace continues, assistant decides, citation only). Same
+announced/blocking logic as v3's modal/inline/provenance-only, renamed
+S1--S3 and drawn for the Falcon example in the new Figure~1. \\
+\end{wwhtable}
+
+\section{Task load and controls}
+\begin{wwhtable}
+Drop the unforked control items. &
+v3 used 2 no-fork control items per block (of 6) for a baseline
+page-opening rate and so two citation chips never signalled a fork by
+themselves. Every v4 trace already cites two sources on every task, so a
+citation count can no longer leak the fork either way, and the
+provenance-only form is itself the baseline for how often people check
+when nothing announces anything. &
+4 items per block, all forked, in every block: no control items. This is
+disclosed to participants up front (the instructions state the assistant
+can be wrong on any task), so the fork can no longer be ``found'' by
+contrast with unflagged items; that contrast is gone as a source of
+information for participants, and as a design lever for the researchers. \\
+\rowsep
+Shrink the item count. &
+Fewer, more heavily instrumented items are enough for the same number of
+measured forks once controls are cut, and a shorter block shortens the
+session. &
+12 measured tasks (4/block $\times$ 3 blocks, 6 with a correct
+recommendation and 6 with a wrong one) plus 2 practice tasks, down from 18
+measured (12 flagged $+$ 6 control) plus 2 practice in v3. \\
+\end{wwhtable}
+
+\section{Measures}
+\begin{wwhtable}
+Keep the binary verification measure for H1; add a richer per-source, timed
+measure alongside it. &
+v3's ``verified'' (opened a diverging page, yes/no, anchored to the item)
+stays exactly comparable across v3 and v4 and is still what H1 is tested
+on. But it collapses ``checked nothing,'' ``checked only the recommended
+source,'' and ``checked both'' into the same value, which loses the more
+diagnostic question of \emph{what} people check, not just whether. &
+\emph{Verified} (binary, unchanged in spirit) remains the primary DV for
+H1. New, per task: \emph{Source pattern} (recommended only, non-recommended
+only, both, or neither opened) and \emph{Dwell} (seconds each source was
+open, summed over openings), reported descriptively by form and analyzed
+alongside \emph{Followed} for appropriate reliance. \\
+\rowsep
+State clearly that this is additive. &
+A reviewer could otherwise read the new measures as a quiet replacement of
+the original hypothesis test. &
+The proposal keeps H1 phrased on Verified exactly as before; Source pattern
+and Dwell are named secondary and descriptive, not substituted into the
+formal H1/H2/H3 tests. \\
+\end{wwhtable}
+
+\section{Spec sheet, not a per-item situation line}
+\begin{wwhtable}
+Externalize the deciding fact into a persistent, block-level spec sheet. &
+v3's deciding fact lived in a one- or two-line ``Your situation'' field on
+each task card, shown once per item. That does not match the cover story
+(a student completing an assignment on Falcon) and buries the mechanism
+inside the item rather than making it a standing, checkable object. &
+Each block is now framed as one assignment; a spec sheet of plain
+constraint statements (``Stage 2, training: about 30\,h, 1 GPU, 40\,GB GPU
+memory'') stays on screen for the whole block. The assistant never
+receives it; the participant does. \\
+\rowsep
+Keep the sheet easy to check and easy to skip. &
+The sheet is what turns ``did they verify'' into a measure of complacency
+rather than an artifact of a fact being forced in front of them on every
+single item, the way the per-item situation line did. &
+Plain constraint statements only, no scoring hints; the same sheet backs
+multiple tasks in a block, so a participant who never reads it is making
+the same mistake repeatedly rather than being re-prompted each time. \\
+\end{wwhtable}
+
+\section{Known limitation: task set is confounded with escalation form}
+\begin{wwhtable}
+Accept, and state plainly, that each task set is now tied to one system. &
+v3 crossed task set and form in a $3\times3$ Latin square, so any
+difference between forms could not be attributed to set content. v4 ties
+S1 always to the job-submission set, S2 always to access/connection, S3
+always to storage/software. Task-set difficulty is now perfectly
+collinear with escalation form: any effect between forms could be driven
+by which set of tasks a form happened to get, not by the form itself. &
+Name it in Threats as a stated, deliberate limitation for this
+checkpoint's design, not an oversight: crossing set with form (as in v3's
+Latin square) would remove the confound at no measurement cost, and the
+team considered it, but decided against restructuring for this
+checkpoint. The matching procedure (sets matched on trace length, fork
+line index, query--source overlap band, fork type) and the task random
+effect in every model are the only defenses that remain, and the memo does
+not propose the Latin-square fix as something to do now. \\
+\rowsep
+Say what it costs. &
+A reviewer can no longer be told that an observed form effect is
+attributable to form alone. &
+The proposal's own Threats paragraph says so directly; this memo does not
+soften that. \\
+\end{wwhtable}
+
+\section{Length, formal design statement, and citations}
+\begin{wwhtable}
+Add a MacKenzie-style formal IV/DV/design-statement block to the
+Evaluation Plan before the narrative procedure. &
+v3's Evaluation Plan stated the design in prose only. A reviewer expects
+independent variables, dependent variables and a formal design statement
+written out explicitly, which is more rigorous but longer. &
+Design section now opens with Escalation Form and Recommendation
+Correctness spelled out as IVs with their levels, Block Order as a
+between-subjects nuisance variable, a one-sentence formal design statement
+($3\times2$ within-subjects, two replicates per cell, 12 tasks/participant,
+216 tasks / 36 per cell at $N{=}18$), and DVs (a)--(g) listed individually
+before the narrative procedure resumes. \\
+\rowsep
+Accept the length tradeoff; flag where to cut if the budget is hard. &
+The extra rigor pushed the proposal from about 5 pages (v3) to nearer 5.5
+(v4). Related Work was left untouched in this pass and is the one section
+with slack, since nothing about the literature or its citations changed. &
+If page count is a hard constraint, trim Related Work first; do not cut
+the new IV/DV/design-statement block, since that is exactly what a formal
+reviewer will look for. \\
+\rowsep
+Bibliography and citations: unchanged. &
+No new claims, sources or citation audit were needed for this pass. &
+\texttt{references.bib} and every in-text citation are identical to v3;
+see \texttt{what\_changes.tex} for that audit rather than repeating it
+here. \\
+\end{wwhtable}
+
+\begin{keepbox}{What v4 keeps from v3}
+\begin{itemize}[leftmargin=1.2em, itemsep=1pt]
+  \item \hd{The RQ, title and MiPP anchor}, unchanged word for word.
+  \item \hd{The CSU student population and the Falcon/SNA corpus family},
+  same recruitment route and screening logic.
+  \item \hd{Within-subjects design with all six block orders}, NASA-TLX,
+  the intrusion item, the manipulation check and the end-of-session
+  ranking with a free-text reason.
+  \item \hd{The context-dependent fork definition}, the FictionalQA
+  blind-vs-informed filter, and the reason mid-task escalation is used
+  instead of asking up front.
+  \item \hd{The announced/blocking definition of the three forms} and the
+  MiPP C1--C3 constraints held constant across them.
+  \item \hd{The agentic drafting loop and its fork check}, frozen and
+  replayed identically to every participant.
+  \item \hd{Related Work and the bibliography}, untouched in this pass.
+\end{itemize}
+\end{keepbox}
+
+\section{Prioritized checklist for checkpoint 2}
+\begin{enumerate}[leftmargin=1.6em, itemsep=2pt, label=\sffamily\bfseries\color{accent}\arabic*.]
+  \item \hd{Verify the \texttt{-short}/\texttt{-medium} flag syntax and
+  wall-time limits} against the frozen Submitting Jobs page; the current
+  text uses \texttt{-short}/\texttt{-medium} as written on the whiteboard
+  and has not been checked against \texttt{--qos=} syntax or the actual
+  limits.
+  \item \hd{Draft the second source pair for the S2 and S3 sets} (tasks
+  2.3--2.4 and 3.3--3.4) from the drafting pipeline once the snapshot is
+  frozen; do not hand-seed them.
+  \item \hd{Decide, and write down the decision,} on the task-set/form
+  confound: confirm the sets are tied to systems as agreed on the
+  whiteboard, and if the tie is kept, make sure the matching procedure and
+  the task random effect are documented in Threats as the stated defenses.
+  \item \hd{Read \texttt{new\_proposal\_v4.tex} end to end} against this
+  memo and change anything that is not your view, in particular: the
+  Falcon example, the 12-task/no-control design, the spec sheet wording,
+  and the new IV/DV/design-statement block.
+  \item \hd{If the page budget is hard, trim Related Work first}; do not
+  cut the new formal design-statement block to save space.
+  \item \hd{Confirm the Team paragraph roles} and the Use-of-AI note about
+  this revision pass before submitting.
+\end{enumerate}
+
+\end{document}

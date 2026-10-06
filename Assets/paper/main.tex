@@ -1,0 +1,459 @@
+%% Escalate or Answer -- living paper for CS 567 checkpoints (ACM CHI format).
+%% Checkpoint 2 (methodology): single-column review layout, as the course requires.
+\documentclass[manuscript,review]{acmart}
+
+\settopmatter{printacmref=false, printccs=false, printfolios=true}
+\setcopyright{none}
+\acmConference{CS 567: 3D User Interfaces and Human-Centered Spatial AI}{Fall 2026}{Colorado State University}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\setlength{\emergencystretch}{1em}
+
+%% Visible marker for claims the authors must still check against the cited paper.
+%% Replace the definition with \newcommand{\verify}{} before a submission that should not show them.
+\newcommand{\verify}{\textsuperscript{\textcolor{red}{[verify]}}}
+%% Placeholder for sections that are not yet written.
+\newcommand{\todo}[1]{{\itshape\color{black!60}[#1]}}
+
+\begin{document}
+
+%% ---------------------------------------------------------------- title
+\title{How Should an Agentic RAG Assistant Hand Back a Decision That Depends on the User?}
+
+\author{Coen Petto}
+\email{coenp@colostate.edu}
+\affiliation{%
+  \institution{Colorado State University}
+  \city{Fort Collins}
+  \state{Colorado}
+  \country{USA}
+}
+\author{Cameron Suess}
+\email{camsuess@colostate.edu}
+\affiliation{%
+  \institution{Colorado State University}
+  \city{Fort Collins}
+  \state{Colorado}
+  \country{USA}
+}
+
+\renewcommand{\shortauthors}{Petto and Suess}
+
+%% ---------------------------------------------------------------- abstract
+\begin{abstract}
+Retrieval-augmented generation (RAG) assistants over internal documentation
+answer fluently even when the right answer depends on who is asking. Agentic
+RAG architectures prescribe a remedy: when the agent cannot settle a choice
+from the documents alone, it hands the decision back to the person. How that
+hand-back should look is untested where the agent's recommendation can be
+wrong. We ran a $3\times2$ within-subjects study with [$N$] university
+students who were new to their department's GPU cluster. Each participant
+held a spec sheet for a course project and, on each of nine tasks, sent a
+scripted query, watched the assistant's retrieval trace stream over a frozen
+documentation snapshot, and accepted or rejected the single answer it filled
+in. Every task was a fork the documents could not settle, and the deciding
+fact was on the sheet, which the assistant never saw. We varied only the
+form of the hand-back at the fork (modal stop, inline warning, or
+provenance-only citation), holding content, provenance and undo constant,
+and measured which sources were opened and for how long, whether
+participants kept or overrode the recommendation when it was right and
+wrong, decision time, and workload. \todo{Results and implications are
+added after data collection.}
+\end{abstract}
+
+\keywords{agentic AI; retrieval-augmented generation; interruption; appropriate reliance; human-in-the-loop; proactive assistants}
+
+\maketitle
+
+%% ---------------------------------------------------------------- body
+\section{Introduction}
+\label{sec:intro}
+
+Retrieval-augmented generation (RAG) is the usual way to put a large
+language model on top of an organization's own documents, and internal
+documentation is full of answers that are conditional. On the Colorado
+State University (CSU) Computer Science department's Falcon cluster, the
+quality-of-service (QoS) level a job is submitted under depends on how long
+the job will run: the documentation lists a \texttt{gpu\_short} QoS with a
+24-hour limit and a \texttt{gpu\_medium} QoS with a 3-day limit, and which
+one applies depends on the job. How to connect depends on whether you are
+on campus; where a job should write depends on whether the data matters.
+People ask short questions that leave the deciding fact out (``Which QoS
+should I use to submit this job?''), and a RAG assistant composes a
+confident answer from whichever passage ranked higher. Nothing on screen
+says that the other passage applies to someone else, and a reader who is
+new to the system has no way to tell.
+
+The reliance literature gives reason to expect that the reader will not
+catch it. Bansal et al.~\cite{bansal2021} found that explanations raise
+acceptance of AI recommendations whether or not they are right.
+Bu\c{c}inca et al.~\cite{bucinca2021} showed that cognitive forcing
+functions reduce overreliance but are the designs people like least.
+Vasconcelos et al.~\cite{vasconcelos2023} modeled verification as a
+cost--benefit choice: people check the AI only when checking is cheap
+relative to the task. The practical question is therefore not whether to
+show sources but how to hand the decision back at the moment it is needed.
+
+Agentic RAG architectures describe such a moment. Mishra et
+al.~\cite{mishra2026} catalogue a human-in-the-loop pattern in which the
+agent pauses execution to request disambiguation when it cannot resolve a
+choice itself. S\'anchez-Adame and Mendoza~\cite{sanchezadame2026} supply
+a contract, Minimal Proactivity Policies (MiPP), for how a system-initiated
+pause should be expressed, and tested three initiation forms in a
+within-subjects study of $n{=}48$, but on a system that was never wrong,
+so checking the source could not change any outcome. This paper asks what
+neither line has answered:
+
+\begin{quote}
+\textbf{RQ.} When an agentic RAG assistant finds mid-task that the right
+answer depends on a fact about the user that the question did not state,
+and hands the choice back, how does the form of that hand-back (modal
+stop, inline warning, or provenance-only citation) affect verification,
+appropriate reliance, decision time and workload?
+\end{quote}
+
+We hold the agent constant and vary only the human-facing form. Each task
+is one scripted assistant session over a frozen snapshot of the Falcon
+documentation; the participant watches the retrieval trace, may open
+either of the two sources it cites, and accepts or rejects the one answer
+it fills in. Every task is a \emph{context-dependent fork}: two passages
+give different answers, both correct for someone, and which applies
+depends on the participant's situation, written on a spec sheet the
+assistant was never given. Such a fork is the case the human-in-the-loop
+pattern is written for: the agent cannot settle the choice from the
+documents and the person can, so pausing to ask is the pattern's intended
+use, not a failure~\cite{mishra2026,horvitz1999}. The recommendation is wrong for this
+participant on about half of the tasks, so verifying has a payoff and keeping
+or overriding it can be scored as appropriate or inappropriate
+reliance~\cite{schemmer2023}.
+
+This paper makes three contributions. (1) A comparison of three
+escalation forms at fixed decision points on an agent whose recommendation
+can be wrong, with verification and appropriate reliance as outcomes. (2)
+Predictions, derived from the interruption and reliance literatures, of
+how the forms trade verification against decision time and workload, and
+their test. (3) A reusable protocol (frozen snapshot, task records,
+contamination filter, matched task sets, event logging) that other groups
+can apply to their own documentation.
+
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Interruption as a design variable}
+McFarlane and Latorella~\cite{mcfarlane2002scope} made human interruption
+a first-class problem for interface design.
+McFarlane~\cite{mcfarlane2002comparison} compared four coordination
+methods (immediate, negotiated, mediated, scheduled) in a dual-task
+experiment with 36 participants and concluded that ``negotiation support
+is the best overall solution except where small differences in the
+timeliness of handling interruptions is critical and then immediate is
+best.''
+Horvitz~\cite{horvitz1999} framed mixed initiative decision-theoretically:
+initiate only when the expected utility of acting exceeds the cost of
+interrupting, and use dialogue to resolve uncertainty. Read against this
+work, and as our own interpretation, a modal stop is closest to
+McFarlane's immediate method, an inline warning to a negotiated one, and a
+provenance-only answer does not interrupt at all. \verify{} In these studies the
+interruption carried no fallible content; what they leave open is whether
+the coordination method also changes the accuracy of the decision the
+interruption asks the person to make.
+
+\subsection{Reliance on AI advice}
+Work at CHI, CSCW and IUI studies what people do with an AI recommendation
+that may be wrong. Bansal et al.~\cite{bansal2021} found no complementary
+gain from explanations, which raised acceptance regardless of correctness.
+Bu\c{c}inca et al.~\cite{bucinca2021} showed that forcing engagement before
+the AI's answer is accepted reduces overreliance at a subjective cost.
+Vasconcelos et al.~\cite{vasconcelos2023} showed across five studies that
+explanations help only when they lower the cost of verifying relative to
+the task. Schemmer et al.~\cite{schemmer2023} define appropriateness of
+reliance in two dimensions: following the AI when it is right and
+overriding it when it is wrong. M\"ohle et al.~\cite{mohle2026} found in a
+judge--advisor study that a stated accuracy level shifted self-reported
+trust more when the reasoning was convincing, while actual accuracy was
+never varied. We take from this that self-report is a weak proxy for
+behavior, which is why our primary outcomes are logged. All of these are
+single-shot decisions in which the AI proposes and the human disposes and none
+has a system-initiated pause mid-task, and none varies its form.
+
+\subsection{MiPP: a contract for proactive initiation}
+MiPP~\cite{sanchezadame2026} separates decision authority (whether the
+system may initiate) from interaction authority (how the initiation is
+expressed). Its constraints include C1, a brief cue followed by a single
+question or choice; C2, a one-step escape hatch; and C3, an explicit
+provenance cue naming the source that justified the initiation. C5 says
+that when inputs are missing or ambiguous the system should ``defer,
+downgrade to an indirect channel, or remain silent.'' MiPP's $n{=}48$
+study compared a reactive baseline with three policy families (direct
+alert, confirmatory prompt, indirect entry) on productivity scenarios; the
+quieter families reduced perceived intrusion, and removing the
+confirmatory cue worsened intrusion, timing, trust and willingness. Three
+features of that study define the gap we address. Each condition bundled a
+family with its own trigger and scenario, so forms were not compared at the
+same decision points. Every initiation was correct by construction, so
+verification had no consequence and the families differed on it by at most
+six points. Its verification measure is anchored to an initiation, so
+it is undefined when nothing is announced. We anchor verification to the
+task. MiPP calls its contract domain-agnostic and names per-scenario
+designs with real workloads as future work.
+
+C5 also creates a tension that our design tests. In MiPP, silence means
+non-initiation: when the inputs that describe the user's situation are
+missing, the system does not initiate. Our agent is answering a query it
+was asked, so the move it can decline to initiate is the hand-back at the
+fork, and the fact it lacks is exactly the kind C5 names, a fact about the
+user. The provenance-only form is therefore non-initiation in C5's sense:
+the assistant answers and cites but does not raise the fork. In MiPP's
+setting that default is safe because nothing is lost by staying quiet;
+here it means quietly applying a recommendation that is wrong for this
+user.
+
+\subsection{Agentic RAG and RAG transparency}
+Mishra et al.~\cite{mishra2026} systematize agentic RAG and document a
+human-in-the-loop pattern that ``models human oversight as a callable API
+within the action space,'' pausing execution ``to request disambiguation
+or supervision'' when uncertainty exceeds a threshold. They note that
+existing implementations validate at predefined bottlenecks rather than
+triggering on internal ambiguity, and \emph{propose} escalation precision
+and recall and detection of conflicting retrieved contexts as criteria
+for future systems; the paper is a survey, available only as an arXiv
+preprint, and evaluates nothing. Ravi and Sindhgatta~\cite{ravi2025}
+evaluated a RAG assistant for equity research with 50 financial
+professionals and report that source attribution and highlighting
+substantially improved self-reported trust and understanding, whereas
+confidence scores alone did not.
+Their measures are self-report, the system is not agentic, and nothing
+interrupts mid-task; a cited answer with named sources is the current
+practice that our provenance-only condition reproduces. Kirchenbauer et
+al.~\cite{kirchenbauer2026} validated FictionalQA items by prompting the
+generator blind and informed and discarding items answerable blind; the
+check reduces, not removes, the pretraining confound, and we reuse it as a
+filter on real Falcon facts.
+
+\subsection{Pre-generated agent behavior in reliance studies}
+Studies of reliance on AI advice typically fix the AI's advice in advance
+and show every participant the same items, so that the correctness of each
+recommendation is controlled rather than left to a live
+model~\cite{bucinca2021,vasconcelos2023}; the practice has the same aim
+as Wizard-of-Oz studies of intelligent interfaces, in which system
+behavior is controlled so that the interface can be studied on its
+own~\cite{dahlback1993}. We follow that paradigm: the
+agent's behavior is generated once by the pipeline described in
+Section~\ref{sec:method} and replayed identically to every participant.
+
+\subsection{The gap}
+Interruption research tells us how coordination method changes disruption
+when the interruption is not fallible. Reliance research tells us how
+forcing engagement changes overreliance in single-shot decisions. MiPP
+tells us how an initiation should be expressed, on a system that is never
+wrong. No study we are aware of has fixed the decision points of a fallible
+agent, varied only the form in which it hands a decision back mid-task,
+and measured whether people verify and rely appropriately, and at what
+cost.
+
+%% ---------------------------------------------------------------- method
+\section{Method}
+\label{sec:method}
+
+%% Checkpoint 2 focus. Written in past tense, as if the study has been run.
+%% Subsection order follows MacKenzie (2024), Ch. 5 and 8.2.5.
+
+\subsection{Participants}
+\label{sec:participants}
+Twelve Colorado State University students who reported no prior use of
+the department's Falcon cluster took part ([$n$] undergraduate, [$n$]
+graduate; [$n$] women, [$n$] men; courses of study were recorded at the
+session). They were recruited in person by word of mouth, were not
+compensated, and gave consent on the course's class-project
+data-collection form. Three pilot participants run before data collection
+are not included.
+
+\subsection{Apparatus}
+\label{sec:apparatus}
+\paragraph{Corpus.} The corpus was a frozen snapshot of the CSU Computer
+Science department's systems documentation (sna.cs.colostate.edu), crawled
+on 3 October 2026: 77 pages (23,965 words), stored as raw HTML and
+Markdown with per-page hashes, split at headings into 226 chunks and
+embedded with \texttt{nomic-embed-text}.
+
+\paragraph{Drafting pipeline.} The assistant's retrieval and escalation
+decisions were produced before the study by a local pipeline
+(\texttt{qwen2.5:7b-instruct} through Ollama 0.35.1; temperature 0, seed
+567) and frozen as task records, so no model ran during a session. \verify{} Three
+elements of each task came from the pipeline: the retrieved passages and
+their ranking (an embedding search over the snapshot for the scripted
+query, top four chunks); the decision that the question was a fork, made
+by the fork check, which fired when the cosine margin between the top two
+chunks was at most 0.10 and an LLM judge found that the passages gave
+different correct answers depending on a fact the query did not state; and
+the recommendation, which was always the option whose passage ranked
+higher. \verify{} The two options, the highlighted passage for each, the
+spec-sheet lines and the answer keys were written by us from the snapshot.
+The pipeline then had to find the same fork on its own: shown the
+retrieved passages, the judge named the options it saw, and a fork was
+used only when those options matched the two we had authored, which held
+for 8 of 25 query phrasings over 15 candidate forks. The seven-line trace
+shown to participants was a fixed template; the pipeline supplied what
+filled it: which page was Source A and which Source B (its retrieval
+ranking), that line 6 was a fork (its fork check), and which option line 6
+recommended (the higher-ranked option). The wording of the lines
+themselves (``Reading the question\ldots'', ``Found Source A: \ldots'',
+``Source A suggests [option].'') was fixed, not written by the model, so
+that every task presented the same structure and the form of the fork
+line was the only variable.
+
+\paragraph{Interface.} \verify{} The study ran as a single-page web application in a
+desktop browser: the block's spec sheet, the task question, one answer
+field and Accept and Reject buttons on the left; the scripted query, a Send
+button and the assistant's seven-line trace on the right, in which Source A
+and Source B appeared as chips that opened the frozen page with the cited
+lines highlighted. Trace lines arrived one at a time at a fixed delay of
+3--5 s stored in the task record, and only line 6, the fork line, was
+rendered differently across forms. Instrument screens between blocks and
+at the end of the session collected the questionnaires, and the
+application assigned each participant's block order and task rotation
+from the participant number.
+
+\paragraph{Logging.} Every interaction (Send, each line onset, fork onset,
+modal pick, each source open and close with its duration, Reject, picker
+choice, Accept) was written to a local SQLite database under a participant
+code, together with a per-task summary of the final value, accuracy,
+following, verification, source pattern, dwell per source and decision
+time.
+
+\subsection{Tasks and Materials}
+\label{sec:tasks}
+The task pool held nine context-dependent forks, three per set (job
+submission; access and remote connection; storage and software), plus two
+practice tasks without a fork. A fork was two documented options whose
+correct choice depended on one fact the scripted query omitted and the
+spec sheet stated. Each fork existed in two twin versions with the same
+query, trace, sources and recommendation; the twins differed only in the
+sheet line and the task question, so that the recommendation was correct
+under one and wrong under the other. Each participant met every fork
+exactly once, in one of its two versions, one task from each set in every
+block, with the assignment of forks to forms and of twins to participants
+rotated so that every fork appeared under every form, and in each version,
+equally often. The cover story was a single
+course project on the cluster, and each block's spec sheet listed the
+three deciding facts for that block's tasks, one line per task. The
+recommendation was always the option whose passage ranked higher in
+retrieval, and the key was the option the documentation gave for the
+sheet line; correctness was never set by editing the agent.
+
+\subsection{Design}
+\label{sec:design}
+The experiment was a $3\times2$ within-subjects design with factors
+Escalation Form (S1 modal stop, S2 inline warning, S3 provenance-only) and
+Recommendation Correctness (correct, wrong). Each form was administered in
+one block of three tasks, one from each task set, so that task set was
+crossed with form rather than tied to it; the twin assignment was
+constrained so that every block contained at least one correct and one
+wrong recommendation and every participant received four or five of each.
+Block order was counterbalanced across the six permutations of the three
+forms, two participants per order, and the fork-to-form rotation was
+balanced within each order. With 12 participants this gave 108 measured
+tasks, 18 per Form $\times$ Correctness cell.
+
+\subsection{Procedure}
+\label{sec:procedure}
+\verify{} Sessions lasted about one hour: instructions stating that the
+assistant was usually right but could be wrong and that any cited source
+could be opened; two practice tasks, during which the experimenter had
+participants open a source and use Reject and Accept once each; three
+blocks of three tasks, one block per form, each block's three-line spec
+sheet staying on screen; the instrument screens after each block; and a
+closing ranking screen followed by a debrief. On each task the
+participant pressed Send, watched the trace, could open either source,
+and pressed Accept, or Reject followed by a choice from the two-option
+picker; no feedback on correctness was given.
+
+\subsection{Measures}
+\label{sec:measures}
+Per task we recorded verification (a source viewed for at least 3 s of
+summed dwell before Accept), the source pattern under the same threshold
+and the raw dwell time per source, following (final value equal to
+the recommendation), accuracy (final value equal to the key) and decision
+time (fork-line onset to Accept). After each block an instrument screen
+collected raw NASA-TLX, a single perceived-intrusion item (``How
+intrusive was the assistant's interruption?'', 1--7, the item used in
+MiPP-Eval, kept for comparability with MiPP), and a manipulation check
+asking which form the participant had just used (paused and asked, warned
+but continued, or cited only), and at the end of the
+session a screen collected a ranking of the three forms with a free-text
+reason.
+
+\subsection{Hypotheses and Analysis}
+\label{sec:analysis}
+We predicted that verification would be ordered S1 $>$ S2 $>$ S3 (H1),
+because designs that force engagement before an answer can be accepted
+raise engagement with the evidence~\cite{bucinca2021} and an immediate
+interruption is handled most promptly~\cite{mcfarlane2002comparison};
+that overriding a wrong recommendation would be higher under S1 and S2
+than under S3 while following a correct one would not differ (H2, a Form
+$\times$ Correctness interaction), because forcing functions reduce
+overreliance~\cite{bucinca2021} whereas a cited answer alone raises
+acceptance regardless of correctness~\cite{bansal2021}, scored as
+relative self-reliance and relative AI reliance~\cite{schemmer2023}; that
+decision time would be ordered S1 $>$ S2 $>$ S3 (H3a), because an
+immediate interruption costs the interrupted task the
+most~\cite{mcfarlane2002comparison} and checking a source is a time cost
+people weigh~\cite{vasconcelos2023}; and that perceived workload would
+follow the same order (H3b), because forcing functions are rated as more
+effortful~\cite{bucinca2021} and quieter initiations as less
+intrusive~\cite{sanchezadame2026}. Task-level outcomes (H1, H2, H3a) were
+analyzed with logistic mixed models with fixed effects of form,
+correctness, their interaction and block position, and random intercepts
+for participant and task; decision time with a linear mixed model on log
+time; and the per-block scales (H3b) with repeated-measures ANOVA.
+
+%% ---------------------------------------------------------------- results
+\section{Results}
+\label{sec:results}
+\todo{To be written after data collection.}
+
+\subsection{Verification}
+\subsection{Appropriate reliance}
+\subsection{Decision time and workload}
+\subsection{Subjective ranking and reasons}
+
+%% ---------------------------------------------------------------- discussion
+\section{Discussion}
+\label{sec:discussion}
+\todo{To be written after data collection.}
+
+\subsection{Implications for proactive assistants}
+\subsection{Limitations}
+\subsection{Future work}
+
+\section{Conclusion}
+\label{sec:conclusion}
+\todo{To be written after data collection.}
+
+%% ---------------------------------------------------------------- disclosure
+\section*{Use of AI}
+
+Claude Code (Anthropic), running Claude Opus 5.5 with Claude Fable 5.1
+subagents, was used in preparing the proposal that this paper grew from
+to: critique the instructor's feedback and the original proposal; read the
+full text of the MiPP paper and check our claims against it; check each
+bibliographic entry against publisher records (Crossref, IEEE Xplore,
+Springer, ACM, ICLR proceedings, arXiv) and produce corrected BibTeX; draft
+the text of the proposal; and draw its mock-ups. For this checkpoint,
+Claude Code (Claude Fable 5.1) ported the abstract, introduction and
+related work into the review template, drafted the opening sentences of
+the Method section from the released apparatus code and data, and built
+the apparatus code described in Section~\ref{sec:method} with the authors.
+The authors made every design decision, revise the text, and verify each
+reference on the publisher page before submission; claims the tool could
+not confirm are marked in the source and in the text.
+% TODO authors: verify -- add any other AI tools used (for example, for
+% grammar or LaTeX fixes) and what each did.
+
+%% ---------------------------------------------------------------- references
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}
