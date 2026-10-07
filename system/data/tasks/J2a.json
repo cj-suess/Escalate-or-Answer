@@ -1,0 +1,110 @@
+{
+  "contamination_probe": {
+    "blind": "Up to 4 GPUs per job.",
+    "blind_correct": false,
+    "gold": "2",
+    "informed": "2",
+    "informed_correct": true,
+    "question": "On the Colorado State CS Falcon cluster, how many GPUs can one job request on the peregrine-gpu partition?",
+    "survives": true
+  },
+  "deciding_fact": "GPU memory per GPU and number of GPUs the job needs",
+  "exclusivity": "hard both ways",
+  "fork_check": {
+    "fired_on_authored_fork": true,
+    "judge_yes": true,
+    "margin": 0.0254,
+    "margin_small": true,
+    "matched_options": 2,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S1",
+  "is_correct": true,
+  "item_id": "J2a",
+  "key": "kestrel-gpu",
+  "key_logic": "40 GB does not fit an RTX 3090 (24 GB), so only peregrine-gpu (A100) works. Three GPUs in one job exceed peregrine-gpu's limit of 2 GPUs per job (Resource Limits), so only kestrel-gpu (limit 3) works.",
+  "options": [
+    "kestrel-gpu",
+    "peregrine-gpu"
+  ],
+  "pair_id": "J2",
+  "question": "Which partition do you submit the Stage 4 search to?",
+  "recommendation_correct": true,
+  "recommendation_correctness": "correct",
+  "recommended_option": "kestrel-gpu",
+  "scripted_query": "Which GPU partition should I submit this job to?",
+  "selected": true,
+  "set": "1",
+  "source_a": {
+    "chunk_id": "p020-c00",
+    "heading": "",
+    "highlight": "Nvidia GeForce RTX 3090 24GB - 12 available",
+    "label": "A",
+    "page_text": "GPUs are available on the peregrine  and kestrel nodes through the `peregrine-gpu` and `kestrel-gpu` partitions.\nThere are three types of GPUs on these nodes:\n\nperegrine-gpu\n\n- Nvidia A100 80GB - 6 available\n\n- Nvidia A100 40GB - 4 available\n\nkestrel-gpu\n\n- Nvidia GeForce RTX 3090 24GB - 12 available\n\n#### How to use GPUs\n\nTo use GPUs in your SLURM job:\n\n-\n\nAdd an additional SBATCH statement: `#SBATCH --gres=gpu:<type>:<number_of_gpus>` to your job script.\n\n  - For A100 80GB, use\n\n```\n#SBATCH --gres=gpu:a100-sxm4-80gb:1\n```\n\n  - For A100 40GB, use\n\n```\n#SBATCH --gres=gpu:nvidia_a100_3g.40gb:1\n```\n\n  - For RTX 3090 24GB, use\n\n```\n#SBATCH --gres=gpu:3090:1\n```\n\n-\n\nSubmit to the `peregrine-gpu` partition for A100s or `kestrel-gpu` partition for the 3090s.\n\n-\n\nNote that the number at the end of the SBATCH statement is the quantity of GPUs. In the statements above, we have requested for 1 GPU.\n\nAdding the `--gres` option to a Slurm script for a CPU-only code WILL NOT magically speed-up your code.\n\nOnly software/code that has been explicitly written to run on GPUs can benefit from GPUs.\n\nRequesting a GPU for a CPU-only code will waste resources and might as well lower down the priority of your future jobs.\n\nThe GPU type must be specified in the SLURM script.\n\nIt is not possible to mix and match GPU types in a single job.\n\nDo not ask for multiple GPUs if your codes is only written to use a single GPU.\n\nDoing so will waste resources and might as well lower down the priority  of your future jobs.\n\n#### CPU-GPU ratio\n\nOn the peregrine nodes, the ratio of CPUs to GPUs is 6:1.\nSo, your job can request 6 CPU cores for 1 GPU.\n\n#### Monitor GPU Usage\n\nAfter you submit your GPU job via `sbatch` command, you can monitor the GPU usage to check the memory usage of one or more GPUs in your job.\nUse the following command to get GPU usage of your job:\n\n```\nsgpu <your-jobid-here>\n```\n\nThe above command runs within your job’s resource allocation. Though the resources required for this task are not too high, and should not impact your job performance, it is recommened to use this on an “as needed” basis, and not in a script which runs it in a loop.",
+    "path": "/hpc/samples/gpu-jobs/",
+    "title": "GPU Jobs",
+    "updated": "2022-09-02",
+    "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/"
+  },
+  "source_b": {
+    "chunk_id": "p012-c01",
+    "heading": "GPU Partition Limits",
+    "highlight": "| peregrine-gpu (A100) | 2 | 20 | 1 | 2 | 1 |",
+    "label": "B",
+    "page_text": "#### CPU Partition Limits\n\n| Partition | QoS | Time Limit | Cores Limit | Jobs (running) | Jobs (waiting) |\n| peregrine-cpu | cpu_debug | 30 min | 20 | 1 | 2 |\n| peregrine-cpu | cpu_short | 24 hours | 20 | 1 | 2 |\n| peregrine-cpu | cpu_medium | 3 days | 20 | 1 | 2 |\n| peregrine-cpu | cpu_long | 10 days | 20 | 1 | 2 |\n\n#### GPU Partition Limits\n\nAt present, the resource limits on the GPU partitions are:\n\n| Partition | GPUs | CPUs | Nodes | Jobs (running) | Jobs (waiting) |\n| peregrine-gpu (A100) | 2 | 20 | 1 | 2 | 1 |\n| kestrel-gpu (3090) | 3 | 32 | 1 | 2 | 2 |",
+    "path": "/hpc/job-handling/limits/",
+    "title": "Resource Limits",
+    "updated": "2022-08-27",
+    "url": "https://sna.cs.colostate.edu/hpc/job-handling/limits/"
+  },
+  "spec_sheet_line": "Stage 4, hyper-parameter search: 3 GPUs in one job, about 12 GB of GPU memory each.",
+  "task_id": "J2a",
+  "trace": [
+    {
+      "delay_ms": 3570,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3910,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 4363,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: GPU Jobs"
+    },
+    {
+      "delay_ms": 3146,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Resource Limits › GPU Partition Limits"
+    },
+    {
+      "delay_ms": 3223,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 4298,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests kestrel-gpu.",
+      "text": "Use kestrel-gpu (Source A)"
+    },
+    {
+      "delay_ms": 3770,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: kestrel-gpu. Filling the answer field."
+    }
+  ]
+}

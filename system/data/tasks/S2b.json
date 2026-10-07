@@ -1,0 +1,111 @@
+{
+  "contamination_probe": {
+    "blind": "source /usr/local/modulecmd.csh",
+    "blind_correct": false,
+    "gold": "/etc/profile.d/modules.csh",
+    "informed": "/etc/profile.d/modules.csh",
+    "informed_correct": true,
+    "question": "On Falcon, which file do you source in .cshrc to use environment modules with tcsh?",
+    "survives": true
+  },
+  "deciding_fact": "your login shell",
+  "exclusivity": "hard both ways",
+  "fork_check": {
+    "fired_on_authored_fork": true,
+    "judge_yes": true,
+    "margin": 0.0346,
+    "margin_small": true,
+    "matched_options": 2,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S3",
+  "is_correct": false,
+  "item_id": "S2b",
+  "key": "source /etc/profile.d/modules.csh",
+  "key_logic": "The FAQ gives one line per shell; the bash script is not valid tcsh syntax and vice versa.",
+  "options": [
+    "source /etc/profile.d/modules.sh",
+    "source /etc/profile.d/modules.csh"
+  ],
+  "pair_id": "S2",
+  "question": "What line do you add to your .cshrc?",
+  "recommendation_correct": false,
+  "recommendation_correctness": "wrong",
+  "recommended_option": "source /etc/profile.d/modules.sh",
+  "scripted_query": "What do I add to my shell startup file so environment modules work in Slurm jobs?",
+  "selected": true,
+  "set": "3",
+  "source_a": {
+    "chunk_id": "p003-c02",
+    "heading": "Environment issues",
+    "highlight": "source /etc/profile.d/modules.sh",
+    "highlight_extra": "source /etc/profile.d/modules.csh",
+    "label": "A",
+    "page_text": "##### SLURM issues\n\nWhen will my job run ?\n\nWhen you submit your job, the scheduler puts it in a queue.\nYour job will wait in the queue until it is next in line, and free resources on the compute nodes become available.\nThe cluster’s scheduling policies determine which job is “next in line.”\nAfter a job is begun, it runs until it either finishes (with or without errors) or reaches its time limit,\nat which point the scheduler terminates it.\n\nWhy is my job still pending?\n\nUse the `squeue` command to list jobs in queue.\nThe REASON column of the `squeue` output gives you an idea why your job is not running.\n\nWhy can’t I submit further jobs?\n\nIf you see the following error when you submit a job:\n\n```\nsbatch: error: Batch job submission failed:\nJob violates accounting/QOS policy\n(job submit limit, user’s size and/or time limits)\n```\n\nthat implies you have hit the maximum number of allowed jobs that can be submitted in a specific partition.\n\nWhy does my job shows up as FAILED although it completed successfully ?\n\nSlurm captures the return value of the batch script/last command and reports this value as\nthe completion status of the job/job step. Slurm indicates status FAILED if the value captured is non-zero.\n\n##### Environment issues\n\nI am not able to use environment modules with SLURM\n\nMake sure you add the following (depending on which shell you use) in your `.bashrc` or `.cshrc` file:\n\nBASH\n\n```\nsource /etc/profile.d/modules.sh\n```\n\nTCSH\n\n```\nsource /etc/profile.d/modules.csh\n```",
+    "path": "/hpc/faq/",
+    "title": "FAQ",
+    "updated": "2022-08-24",
+    "url": "https://sna.cs.colostate.edu/hpc/faq/"
+  },
+  "source_b": {
+    "chunk_id": "p070-c01",
+    "heading": "How can I change my default shell?",
+    "highlight": "bash (the default)",
+    "label": "B",
+    "page_text": "##### How do I change my password?\n\nThe Linux and Windows platforms have distinct password domains. This means that you will need to change your passwords separately for Linux and Windows:\n\nIn Linux, you can change your password using the `passwd` command on any department linux machine. The command assists you in choosing a secure password, thereby enhancing security for everybody.\n\nTo change your Windows password, you would have to change your NetID password on CSU’s EID/NetID management web portal.\n\n##### How can I change my default shell?\n\nSend mail to `sna@cs.colostate.edu` to request that your shell be changed. The change cannot be performed with chsh because of incompatibilities among various machines' implementation of the NIS protocol. The available shells are listed below:\n\n```\nbash (the default)\ntcsh\ncsh\nksh\nsh\nzsh\n```\n\n##### How can I change my name in the finger information?\n\nSend mail to `sna@cs.colostate.edu` to request that your finger information be changed. The change cannot be performed with chfn because of incompatibilities among various machines' implementation of the NIS protocol.\n\n##### Where can I find a set of startup (or dot) files (.login, .cshrc, .xsession, etc) which are known to work?\n\nThe default startup files (which are provided in the home directories of newly created accounts) may be copied from `~info/dot.files`. These files provide a basic template which works in our environment, and may serve as a starting point for your own individual modifications.\n\n##### How long may I keep my account?\n\nGenerally speaking, your account will remain active as long as you are either enrolled as a Computer Science major or as another major taking CS classes. Other student accounts are removed twice annually, at the beginning of the Fall and Spring semesters. E-mail will be sent to accounts about to expire, several weeks before they are disabled.\n\n##### Is it ok to let my friends use my account?\n\nNo. Your account is for your use only. Accounts used by anyone other than the designated user may be suspended or revoked.\n\n##### How can I make ssh work across CS department machines without requiring a password each time?\n\nCreate a public/private key pair using the following commands, and leave the pass-phrase empty when ssh-keygen prompts for it:\n\n```\ncd ~/.ssh\nssh-keygen -t rsa\ncat id_rsa.pub >> authorized_keys\n```\n\nWARNING: If you change your password because you think your account has been compromised, you should also run these commands again. (The attacker may have stolen your ssh keys.)\n\nFor further information on password-less SSH see the Passwordless SSH page..",
+    "path": "/user-accounts/",
+    "title": "User Accounts",
+    "updated": "2021-09-07",
+    "url": "https://sna.cs.colostate.edu/user-accounts/"
+  },
+  "spec_sheet_line": "Your login shell was changed to tcsh last year.",
+  "task_id": "S2b",
+  "trace": [
+    {
+      "delay_ms": 4559,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3156,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 3297,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: FAQ › Environment issues"
+    },
+    {
+      "delay_ms": 4749,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: User Accounts › How can I change my default shell?"
+    },
+    {
+      "delay_ms": 3071,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 3835,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests source /etc/profile.d/modules.sh.",
+      "text": "Use source /etc/profile.d/modules.sh (Source A)"
+    },
+    {
+      "delay_ms": 3008,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: source /etc/profile.d/modules.sh. Filling the answer field."
+    }
+  ]
+}

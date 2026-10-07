@@ -1,0 +1,110 @@
+{
+  "contamination_probe": {
+    "blind": "cslogin.cs.colostate.edu",
+    "blind_correct": false,
+    "gold": "falcon.cs.colostate.edu",
+    "informed": "falcon.cs.colostate.edu",
+    "informed_correct": true,
+    "question": "What host name do you SSH to for the Colorado State CS Falcon cluster?",
+    "survives": true
+  },
+  "deciding_fact": "whether you are on the CSU network or off campus",
+  "exclusivity": "hard one way, documented-condition the other way",
+  "fork_check": {
+    "fired_on_authored_fork": false,
+    "judge_yes": true,
+    "margin": 0.0657,
+    "margin_small": true,
+    "matched_options": 1,
+    "query_attempts": 4
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S2",
+  "is_correct": false,
+  "item_id": "R1b",
+  "key": "connect to the CSU VPN, then ssh falcon.cs.colostate.edu",
+  "key_logic": "Off campus, Falcon is unreachable without the VPN (hard). On campus the VPN step is not required; the Connecting page documents a direct ssh, so direct ssh is the documented answer (weaker: the VPN option is unnecessary rather than invalid).",
+  "options": [
+    "ssh falcon.cs.colostate.edu",
+    "connect to the CSU VPN, then ssh falcon.cs.colostate.edu"
+  ],
+  "pair_id": "R1",
+  "question": "How do you connect to Falcon from your apartment?",
+  "recommendation_correct": false,
+  "recommendation_correctness": "wrong",
+  "recommended_option": "ssh falcon.cs.colostate.edu",
+  "scripted_query": "How do I connect to the Falcon cluster?",
+  "selected": false,
+  "set": "2",
+  "source_a": {
+    "chunk_id": "p005-c00",
+    "heading": "",
+    "highlight": "connect to the host `falcon.cs.colostate.edu`",
+    "label": "A",
+    "page_text": "To connect to the Falcon cluster use an SSH client from your machine and connect to the host `falcon.cs.colostate.edu`, using your CS Linux account credentials.\n\nYou may use any of the following SSH clients:\n\n- ssh from a Unix/Linux computer\n\n- ssh from a terminal window on a Mac computer\n\n- PuTTy from a Windows computer\n\n- ssh from a Windows PowerShell on a Windows computer\n\nIf you need help with SSH, refer to our SSH guide here ../remote-connection/ssh",
+    "path": "/hpc/getting-started/accessing/",
+    "title": "Connecting to Falcon",
+    "updated": "2022-08-28",
+    "url": "https://sna.cs.colostate.edu/hpc/getting-started/accessing/"
+  },
+  "source_b": {
+    "chunk_id": "p002-c01",
+    "heading": "System overview",
+    "highlight": "The Falcon Cluster can only be reached from within the CSU network or via CSU’s VPN from off-campus.",
+    "label": "B",
+    "page_text": "##### Description\n\nThe Falcon cluster at the Computer Science Department is an HPC cluster which supports both CPU and GPU jobs.\n\nThe hardware specifications are listed as follows:\n\n- 4x AMD EPYC 74F3 CPUs and 3x AMD Ryzen Threadripper 3960X ( 240 total cores )\n\n- 2.5 Tb RAM\n\n- 8x Nvidia A100 & 12x Nvidia GeForce RTX 3090 GPUs ( 928Gb total GPU memory )\n\n##### System overview\n\nThe Falcon Cluster can only be reached from within the CSU network or via CSU’s VPN from off-campus.\nThe login nodes serve as the user’s entry point and are where jobs are prepared and submitted.\nSLURM is used to schedule and manage computational tasks on the compute nodes.\nThe CSU Computer Science network file system is accessible to all compute nodes and login nodes.\n\n##### Cluster Nodes\n\nHere is a brief description of the types of nodes:\n\nLogin nodes\n\nUsers work on these nodes directly. This is where users log in, access files and submit jobs to the scheduler to be run on the compute nodes. Furthermore, these are the only nodes that can be accessed via SSH/SCP from outside of the cluster.\n\nCompute nodes\n\nThese nodes are where the actual computing gets done.\nUsers do not log into these nodes directly.\nInstead jobs are created and submitted from the login nodes and a scheduler decides which compute resources are available and when to run the job.\n\nManagement node\n\nThere is one management node, which is reserved for administration of the cluster. It is not available to users.\n\n##### Queueing System\n\nOn Falcon, we use the open-source scheduler Slurm, to manage all compute jobs.\nThe process is described in detail in the Job handling section.\n\n##### Storage\n\nThe following storage locations are available on the Falcon cluster.\n\nCS NFS Space\n\nThe cluster has read/write access to the same NFS shares as any other CS Linux system\n\nScratch Space\n\nAll compute nodes have a local scratch directory on a high speed SSD, and it is generally about a tera-byte in size.\nThis is used by the scheduler to store temporary job files.\nUsers can access this scratch space as `/tmp` directory in their job scripts.\nThe access is allowed only for the duration of their job.\nAfter jobs are completed, this space is purged automatically.\nThis space is shared between all users, but your data is accessible only to you.",
+    "path": "/hpc/",
+    "title": "Falcon HPC Cluster",
+    "updated": "2022-08-05",
+    "url": "https://sna.cs.colostate.edu/hpc/"
+  },
+  "spec_sheet_line": "You work from your apartment, off campus.",
+  "task_id": "R1b",
+  "trace": [
+    {
+      "delay_ms": 3578,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 4475,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 3631,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Connecting to Falcon"
+    },
+    {
+      "delay_ms": 3526,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Falcon HPC Cluster › System overview"
+    },
+    {
+      "delay_ms": 3803,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 3508,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests ssh falcon.cs.colostate.edu.",
+      "text": "Use ssh falcon.cs.colostate.edu (Source A)"
+    },
+    {
+      "delay_ms": 4414,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: ssh falcon.cs.colostate.edu. Filling the answer field."
+    }
+  ]
+}

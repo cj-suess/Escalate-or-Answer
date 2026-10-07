@@ -1,0 +1,110 @@
+{
+  "contamination_probe": {
+    "blind": "csusername.colostate.edu",
+    "blind_correct": false,
+    "gold": "foo@colostate.edu",
+    "informed": "foo@colostate.edu",
+    "informed_correct": true,
+    "question": "What username format does the Colorado State CS VMware portal (turing.cs.colostate.edu) require?",
+    "survives": true
+  },
+  "deciding_fact": "which service you are logging in to",
+  "exclusivity": "hard both ways (separate credential domains)",
+  "fork_check": {
+    "fired_on_authored_fork": true,
+    "judge_yes": true,
+    "margin": 0.0209,
+    "margin_small": true,
+    "matched_options": 2,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S2",
+  "is_correct": true,
+  "item_id": "R6b",
+  "key": "your CSU eName with @colostate.edu",
+  "key_logic": "Falcon takes the CS Linux account; the VMware portal takes the CSU eName with the @colostate.edu domain, and the New Users page says CS credentials are not the CSU ones.",
+  "options": [
+    "your CS Linux account credentials",
+    "your CSU eName with @colostate.edu"
+  ],
+  "pair_id": "R6",
+  "question": "Which username do you type into the VMware portal?",
+  "recommendation_correct": true,
+  "recommendation_correctness": "correct",
+  "recommended_option": "your CSU eName with @colostate.edu",
+  "scripted_query": "Which username and password do I log in with?",
+  "selected": true,
+  "set": "2",
+  "source_a": {
+    "chunk_id": "p071-c00",
+    "heading": "Instructions for accessing the VMWare portal",
+    "highlight": "If your CSU ename is “foo”, then type “foo@colostate.edu” in the username box.",
+    "label": "A",
+    "page_text": "##### Instructions for accessing the VMWare portal\n\nTo use this service from off campus you must be connected to CSU’s VPN.\n\nOpen a browser and go to our vmware portal https://turing.cs.colostate.edu\n\nIn the next step, make sure you include the domain portion in your CSU username. If your CSU ename is “foo”, then type “foo@colostate.edu” in the username box.\n\nFor the next step, to view the virtual machine in a web console, make sure pop-up windows are allowed in your browser.\n\nThe virtual machine will now open in another browser window. Use the login screen on the VM to login into the virtual machine.\n\nThe login instructions will vary based on the guest OS on the VM. Refer to the guides in the left navigation menu for more details on each guest OS (Ubuntu, CentOS or Windows).\n\nAfter you are done using the VM, logout from the vmware portal as shown below.",
+    "path": "/virtual-machines/",
+    "title": "Virtual Machines",
+    "updated": "2021-09-01",
+    "url": "https://sna.cs.colostate.edu/virtual-machines/"
+  },
+  "source_b": {
+    "chunk_id": "p005-c00",
+    "heading": "",
+    "highlight": "using your CS Linux account credentials",
+    "label": "B",
+    "page_text": "To connect to the Falcon cluster use an SSH client from your machine and connect to the host `falcon.cs.colostate.edu`, using your CS Linux account credentials.\n\nYou may use any of the following SSH clients:\n\n- ssh from a Unix/Linux computer\n\n- ssh from a terminal window on a Mac computer\n\n- PuTTy from a Windows computer\n\n- ssh from a Windows PowerShell on a Windows computer\n\nIf you need help with SSH, refer to our SSH guide here ../remote-connection/ssh",
+    "path": "/hpc/getting-started/accessing/",
+    "title": "Connecting to Falcon",
+    "updated": "2022-08-28",
+    "url": "https://sna.cs.colostate.edu/hpc/getting-started/accessing/"
+  },
+  "spec_sheet_line": "You are about to open the course virtual machine in the VMware portal.",
+  "task_id": "R6b",
+  "trace": [
+    {
+      "delay_ms": 4538,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 4117,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 4302,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Virtual Machines › Instructions for accessing the VMWare portal"
+    },
+    {
+      "delay_ms": 4250,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Connecting to Falcon"
+    },
+    {
+      "delay_ms": 4072,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 3148,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests your CSU eName with @colostate.edu.",
+      "text": "Use your CSU eName with @colostate.edu (Source A)"
+    },
+    {
+      "delay_ms": 3439,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: your CSU eName with @colostate.edu. Filling the answer field."
+    }
+  ]
+}

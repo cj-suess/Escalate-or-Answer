@@ -1,0 +1,217 @@
+{
+  "card": {
+    "key": "kestrel-gpu",
+    "options": [
+      "peregrine-gpu",
+      "kestrel-gpu"
+    ],
+    "prefill": "peregrine-gpu",
+    "scored_field": "GPU memory the model needs"
+  },
+  "created": "2026-10-03T02:21:35+00:00",
+  "escalation_step": 0,
+  "flagged": true,
+  "provenance": {
+    "embed": "nomic-embed-text",
+    "embed_digest": "0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "llm": "qwen2.5:7b-instruct",
+    "llm_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+    "llm_options": {
+      "num_ctx": 4096,
+      "repeat_penalty": 1.0,
+      "seed": 567,
+      "temperature": 0,
+      "top_k": 1,
+      "top_p": 1.0
+    },
+    "ollama_version": "0.35.1"
+  },
+  "question": "Set up a GPU job for my PyTorch model",
+  "record_id": "3d3ffad760",
+  "situation": "You are a graduate student. Your model fits in 16 GB of GPU memory.",
+  "steps": [
+    {
+      "cites": [
+        "p014-c00"
+      ],
+      "escalation": {
+        "attribute": "GPU memory the model needs",
+        "default": {
+          "applies_when": "The model requires more than 360 GB of GPU memory.",
+          "chunk_id": "p014-c00",
+          "value": "peregrine-gpu"
+        },
+        "options": [
+          {
+            "applies_when": "The model requires more than 360 GB of GPU memory.",
+            "chunk_id": "p014-c00",
+            "value": "peregrine-gpu"
+          },
+          {
+            "applies_when": "The model requires up to 360 GB of GPU memory.",
+            "chunk_id": "p014-c00",
+            "value": "kestrel-gpu"
+          }
+        ]
+      },
+      "fork_check": {
+        "attribute": "GPU memory the model needs",
+        "depends_on_user": true,
+        "options": [
+          {
+            "applies_when": "The model requires more than 360 GB of GPU memory.",
+            "chunk_id": "[p014-c00] Partitions > Partitions (updated 2022-08-27)",
+            "value": "peregrine-gpu"
+          },
+          {
+            "applies_when": "The model requires up to 360 GB of GPU memory.",
+            "chunk_id": "[p014-c00] Partitions > Partitions (updated 2022-08-27)",
+            "value": "kestrel-gpu"
+          }
+        ]
+      },
+      "goal": "Identify the appropriate GPU resources on the Falcon HPC cluster.",
+      "grounded_options": [
+        {
+          "applies_when": "The model requires more than 360 GB of GPU memory.",
+          "chunk_id": "p014-c00",
+          "value": "peregrine-gpu"
+        },
+        {
+          "applies_when": "The model requires up to 360 GB of GPU memory.",
+          "chunk_id": "p014-c00",
+          "value": "kestrel-gpu"
+        }
+      ],
+      "margin": 0.1039,
+      "query": "Falcon HPC cluster GPU resources",
+      "retrieved": [
+        {
+          "chunk_id": "p002-c00",
+          "heading": "Description",
+          "score": 0.8628,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        },
+        {
+          "chunk_id": "p002-c01",
+          "heading": "System overview",
+          "score": 0.7589,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        },
+        {
+          "chunk_id": "p014-c00",
+          "heading": "",
+          "score": 0.7552,
+          "title": "Partitions",
+          "updated": "2022-08-27",
+          "url": "https://sna.cs.colostate.edu/hpc/job-handling/partitions/"
+        },
+        {
+          "chunk_id": "p002-c02",
+          "heading": "Cluster Nodes",
+          "score": 0.7432,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        }
+      ],
+      "text": "Submit your job to the peregrine-gpu partition."
+    },
+    {
+      "cites": [
+        "p021-c01"
+      ],
+      "escalation": null,
+      "fork_check": null,
+      "goal": "Submit a job script for your PyTorch model using the identified GPU resources.",
+      "grounded_options": [],
+      "margin": 0.0585,
+      "query": "submitting GPU jobs on Falcon HPC",
+      "retrieved": [
+        {
+          "chunk_id": "p002-c00",
+          "heading": "Description",
+          "score": 0.7648,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        },
+        {
+          "chunk_id": "p021-c01",
+          "heading": "",
+          "score": 0.7063,
+          "title": "CUDA",
+          "updated": "2022-08-27",
+          "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/cuda/"
+        },
+        {
+          "chunk_id": "p002-c01",
+          "heading": "System overview",
+          "score": 0.7045,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        },
+        {
+          "chunk_id": "p002-c03",
+          "heading": "Storage",
+          "score": 0.6896,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        }
+      ],
+      "text": "Submit your PyTorch job script with `--gres=gpu:nvidia_a100_3g.40gb:1`."
+    },
+    {
+      "cites": [
+        "p024-c00"
+      ],
+      "escalation": null,
+      "fork_check": null,
+      "goal": "Ensure the necessary PyTorch environment is set up for the job.",
+      "grounded_options": [],
+      "margin": 0.0474,
+      "query": "setting up PyTorch environment on Falcon HPC",
+      "retrieved": [
+        {
+          "chunk_id": "p002-c00",
+          "heading": "Description",
+          "score": 0.6918,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        },
+        {
+          "chunk_id": "p002-c01",
+          "heading": "System overview",
+          "score": 0.6444,
+          "title": "Falcon HPC Cluster",
+          "updated": "2022-08-05",
+          "url": "https://sna.cs.colostate.edu/hpc/"
+        },
+        {
+          "chunk_id": "p024-c00",
+          "heading": "",
+          "score": 0.6362,
+          "title": "PyTorch",
+          "updated": "2022-08-27",
+          "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/torch/"
+        },
+        {
+          "chunk_id": "p005-c00",
+          "heading": "",
+          "score": 0.636,
+          "title": "Connecting to Falcon",
+          "updated": "2022-08-28",
+          "url": "https://sna.cs.colostate.edu/hpc/getting-started/accessing/"
+        }
+      ],
+      "text": "Submit the provided SLURM script to run PyTorch on GPU."
+    }
+  ]
+}

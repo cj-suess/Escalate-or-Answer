@@ -1,0 +1,110 @@
+{
+  "contamination_probe": {
+    "blind": "Modules module",
+    "blind_correct": false,
+    "gold": "ide/visual-studio-code",
+    "informed": "ide/visual-studio-code",
+    "informed_correct": true,
+    "question": "Which environment module provides the code command on CS machines?",
+    "survives": true
+  },
+  "deciding_fact": "whether you work at a CS machine or on your own laptop",
+  "exclusivity": "hard one way, documented-condition the other way",
+  "fork_check": {
+    "fired_on_authored_fork": false,
+    "judge_yes": true,
+    "margin": 0.0421,
+    "margin_small": true,
+    "matched_options": 1,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S3",
+  "is_correct": true,
+  "item_id": "S4a",
+  "key": "module load ide/visual-studio-code, then run code",
+  "key_logic": "Environment modules exist only on CS machines (hard for the laptop twin); at the lab the page documents the module.",
+  "options": [
+    "module load ide/visual-studio-code, then run code",
+    "install VS Code and its SSH extension on your laptop"
+  ],
+  "pair_id": "S4",
+  "question": "How do you open VS Code at the lab machine?",
+  "recommendation_correct": true,
+  "recommendation_correctness": "correct",
+  "recommended_option": "module load ide/visual-studio-code, then run code",
+  "scripted_query": "How do I open VS Code for this project?",
+  "selected": false,
+  "set": "3",
+  "source_a": {
+    "chunk_id": "p062-c00",
+    "heading": "How do I use Visual Studio Code ?",
+    "highlight": "module load ide/visual-studio-code",
+    "label": "A",
+    "page_text": "##### How do I use Visual Studio Code ?\n\nVS Code editor is installed on all CS machines. You can launch the editor by finding it in the Applications menu.\nIf you would like to launch it from within a terminal, via the `code` command, you will need to load the necessary environment module as shown below:\n\n```\nmodule load ide/visual-studio-code\n```\n\nAfter that, the `code` command will be available in your current terminal session.\nRefer to Environment Modules page for more information on how to find and use modules and make them persistent.\n\n##### How do I use Visual Studio Code remotely?\n\nIn this use-case Visual Studio Code is installed and running on your personal machine (laptop or desktop).\nYou write and edit code on your laptop, but connect to the CS machines for running the code.\nThe connection is handled by a proprietary SSH extension which you will need to install on your laptop.\n\nIt is not feasible for SNA to support this use case, yet we are listing some common issues and troubleshooting steps below.\n\n##### Troubleshooting Remote VS Code Connection\n\nSNAs are not experts on the specific details of VS Code or its proprietary extensions, however, we have encountered a few common issues that users may experience when using VS Code remotely.\nThese issues include:\n\n- Connection drops\n\n- VS Code repeatedly asking for a password even though supplied password is correct\n\n- Multiple sessions can’t exist simultaneously\n\n- Only the session from the last connected server will work\n\n- Connections work on some machines and do not work on some other machines.\n\nPossible Causes\n\nWhen a user connects remotely to a CS machine via VS code, it creates a sub-directory under the user’s home directory to facilitate the connection.\nWe believe that corruption of files under vscode directories is likely the main cause of most connection issues.\nSince home directories on CS Linux machines are shared across machines, your home directory and its content is the same on all machines.\nThis increases the likelyhood of clashes and overwriting files when one logs in to multiple machines via remote vscode.\nOther causes of corruption could be:\n\n- Accessing multiple CS machines simultaneously while using VS Code.\n\n- Ungraceful shutdown of a connection on one machine and re-connecting to another machine.\n\nSuggested Solution\n\nThe ideal solution is to change the default path of VS Code server directory to a path local on the remote host you are connecting to.\nBy default the location is `~/.vscode-server`, which is in your home directory. The following steps will show how to change this.\n\n- Delete the `~/.vscode-server` directory by logging in without VS Code, using an SSH client to connect (see here).\nEnter the following commands:\n\n```\npkill -u <your-CS-username> node\nrm -rf ~/.vscode-server\n```\n\n- Open VS Code on your laptop\n\n- Go to the Settings\n\n- Go to Remote SSH extension’s settings by typing `@ext:ms-vscode-remote.remote-ssh install` in the search box (see screenshot below)\n\n- Now, under Server Install Path, click Add Item and add the following key:value pair\n\nItem = host\n\nValue = /s/$HOSTNAME/a/tmp/$USER\n\nThe “host” in the Item field must match with the host you have in your SSH config file. The Value field stays the same for all hosts, so use the exact value as listed above.\n\n- Hit Ok\n\n- Do this for each and every host in your SSH configuration. Click Add Item to add more hosts. Notice how the path stays the same for all hosts, see screenshot below\n\n- Now connect to one of the remote machines and you would notice that the `.vscode-server` directory gets created on a local filesystem on this host, not in your home directory.\n\nAlways close your remote connections via File –> Close Remote Connection instead of just closing the window.",
+    "path": "/software/vscode/",
+    "title": "Using VS Code",
+    "updated": "2022-01-27",
+    "url": "https://sna.cs.colostate.edu/software/vscode/"
+  },
+  "source_b": {
+    "chunk_id": "p062-c01",
+    "heading": "How do I use Visual Studio Code remotely?",
+    "highlight": "The connection is handled by a proprietary SSH extension which you will need to install on your laptop.",
+    "label": "B",
+    "page_text": "##### How do I use Visual Studio Code ?\n\nVS Code editor is installed on all CS machines. You can launch the editor by finding it in the Applications menu.\nIf you would like to launch it from within a terminal, via the `code` command, you will need to load the necessary environment module as shown below:\n\n```\nmodule load ide/visual-studio-code\n```\n\nAfter that, the `code` command will be available in your current terminal session.\nRefer to Environment Modules page for more information on how to find and use modules and make them persistent.\n\n##### How do I use Visual Studio Code remotely?\n\nIn this use-case Visual Studio Code is installed and running on your personal machine (laptop or desktop).\nYou write and edit code on your laptop, but connect to the CS machines for running the code.\nThe connection is handled by a proprietary SSH extension which you will need to install on your laptop.\n\nIt is not feasible for SNA to support this use case, yet we are listing some common issues and troubleshooting steps below.\n\n##### Troubleshooting Remote VS Code Connection\n\nSNAs are not experts on the specific details of VS Code or its proprietary extensions, however, we have encountered a few common issues that users may experience when using VS Code remotely.\nThese issues include:\n\n- Connection drops\n\n- VS Code repeatedly asking for a password even though supplied password is correct\n\n- Multiple sessions can’t exist simultaneously\n\n- Only the session from the last connected server will work\n\n- Connections work on some machines and do not work on some other machines.\n\nPossible Causes\n\nWhen a user connects remotely to a CS machine via VS code, it creates a sub-directory under the user’s home directory to facilitate the connection.\nWe believe that corruption of files under vscode directories is likely the main cause of most connection issues.\nSince home directories on CS Linux machines are shared across machines, your home directory and its content is the same on all machines.\nThis increases the likelyhood of clashes and overwriting files when one logs in to multiple machines via remote vscode.\nOther causes of corruption could be:\n\n- Accessing multiple CS machines simultaneously while using VS Code.\n\n- Ungraceful shutdown of a connection on one machine and re-connecting to another machine.\n\nSuggested Solution\n\nThe ideal solution is to change the default path of VS Code server directory to a path local on the remote host you are connecting to.\nBy default the location is `~/.vscode-server`, which is in your home directory. The following steps will show how to change this.\n\n- Delete the `~/.vscode-server` directory by logging in without VS Code, using an SSH client to connect (see here).\nEnter the following commands:\n\n```\npkill -u <your-CS-username> node\nrm -rf ~/.vscode-server\n```\n\n- Open VS Code on your laptop\n\n- Go to the Settings\n\n- Go to Remote SSH extension’s settings by typing `@ext:ms-vscode-remote.remote-ssh install` in the search box (see screenshot below)\n\n- Now, under Server Install Path, click Add Item and add the following key:value pair\n\nItem = host\n\nValue = /s/$HOSTNAME/a/tmp/$USER\n\nThe “host” in the Item field must match with the host you have in your SSH config file. The Value field stays the same for all hosts, so use the exact value as listed above.\n\n- Hit Ok\n\n- Do this for each and every host in your SSH configuration. Click Add Item to add more hosts. Notice how the path stays the same for all hosts, see screenshot below\n\n- Now connect to one of the remote machines and you would notice that the `.vscode-server` directory gets created on a local filesystem on this host, not in your home directory.\n\nAlways close your remote connections via File –> Close Remote Connection instead of just closing the window.",
+    "path": "/software/vscode/",
+    "title": "Using VS Code",
+    "updated": "2022-01-27",
+    "url": "https://sna.cs.colostate.edu/software/vscode/"
+  },
+  "spec_sheet_line": "You edit from a terminal on a CS lab machine.",
+  "task_id": "S4a",
+  "trace": [
+    {
+      "delay_ms": 4254,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3972,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 3870,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Using VS Code › How do I use Visual Studio Code ?"
+    },
+    {
+      "delay_ms": 4457,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Using VS Code › How do I use Visual Studio Code remotely?"
+    },
+    {
+      "delay_ms": 3218,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 3177,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests module load ide/visual-studio-code, then run code.",
+      "text": "Use module load ide/visual-studio-code, then run code (Source A)"
+    },
+    {
+      "delay_ms": 3212,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: module load ide/visual-studio-code, then run code. Filling the answer field."
+    }
+  ]
+}

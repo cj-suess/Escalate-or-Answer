@@ -1,0 +1,4 @@
+# Exact versions the frozen artifacts were built and verified with (Python 3.13.1).
+requests==2.32.3
+beautifulsoup4==4.15.0
+numpy==2.1.3

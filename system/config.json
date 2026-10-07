@@ -1,0 +1,37 @@
+{
+  "corpus": {
+    "base_url": "https://sna.cs.colostate.edu/",
+    "exclude_prefixes": ["/myaccount/", "/status/"],
+    "max_pages": 200,
+    "delay_seconds": 0.5,
+    "user_agent": "EscalateOrAnswer-research-snapshot/0.1 (+https://github.com/cj-suess/Escalate-or-Answer)"
+  },
+  "chunking": {
+    "max_words": 180,
+    "min_words": 25
+  },
+  "models": {
+    "llm": "qwen2.5:7b-instruct",
+    "embed": "nomic-embed-text"
+  },
+  "llm_options": {
+    "temperature": 0,
+    "top_k": 1,
+    "top_p": 1.0,
+    "seed": 567,
+    "num_ctx": 4096,
+    "repeat_penalty": 1.0
+  },
+  "qa": {
+    "per_chunk": 2,
+    "max_chunks": null
+  },
+  "retrieval": {
+    "k": 4
+  },
+  "agent": {
+    "max_steps": 4,
+    "fork_margin": 0.10,
+    "fork_requires_small_margin": false
+  }
+}

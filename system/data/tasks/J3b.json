@@ -1,0 +1,110 @@
+{
+  "contamination_probe": {
+    "blind": "srun --pty bash",
+    "blind_correct": true,
+    "gold": "srun",
+    "informed": "srun or salloc",
+    "informed_correct": true,
+    "question": "Which Slurm command does the Falcon documentation say to use for interactive jobs with a shell?",
+    "survives": false
+  },
+  "deciding_fact": "whether the program needs live terminal input or runs unattended for hours",
+  "exclusivity": "hard both ways",
+  "fork_check": {
+    "fired_on_authored_fork": false,
+    "judge_yes": false,
+    "margin": 0.0198,
+    "margin_small": true,
+    "matched_options": 1,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S1",
+  "is_correct": true,
+  "item_id": "J3b",
+  "key": "srun --pty /bin/bash (interactive)",
+  "key_logic": "Interactive Jobs: 'Do not use interactive jobs for long term jobs ... use the sbatch command'; an sbatch job cannot take terminal input.",
+  "options": [
+    "sbatch job.sh",
+    "srun --pty /bin/bash (interactive)"
+  ],
+  "pair_id": "J3",
+  "question": "How do you run the interactive setup step?",
+  "recommendation_correct": true,
+  "recommendation_correctness": "correct",
+  "recommended_option": "srun --pty /bin/bash (interactive)",
+  "scripted_query": "How should I run this on the cluster?",
+  "selected": false,
+  "set": "1",
+  "source_a": {
+    "chunk_id": "p026-c00",
+    "heading": "",
+    "highlight": "Certain applications require direct user input via a terminal.",
+    "label": "A",
+    "page_text": "Certain applications require direct user input via a terminal. For these one can make use of interactive jobs in SLURM, which makes it possible to run applications/commands on compute nodes in a shell.\nSLURM offers two ways in which one can run interactive jobs: using the `srun` command and `salloc` command.\n\nInteractive jobs are intended for very short running and very specific applications/commands.\n\nDo not use interactive jobs for long term jobs and for regular applications.\n\nPlease use the `sbatch` command to submit jobs.\n\n#### SRUN\n\nUsing the `srun` command, interactive jobs can be run within a scheduled shell.\n\nHere is an example:\n\n```\nsrun --nodes=1 --ntasks=1 --mem=4G --time=00:05:00 --pty /bin/bash\n```\n\nNotice how the prompt changes indicating that a new shell has been spawned on one of the compute nodes:\n\n```\nperegrine0:~$\n```\n\nYou can now run your interactive application/command and after you are done, just type `exit` at the command prompt to quit the shell and delete the SLURM job.\n\n#### SALLOC\n\nFor situations where you would like to come back to your interactive session (after disconnecting from it), you can use SLURM’s  `salloc` command to allocate resource up-front and keep the job running.\nThe process looks like this:\n\n- Use `salloc` to create the resource allocation up front\n\n- Use srun to connect to it, as many times as needed during the job time frame.\n\nRun the command below to allocate resources:\n\n```\nsalloc --nodes=1 --ntasks=1 --mem=4G --time=00:20:00\n```\n\nHere we are allocating 4GB of memory and one CPU on a node for 20 minutes. The command will display a job id number.\nKeep a note of it, as you will need that to connect to the interactive shell.\n\n```\nsalloc: Granted job allocation 235\nsalloc: Waiting for resource configuration\nsalloc: Nodes peregrine0 are ready for job\n```\n\nNotice this time the prompt did not change.\nSince `salloc` only allocates resources to your job, it does not start a shell.\nTo connect to an interactive shell on your job use the `srun` command and specify the job id (which you noted in the `salloc` step):\n\n```\nsrun --jobid=235 --pty /bin/bash\n```\n\nYou will now be landed on a compute node in an interactive shell.\n\n```\nperegrine0:~$\n```\n\nNow you can exit from the shell and connect again later, using the `srun` command with the same job id number.\nTo finally delete your job, use the `scancel` command.\n\n```\nscancel 235\n```\n\n```\nsalloc: Job allocation 235 has been revoked.\nHangup\n```",
+    "path": "/hpc/samples/interactive/",
+    "title": "Interactive Jobs",
+    "updated": "2022-09-01",
+    "url": "https://sna.cs.colostate.edu/hpc/samples/interactive/"
+  },
+  "source_b": {
+    "chunk_id": "p016-c01",
+    "heading": "Submit your Job",
+    "highlight": "submit the job via the `sbatch` command",
+    "label": "B",
+    "page_text": "##### The Job Script\n\nTo submit jobs on a cluster, one needs to allocate resources and then run the executable over these resources.\nThis is usually done by writing a job script. In this job script, you specify a partition, the resources your job needs (CPUs, memory, GPUs, etc) and a\nQoS.\n\nRefer to the Sample Job Scripts section for help on writing job scripts.\n\n##### Submit your Job\n\nAfter you have your job script written in a file (say `job.sh`), submit the job via the `sbatch` command as shown below:\n\n```\nsbatch job.sh\n```\n\nOn successful submission, you would see an output similar to\n\n```\nSubmitted batch job 1025\n```\n\nWhere that number `1025` is the job id number. This is job id number is needed for troubleshooting, so make a note of it.\n\nYou can then monitor the status of your job, refer to the Monitoring Jobs section.",
+    "path": "/hpc/job-handling/submitting-jobs/",
+    "title": "Submitting Jobs",
+    "updated": "2022-08-27",
+    "url": "https://sna.cs.colostate.edu/hpc/job-handling/submitting-jobs/"
+  },
+  "spec_sheet_line": "Before training you must answer a 5-minute interactive setup prompt in a terminal on a compute node.",
+  "task_id": "J3b",
+  "trace": [
+    {
+      "delay_ms": 3297,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3321,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 4521,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Interactive Jobs"
+    },
+    {
+      "delay_ms": 4508,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Submitting Jobs › Submit your Job"
+    },
+    {
+      "delay_ms": 3375,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 4926,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests srun --pty /bin/bash (interactive).",
+      "text": "Use srun --pty /bin/bash (interactive) (Source A)"
+    },
+    {
+      "delay_ms": 3865,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: srun --pty /bin/bash (interactive). Filling the answer field."
+    }
+  ]
+}

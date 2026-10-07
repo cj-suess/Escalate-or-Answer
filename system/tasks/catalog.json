@@ -1,0 +1,628 @@
+{
+  "_about": "Candidate context-dependent forks authored against the frozen SNA snapshot (proposal v4, Sections 3.1 and 3.4). Each pair names two options, the page passage that states each, and two spec-sheet lines: one under which each option is the documented answer. The pipeline (python -m escalate tasks) decides whether its fork check fires, which source ranks higher (that option becomes the assistant's recommendation), and whether the deciding fact survives the blind-vs-informed filter. 'selected' marks the six pairs proposed for the 12 measured tasks; the rest are backups and count toward the ~30-query candidate pool.",
+  "sets": {
+    "1": {
+      "name": "Job submission",
+      "assignment": "Fine-tune an image model on Falcon in stages."
+    },
+    "2": {
+      "name": "Access and remote connection",
+      "assignment": "Set up and run the course project from your laptop and the CS labs."
+    },
+    "3": {
+      "name": "Storage and software",
+      "assignment": "Prepare the data and software environment for the project."
+    }
+  },
+  "pairs": [
+    {
+      "pair_id": "J1",
+      "set": "1",
+      "selected": true,
+      "query": "Which QoS should I use to submit this GPU job?",
+      "deciding_fact": "how long the GPU job runs",
+      "options": [
+        {
+          "value": "gpu_short",
+          "source": "/hpc/job-handling/partitions/",
+          "highlight": "| [peregrine,kestrel]-gpu | gpu_short | 24 hours |",
+          "condition": "job finishes within 24 hours"
+        },
+        {
+          "value": "gpu_medium",
+          "source": "/hpc/job-handling/partitions/",
+          "highlight": "| [peregrine,kestrel]-gpu | gpu_medium | 3 days |",
+          "condition": "job runs longer than 24 hours, up to 3 days"
+        }
+      ],
+      "rule_source": {
+        "source": "/hpc/policies/",
+        "highlight": "Only request the resources which your job needs, do not over-request resources."
+      },
+      "sheet_lines": {
+        "gpu_short": "Stage 3, evaluation sweep: about 10 h of wall time on 1 GPU.",
+        "gpu_medium": "Stage 2, training: about 30 h of wall time on 1 GPU."
+      },
+      "questions": {
+        "gpu_short": "Which QoS do you use for the Stage 3 evaluation sweep?",
+        "gpu_medium": "Which QoS do you use for the Stage 2 training run?"
+      },
+      "key_logic": "A 30 h job under gpu_short (24 h limit) is terminated at its time limit (FAQ: 'runs until it ... reaches its time limit, at which point the scheduler terminates it'), so gpu_medium is the only valid option. A 10 h job fits both; the Policies page ('do not over-request resources') makes gpu_short the documented answer.",
+      "exclusivity": "hard one way (30 h), policy rule the other way (10 h)",
+      "blind_probe": {
+        "question": "On the Falcon cluster at Colorado State CS, what is the time limit of the gpu_short QoS?",
+        "answer": "24 hours"
+      },
+      "alt_queries": [
+        "Which QoS should I put in my Slurm job script?",
+        "Which quality of service (QoS) do I specify when I submit a job on Falcon?",
+        "Which QoS do I use for a GPU job, and what are the time limits?",
+        "What are the QoS options for GPU jobs on Falcon?"
+      ]
+    },
+    {
+      "pair_id": "J2",
+      "set": "1",
+      "selected": true,
+      "query": "Which GPU partition should I submit this job to?",
+      "deciding_fact": "GPU memory per GPU and number of GPUs the job needs",
+      "options": [
+        {
+          "value": "kestrel-gpu",
+          "source": "/hpc/samples/gpu-jobs/",
+          "highlight": "Nvidia GeForce RTX 3090 24GB - 12 available",
+          "condition": "fits in 24 GB per GPU; up to 3 GPUs per job"
+        },
+        {
+          "value": "peregrine-gpu",
+          "source": "/hpc/job-handling/limits/",
+          "highlight": "| peregrine-gpu (A100) | 2 | 20 | 1 | 2 | 1 |",
+          "condition": "needs more than 24 GB per GPU (A100 40/80 GB); at most 2 GPUs per job"
+        }
+      ],
+      "sheet_lines": {
+        "kestrel-gpu": "Stage 4, hyper-parameter search: 3 GPUs in one job, about 12 GB of GPU memory each.",
+        "peregrine-gpu": "Stage 1, warm-up training: 1 GPU with about 40 GB of GPU memory."
+      },
+      "questions": {
+        "kestrel-gpu": "Which partition do you submit the Stage 4 search to?",
+        "peregrine-gpu": "Which partition do you submit the Stage 1 warm-up to?"
+      },
+      "key_logic": "40 GB does not fit an RTX 3090 (24 GB), so only peregrine-gpu (A100) works. Three GPUs in one job exceed peregrine-gpu's limit of 2 GPUs per job (Resource Limits), so only kestrel-gpu (limit 3) works.",
+      "exclusivity": "hard both ways",
+      "blind_probe": {
+        "question": "On the Colorado State CS Falcon cluster, how many GPUs can one job request on the peregrine-gpu partition?",
+        "answer": "2"
+      },
+      "alt_queries": [
+        "Which partition should my GPU job use?"
+      ]
+    },
+    {
+      "pair_id": "J3",
+      "set": "1",
+      "selected": false,
+      "query": "How should I run this on the cluster?",
+      "deciding_fact": "whether the program needs live terminal input or runs unattended for hours",
+      "options": [
+        {
+          "value": "sbatch job.sh",
+          "source": "/hpc/job-handling/submitting-jobs/",
+          "highlight": "submit the job via the `sbatch` command",
+          "condition": "unattended, long-running"
+        },
+        {
+          "value": "srun --pty /bin/bash (interactive)",
+          "source": "/hpc/samples/interactive/",
+          "highlight": "Certain applications require direct user input via a terminal.",
+          "condition": "needs direct terminal input, very short"
+        }
+      ],
+      "sheet_lines": {
+        "sbatch job.sh": "Stage 2 training runs unattended overnight.",
+        "srun --pty /bin/bash (interactive)": "Before training you must answer a 5-minute interactive setup prompt in a terminal on a compute node."
+      },
+      "questions": {
+        "sbatch job.sh": "How do you start the overnight training run?",
+        "srun --pty /bin/bash (interactive)": "How do you run the interactive setup step?"
+      },
+      "key_logic": "Interactive Jobs: 'Do not use interactive jobs for long term jobs ... use the sbatch command'; an sbatch job cannot take terminal input.",
+      "exclusivity": "hard both ways",
+      "blind_probe": {
+        "question": "Which Slurm command does the Falcon documentation say to use for interactive jobs with a shell?",
+        "answer": "srun"
+      }
+    },
+    {
+      "pair_id": "J4",
+      "set": "1",
+      "selected": false,
+      "query": "Which GPU type should I request in my job script?",
+      "deciding_fact": "GPU memory the model needs on an A100",
+      "options": [
+        {
+          "value": "--gres=gpu:nvidia_a100_3g.40gb:1",
+          "source": "/hpc/samples/gpu-jobs/",
+          "highlight": "#SBATCH --gres=gpu:nvidia_a100_3g.40gb:1",
+          "condition": "fits in 40 GB"
+        },
+        {
+          "value": "--gres=gpu:a100-sxm4-80gb:1",
+          "source": "/hpc/samples/gpu-jobs/",
+          "highlight": "#SBATCH --gres=gpu:a100-sxm4-80gb:1",
+          "condition": "needs more than 40 GB"
+        }
+      ],
+      "sheet_lines": {
+        "--gres=gpu:nvidia_a100_3g.40gb:1": "Stage 2 needs about 30 GB of GPU memory on an A100.",
+        "--gres=gpu:a100-sxm4-80gb:1": "Stage 2 needs about 60 GB of GPU memory on an A100."
+      },
+      "questions": {
+        "--gres=gpu:nvidia_a100_3g.40gb:1": "Which GPU request line goes in the Stage 2 script (30 GB)?",
+        "--gres=gpu:a100-sxm4-80gb:1": "Which GPU request line goes in the Stage 2 script (60 GB)?"
+      },
+      "key_logic": "60 GB exceeds a 40 GB A100 (hard); 30 GB fits both, and the Policies page says not to over-request.",
+      "exclusivity": "hard one way, policy rule the other way",
+      "blind_probe": {
+        "question": "What --gres type string does Falcon use for the A100 80GB GPU?",
+        "answer": "a100-sxm4-80gb"
+      }
+    },
+    {
+      "pair_id": "R1",
+      "set": "2",
+      "selected": false,
+      "query": "How do I connect to the Falcon cluster?",
+      "deciding_fact": "whether you are on the CSU network or off campus",
+      "options": [
+        {
+          "value": "ssh falcon.cs.colostate.edu",
+          "source": "/hpc/getting-started/accessing/",
+          "highlight": "connect to the host `falcon.cs.colostate.edu`",
+          "condition": "on the CSU network"
+        },
+        {
+          "value": "connect to the CSU VPN, then ssh falcon.cs.colostate.edu",
+          "source": "/hpc/",
+          "highlight": "The Falcon Cluster can only be reached from within the CSU network or via CSU’s VPN from off-campus.",
+          "condition": "off campus"
+        }
+      ],
+      "sheet_lines": {
+        "ssh falcon.cs.colostate.edu": "You work from a CS lab machine on campus.",
+        "connect to the CSU VPN, then ssh falcon.cs.colostate.edu": "You work from your apartment, off campus."
+      },
+      "questions": {
+        "ssh falcon.cs.colostate.edu": "How do you connect to Falcon from the CS lab?",
+        "connect to the CSU VPN, then ssh falcon.cs.colostate.edu": "How do you connect to Falcon from your apartment?"
+      },
+      "key_logic": "Off campus, Falcon is unreachable without the VPN (hard). On campus the VPN step is not required; the Connecting page documents a direct ssh, so direct ssh is the documented answer (weaker: the VPN option is unnecessary rather than invalid).",
+      "exclusivity": "hard one way, documented-condition the other way",
+      "blind_probe": {
+        "question": "What host name do you SSH to for the Colorado State CS Falcon cluster?",
+        "answer": "falcon.cs.colostate.edu"
+      },
+      "alt_queries": [
+        "How do I log in to Falcon?",
+        "How do I reach the Falcon cluster from my laptop?",
+        "Do I need anything before I SSH to Falcon?"
+      ]
+    },
+    {
+      "pair_id": "R2",
+      "set": "2",
+      "selected": false,
+      "query": "How do I set up SSH so I am not asked for a password?",
+      "deciding_fact": "which connection the password prompt is blocking: CS machine to CS machine, or laptop to CS machine",
+      "options": [
+        {
+          "value": "run ssh-keygen on a CS machine and append id_rsa.pub to ~/.ssh/authorized_keys",
+          "source": "/remote-connection/ssh/keybased/",
+          "highlight": "This is a frequent situation where you are currently logged in to a CS machine and need to access another CS machine without the need to provide a password.",
+          "condition": "batch jobs or scripts that SSH between CS machines (e.g. Slurm)"
+        },
+        {
+          "value": "run ssh-keygen on your laptop and copy the public key to the CS machine",
+          "source": "/remote-connection/ssh/keybased/",
+          "highlight": "Use this approach to SSH from your personal laptop/desktop into any CS machine without requiring a password input.",
+          "condition": "connecting from your personal laptop"
+        }
+      ],
+      "sheet_lines": {
+        "run ssh-keygen on a CS machine and append id_rsa.pub to ~/.ssh/authorized_keys": "Your Slurm job script opens SSH connections between CS machines and stalls at a password prompt.",
+        "run ssh-keygen on your laptop and copy the public key to the CS machine": "You are tired of typing your password when you SSH from your laptop."
+      },
+      "questions": {
+        "run ssh-keygen on a CS machine and append id_rsa.pub to ~/.ssh/authorized_keys": "How do you stop the job script's password prompt?",
+        "run ssh-keygen on your laptop and copy the public key to the CS machine": "How do you stop the password prompt from your laptop?"
+      },
+      "key_logic": "The page documents two distinct procedures for two distinct use cases; a key generated on the laptop does not authorize CS-to-CS connections, and keys generated on a CS machine do not authorize the laptop.",
+      "exclusivity": "hard both ways",
+      "blind_probe": {
+        "question": "On CS department machines at Colorado State, for passwordless SSH between CS machines, which file do you append id_rsa.pub to?",
+        "answer": "authorized_keys"
+      },
+      "alt_queries": [
+        "How do I set up passwordless SSH?",
+        "How can I log in over SSH without typing my password?"
+      ]
+    },
+    {
+      "pair_id": "R3",
+      "set": "2",
+      "selected": true,
+      "query": "How do I run Jupyter Notebook on a CS machine?",
+      "deciding_fact": "whether you are at the machine (or in remote desktop) or connected over SSH from a laptop",
+      "options": [
+        {
+          "value": "jupyter-notebook",
+          "source": "/software/jupyter/",
+          "highlight": "This works if you are logged into a physical session on the machine, or through a remote desktop connection.",
+          "condition": "physical or remote-desktop session"
+        },
+        {
+          "value": "jupyter-notebook --no-browser --port=9090 with an SSH tunnel",
+          "source": "/software/jupyter/",
+          "highlight": "jupyter-notebook --no-browser --port=9090",
+          "condition": "SSH from a laptop"
+        }
+      ],
+      "sheet_lines": {
+        "jupyter-notebook": "You are sitting at a CS lab machine.",
+        "jupyter-notebook --no-browser --port=9090 with an SSH tunnel": "You are connected to a CS machine over SSH from your laptop."
+      },
+      "questions": {
+        "jupyter-notebook": "How do you start Jupyter at the lab machine?",
+        "jupyter-notebook --no-browser --port=9090 with an SSH tunnel": "How do you start Jupyter over SSH from your laptop?"
+      },
+      "key_logic": "A browser window cannot open through a plain SSH session (hard); at the console the page documents plain jupyter-notebook.",
+      "exclusivity": "hard one way, documented-condition the other way",
+      "blind_probe": {
+        "question": "Which port does the CS department Jupyter SSH-tunnel guide use with --no-browser?",
+        "answer": "9090"
+      }
+    },
+    {
+      "pair_id": "R4",
+      "set": "2",
+      "selected": false,
+      "query": "Which program should I use to transfer files to a CS machine?",
+      "deciding_fact": "the operating system of your laptop",
+      "options": [
+        {
+          "value": "WinSCP",
+          "source": "/remote-connection/scp/",
+          "highlight": "WinSCP: Windows",
+          "condition": "Windows only"
+        },
+        {
+          "value": "CyberDuck",
+          "source": "/remote-connection/scp/",
+          "highlight": "CyberDuck: MacOS & Windows",
+          "condition": "macOS or Windows"
+        }
+      ],
+      "sheet_lines": {
+        "WinSCP": "Your laptop runs Windows 11.",
+        "CyberDuck": "Your laptop is a MacBook."
+      },
+      "questions": {
+        "WinSCP": "Which transfer program do you install (Windows)?",
+        "CyberDuck": "Which transfer program do you install (Mac)?"
+      },
+      "key_logic": "WinSCP is Windows-only (hard for the Mac twin); on Windows both work, so this pair is weak and kept only as a backup.",
+      "exclusivity": "hard one way only; weak",
+      "blind_probe": {
+        "question": "Is WinSCP available for macOS?",
+        "answer": "no"
+      }
+    },
+    {
+      "pair_id": "R5",
+      "set": "2",
+      "selected": false,
+      "query": "How should I connect remotely to a CS lab machine?",
+      "deciding_fact": "whether you need a graphical desktop or only a terminal",
+      "options": [
+        {
+          "value": "Remote Desktop (RDP) to a Lab 120 machine",
+          "source": "/remote-connection/gui/",
+          "highlight": "We use the Remote Desktop Protocol (RDP) for remote GUI connections to CS Linux machines.",
+          "condition": "needs the Linux graphical desktop; only Lab 120 machines"
+        },
+        {
+          "value": "SSH from a terminal",
+          "source": "/remote-connection/ssh/",
+          "highlight": "Most recent operating systems have a built-in SSH client.",
+          "condition": "terminal work"
+        }
+      ],
+      "rule_source": {
+        "source": "/remote-connection/gui/",
+        "highlight": "This service is not intended as a replacement to SSH."
+      },
+      "sheet_lines": {
+        "Remote Desktop (RDP) to a Lab 120 machine": "You need to use a graphical application on the Linux desktop from home.",
+        "SSH from a terminal": "You only need to run command-line scripts from home."
+      },
+      "questions": {
+        "Remote Desktop (RDP) to a Lab 120 machine": "How do you reach the graphical application from home?",
+        "SSH from a terminal": "How do you run the command-line scripts from home?"
+      },
+      "key_logic": "RDP is the documented way to get the Linux GUI remotely (SSH gives a terminal). For terminal-only work the RDP page itself says it 'is not intended as a replacement to SSH'.",
+      "exclusivity": "documented condition both ways",
+      "blind_probe": {
+        "question": "In which lab are the CS Linux machines that accept Remote Desktop (RDP) connections at Colorado State?",
+        "answer": "Lab 120"
+      },
+      "alt_queries": [
+        "Which remote connection method should I use for a CS machine?"
+      ]
+    },
+    {
+      "pair_id": "R6",
+      "set": "2",
+      "selected": true,
+      "query": "Which username and password do I log in with?",
+      "deciding_fact": "which service you are logging in to",
+      "options": [
+        {
+          "value": "your CS Linux account credentials",
+          "source": "/hpc/getting-started/accessing/",
+          "highlight": "using your CS Linux account credentials",
+          "condition": "SSH to Falcon / CS machines"
+        },
+        {
+          "value": "your CSU eName with @colostate.edu",
+          "source": "/virtual-machines/",
+          "highlight": "If your CSU ename is “foo”, then type “foo@colostate.edu” in the username box.",
+          "condition": "VMware virtual-machine portal"
+        }
+      ],
+      "secondary_source": {
+        "source": "/new-user/",
+        "highlight": "No, please contact us for your CS account information."
+      },
+      "sheet_lines": {
+        "your CS Linux account credentials": "You are about to SSH to the Falcon cluster.",
+        "your CSU eName with @colostate.edu": "You are about to open the course virtual machine in the VMware portal."
+      },
+      "questions": {
+        "your CS Linux account credentials": "Which credentials do you use to SSH to Falcon?",
+        "your CSU eName with @colostate.edu": "Which username do you type into the VMware portal?"
+      },
+      "key_logic": "Falcon takes the CS Linux account; the VMware portal takes the CSU eName with the @colostate.edu domain, and the New Users page says CS credentials are not the CSU ones.",
+      "exclusivity": "hard both ways (separate credential domains)",
+      "blind_probe": {
+        "question": "What username format does the Colorado State CS VMware portal (turing.cs.colostate.edu) require?",
+        "answer": "foo@colostate.edu"
+      },
+      "alt_queries": [
+        "Which account do I use to sign in?"
+      ]
+    },
+    {
+      "pair_id": "R7",
+      "set": "2",
+      "selected": false,
+      "query": "How do I change my password?",
+      "deciding_fact": "whether the password is for the Linux machines or the Windows machines",
+      "options": [
+        {
+          "value": "run passwd on a department Linux machine",
+          "source": "/user-accounts/",
+          "highlight": "In Linux, you can change your password using the `passwd` command on any department linux machine.",
+          "condition": "Linux password"
+        },
+        {
+          "value": "change your NetID password on CSU's EID/NetID portal",
+          "source": "/user-accounts/",
+          "highlight": "To change your Windows password, you would have to change your NetID password on CSU’s EID/NetID management web portal.",
+          "condition": "Windows password"
+        }
+      ],
+      "sheet_lines": {
+        "run passwd on a department Linux machine": "You must reset the password you use on the Linux lab machines.",
+        "change your NetID password on CSU's EID/NetID portal": "You must reset the password you use on the Windows lab machines."
+      },
+      "questions": {
+        "run passwd on a department Linux machine": "How do you change the Linux lab password?",
+        "change your NetID password on CSU's EID/NetID portal": "How do you change the Windows lab password?"
+      },
+      "key_logic": "'The Linux and Windows platforms have distinct password domains', so each method changes only its own password.",
+      "exclusivity": "hard both ways",
+      "blind_probe": {
+        "question": "How do you change your Windows lab password in the Colorado State CS department?",
+        "answer": "NetID password on CSU’s EID/NetID management web portal"
+      }
+    },
+    {
+      "pair_id": "S1",
+      "set": "3",
+      "selected": true,
+      "query": "Where should my job write its output?",
+      "deciding_fact": "how large the output is and whether it must be kept",
+      "options": [
+        {
+          "value": "your home directory",
+          "source": "/storage/home-dirs/",
+          "highlight": "Undergraduates: 16000 Mbytes",
+          "condition": "small, important data (backed up; 16000/24000 MB quota)"
+        },
+        {
+          "value": "/s/<hostname>/a/tmp",
+          "source": "/storage/temp-storage/",
+          "highlight": "This space is not backed up and is provided on a “use at your own risk” basis.",
+          "condition": "temporary data; not backed up; scrubbed"
+        }
+      ],
+      "sheet_lines": {
+        "your home directory": "Stage 5 saves the final 2 GB model, which you must keep.",
+        "/s/<hostname>/a/tmp": "Stage 1 writes about 40 GB of intermediate files you can regenerate."
+      },
+      "questions": {
+        "your home directory": "Where does Stage 5 save the final model?",
+        "/s/<hostname>/a/tmp": "Where does Stage 1 write its intermediate files?"
+      },
+      "key_logic": "40 GB exceeds the home quota (16000 MB undergraduate, 24000 MB graduate), so only tmp works. Data that must be kept cannot live in tmp, which is 'regularly, automatically scrubbed' and not backed up; the page says important data belongs in home.",
+      "exclusivity": "hard both ways",
+      "blind_probe": {
+        "question": "What is the home directory quota for undergraduates on Colorado State CS machines?",
+        "answer": "16000 Mbytes"
+      },
+      "alt_queries": [
+        "Where should I store the files my job creates?",
+        "Which storage location should my job use for its files?",
+        "Where should I keep the data my job produces?"
+      ]
+    },
+    {
+      "pair_id": "S2",
+      "set": "3",
+      "selected": true,
+      "query": "What do I add to my shell startup file so environment modules work in Slurm jobs?",
+      "deciding_fact": "your login shell",
+      "options": [
+        {
+          "value": "source /etc/profile.d/modules.sh",
+          "source": "/hpc/faq/",
+          "highlight": "source /etc/profile.d/modules.sh",
+          "condition": "bash"
+        },
+        {
+          "value": "source /etc/profile.d/modules.csh",
+          "source": "/hpc/faq/",
+          "highlight": "source /etc/profile.d/modules.csh",
+          "condition": "tcsh"
+        }
+      ],
+      "secondary_source": {
+        "source": "/user-accounts/",
+        "highlight": "bash (the default)"
+      },
+      "sheet_lines": {
+        "source /etc/profile.d/modules.sh": "Your login shell is bash (the default).",
+        "source /etc/profile.d/modules.csh": "Your login shell was changed to tcsh last year."
+      },
+      "questions": {
+        "source /etc/profile.d/modules.sh": "What line do you add to your .bashrc?",
+        "source /etc/profile.d/modules.csh": "What line do you add to your .cshrc?"
+      },
+      "key_logic": "The FAQ gives one line per shell; the bash script is not valid tcsh syntax and vice versa.",
+      "exclusivity": "hard both ways",
+      "blind_probe": {
+        "question": "On Falcon, which file do you source in .cshrc to use environment modules with tcsh?",
+        "answer": "/etc/profile.d/modules.csh"
+      },
+      "alt_queries": [
+        "How do I make environment modules work in my Slurm jobs?"
+      ]
+    },
+    {
+      "pair_id": "S3",
+      "set": "3",
+      "selected": false,
+      "query": "How much can I store in my home directory?",
+      "deciding_fact": "undergraduate or graduate student",
+      "options": [
+        {
+          "value": "16000 MB",
+          "source": "/storage/home-dirs/",
+          "highlight": "Undergraduates: 16000 Mbytes",
+          "condition": "undergraduate"
+        },
+        {
+          "value": "24000 MB",
+          "source": "/storage/home-dirs/",
+          "highlight": "Graduates:        24000 Mbytes",
+          "condition": "graduate"
+        }
+      ],
+      "sheet_lines": {
+        "16000 MB": "You are a senior undergraduate.",
+        "24000 MB": "You are a first-year MS student."
+      },
+      "questions": {
+        "16000 MB": "What is your home quota (undergraduate)?",
+        "24000 MB": "What is your home quota (MS student)?"
+      },
+      "key_logic": "One quota per status (hard both ways). Caution: the cleanup guide's worked example shows an 8000000 KB quota, a natural distractor.",
+      "exclusivity": "hard both ways",
+      "blind_probe": {
+        "question": "What is the home directory quota for graduate students on Colorado State CS machines?",
+        "answer": "24000 Mbytes"
+      }
+    },
+    {
+      "pair_id": "S4",
+      "set": "3",
+      "selected": false,
+      "query": "How do I open VS Code for this project?",
+      "deciding_fact": "whether you work at a CS machine or on your own laptop",
+      "options": [
+        {
+          "value": "module load ide/visual-studio-code, then run code",
+          "source": "/software/vscode/",
+          "highlight": "module load ide/visual-studio-code",
+          "condition": "terminal on a CS machine"
+        },
+        {
+          "value": "install VS Code and its SSH extension on your laptop",
+          "source": "/software/vscode/",
+          "highlight": "The connection is handled by a proprietary SSH extension which you will need to install on your laptop.",
+          "condition": "your own laptop"
+        }
+      ],
+      "sheet_lines": {
+        "module load ide/visual-studio-code, then run code": "You edit from a terminal on a CS lab machine.",
+        "install VS Code and its SSH extension on your laptop": "You edit on your own laptop and run code on CS machines."
+      },
+      "questions": {
+        "module load ide/visual-studio-code, then run code": "How do you open VS Code at the lab machine?",
+        "install VS Code and its SSH extension on your laptop": "How do you use VS Code from your laptop?"
+      },
+      "key_logic": "Environment modules exist only on CS machines (hard for the laptop twin); at the lab the page documents the module.",
+      "exclusivity": "hard one way, documented-condition the other way",
+      "blind_probe": {
+        "question": "Which environment module provides the code command on CS machines?",
+        "answer": "ide/visual-studio-code"
+      }
+    }
+  ],
+  "practice": [
+    {
+      "task_id": "P1",
+      "query": "How do I submit my job script?",
+      "sheet_line": "Your job script is saved as job.sh.",
+      "question": "Which command submits job.sh?",
+      "answer": "sbatch job.sh",
+      "sources": [
+        {
+          "source": "/hpc/job-handling/submitting-jobs/",
+          "highlight": "submit the job via the `sbatch` command"
+        },
+        {
+          "source": "/hpc/samples/serial/",
+          "highlight": "sbatch helloworld-python.sh"
+        }
+      ]
+    },
+    {
+      "task_id": "P2",
+      "query": "Which host do I connect to for the Falcon cluster?",
+      "sheet_line": "You want to log in to Falcon.",
+      "question": "Which host do you SSH to?",
+      "answer": "falcon.cs.colostate.edu",
+      "sources": [
+        {
+          "source": "/hpc/getting-started/accessing/",
+          "highlight": "connect to the host `falcon.cs.colostate.edu`"
+        },
+        {
+          "source": "/hpc/",
+          "highlight": "The login nodes serve as the user’s entry point"
+        }
+      ]
+    }
+  ]
+}

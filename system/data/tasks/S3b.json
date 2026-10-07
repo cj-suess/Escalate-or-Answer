@@ -1,0 +1,111 @@
+{
+  "contamination_probe": {
+    "blind": "50 GB",
+    "blind_correct": false,
+    "gold": "24000 Mbytes",
+    "informed": "24000 Mbytes",
+    "informed_correct": true,
+    "question": "What is the home directory quota for graduate students on Colorado State CS machines?",
+    "survives": true
+  },
+  "deciding_fact": "undergraduate or graduate student",
+  "exclusivity": "hard both ways",
+  "fork_check": {
+    "fired_on_authored_fork": true,
+    "judge_yes": true,
+    "margin": 0.0117,
+    "margin_small": true,
+    "matched_options": 2,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "form_tied_to": "S3",
+  "is_correct": false,
+  "item_id": "S3b",
+  "key": "24000 MB",
+  "key_logic": "One quota per status (hard both ways). Caution: the cleanup guide's worked example shows an 8000000 KB quota, a natural distractor.",
+  "options": [
+    "16000 MB",
+    "24000 MB"
+  ],
+  "pair_id": "S3",
+  "question": "What is your home quota (MS student)?",
+  "recommendation_correct": false,
+  "recommendation_correctness": "wrong",
+  "recommended_option": "16000 MB",
+  "scripted_query": "How much can I store in my home directory?",
+  "selected": false,
+  "set": "3",
+  "source_a": {
+    "chunk_id": "p065-c00",
+    "heading": "What is the amount of disk space I’m allocated to use?",
+    "highlight": "Undergraduates: 16000 Mbytes",
+    "highlight_extra": "Graduates:        24000 Mbytes",
+    "label": "A",
+    "page_text": "##### What is the amount of disk space I’m allocated to use?\n\nUnless a special allocation has been approved for you through a Computer Science professor, allocations are as follows:\n\nUndergraduates: \t16000 Mbytes\n\nGraduates:        24000 Mbytes\n\nPlease also note that total quota allocations exceed the size(s) of the disk(s). This means that if everybody uses their entire allocation, the disk will fill up. So please try to stay well below your personal allocation.\n\nYou will receive daily warning messages if you exceed your allocation. Failure to remedy the situation after several days of repeated warnings will result in the suspension of your computer account.\n\n##### I received a warning about disk usage, how do I get myself under the allowed disk quota?\n\nIf you receive an email warning about exceeding your disk usage, you must clean up and get below the limit, otherwise your account would get locked. Read this guide which walks you through this process.\n\n##### How do I determine my total disk usage?\n\nEnter the following commands:\n\n```\ncd; du -sh .\n```\n\nThis du command returns an integer value representing the total number of blocks you are currently using in your home directory. The -h option requests output in human readable byte sizes instead of the default of 512 byte blocks.\n\n##### How do I find my largest subdirectories or files?\n\nThis command lists the usage for each of your subdirectories:\n\n```\ndu -sh * .??* | sort -rh | more\n```\n\n##### How do I empty my Gnome Trash can?\n\nRight-click on the trashcan symbol on the far left of your Desktop. Select ‘Empty Trash.’\n\n##### How do I clean out my .mozilla/firefox directory?\n\nFirst, bring up firefox. Go into edit/preferences/advanced and reduce the disk cache size. 10 or 15 megabytes is probably sufficient.\n\nNext, go into edit/preferences/privacy and reduce your browsing history. The default is 90 days but 14 or 30 days will save a fair bit of space.\n\nNext, go to tools/“clear recent history” check all boxes and click “Clear Now”.\n\n##### How do I clean up my Google Chrome data?\n\nTo clean up Chrome, click the wrench icon on the far right of the toolbar and choose “Preferences” from the drop-down menu. On the “Under the Hood” tab, click the “Clear browsing data…” button and choose the data you want cleared. Generally the cache takes up the most disk space.\n\nUser data is stored in `~/.config/google-chrome/`\n\nCache is stored in `~/.cache/google-chrome/`\n\nCurrently Chrome does not offer an easy way to limit the amount of cache it stores on disk. To remedy this, you will need to run Chrome from a terminal or custom Gnome shortcut and pass the following options:\n\n```\ngoogle-chrome --media-cache-size=15728640 --disk-cache-size=15728640\n```\n\nWhere 5242880 represents the size of Chrome’s cache in bytes. 5242880 (5 MB) should be reasonable, but you can tweak to your liking.\n\n##### How can I compress files that I use only rarely?\n\ngzip can be used to compress/uncompress a file that is used rarely.\n\n```\ngzip --best filename\ngunzip filename.gz\n```\n\nYou may also want to check the man pages for the gzip and tar commands.",
+    "path": "/storage/home-dirs/",
+    "title": "Home Directories",
+    "updated": "2021-03-01",
+    "url": "https://sna.cs.colostate.edu/storage/home-dirs/"
+  },
+  "source_b": {
+    "chunk_id": "p065-c02",
+    "heading": "How do I determine my total disk usage?",
+    "highlight": "",
+    "label": "B",
+    "page_text": "##### What is the amount of disk space I’m allocated to use?\n\nUnless a special allocation has been approved for you through a Computer Science professor, allocations are as follows:\n\nUndergraduates: \t16000 Mbytes\n\nGraduates:        24000 Mbytes\n\nPlease also note that total quota allocations exceed the size(s) of the disk(s). This means that if everybody uses their entire allocation, the disk will fill up. So please try to stay well below your personal allocation.\n\nYou will receive daily warning messages if you exceed your allocation. Failure to remedy the situation after several days of repeated warnings will result in the suspension of your computer account.\n\n##### I received a warning about disk usage, how do I get myself under the allowed disk quota?\n\nIf you receive an email warning about exceeding your disk usage, you must clean up and get below the limit, otherwise your account would get locked. Read this guide which walks you through this process.\n\n##### How do I determine my total disk usage?\n\nEnter the following commands:\n\n```\ncd; du -sh .\n```\n\nThis du command returns an integer value representing the total number of blocks you are currently using in your home directory. The -h option requests output in human readable byte sizes instead of the default of 512 byte blocks.\n\n##### How do I find my largest subdirectories or files?\n\nThis command lists the usage for each of your subdirectories:\n\n```\ndu -sh * .??* | sort -rh | more\n```\n\n##### How do I empty my Gnome Trash can?\n\nRight-click on the trashcan symbol on the far left of your Desktop. Select ‘Empty Trash.’\n\n##### How do I clean out my .mozilla/firefox directory?\n\nFirst, bring up firefox. Go into edit/preferences/advanced and reduce the disk cache size. 10 or 15 megabytes is probably sufficient.\n\nNext, go into edit/preferences/privacy and reduce your browsing history. The default is 90 days but 14 or 30 days will save a fair bit of space.\n\nNext, go to tools/“clear recent history” check all boxes and click “Clear Now”.\n\n##### How do I clean up my Google Chrome data?\n\nTo clean up Chrome, click the wrench icon on the far right of the toolbar and choose “Preferences” from the drop-down menu. On the “Under the Hood” tab, click the “Clear browsing data…” button and choose the data you want cleared. Generally the cache takes up the most disk space.\n\nUser data is stored in `~/.config/google-chrome/`\n\nCache is stored in `~/.cache/google-chrome/`\n\nCurrently Chrome does not offer an easy way to limit the amount of cache it stores on disk. To remedy this, you will need to run Chrome from a terminal or custom Gnome shortcut and pass the following options:\n\n```\ngoogle-chrome --media-cache-size=15728640 --disk-cache-size=15728640\n```\n\nWhere 5242880 represents the size of Chrome’s cache in bytes. 5242880 (5 MB) should be reasonable, but you can tweak to your liking.\n\n##### How can I compress files that I use only rarely?\n\ngzip can be used to compress/uncompress a file that is used rarely.\n\n```\ngzip --best filename\ngunzip filename.gz\n```\n\nYou may also want to check the man pages for the gzip and tar commands.",
+    "path": "/storage/home-dirs/",
+    "title": "Home Directories",
+    "updated": "2021-03-01",
+    "url": "https://sna.cs.colostate.edu/storage/home-dirs/"
+  },
+  "spec_sheet_line": "You are a first-year MS student.",
+  "task_id": "S3b",
+  "trace": [
+    {
+      "delay_ms": 4289,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 4087,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 3889,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Home Directories › What is the amount of disk space I’m allocated to use?"
+    },
+    {
+      "delay_ms": 4838,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Home Directories › How do I determine my total disk usage?"
+    },
+    {
+      "delay_ms": 3723,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 4015,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests 16000 MB.",
+      "text": "Use 16000 MB (Source A)"
+    },
+    {
+      "delay_ms": 3999,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: 16000 MB. Filling the answer field."
+    }
+  ]
+}
