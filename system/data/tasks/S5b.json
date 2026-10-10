@@ -1,0 +1,109 @@
+{
+  "contamination_probe": {
+    "blind": "tensorflow115py37module",
+    "blind_correct": false,
+    "gold": "deprecated/tensorflow-1.15",
+    "informed": "deprecated/tensorflow-1.15",
+    "informed_correct": true,
+    "question": "Which environment module provides TensorFlow 1.15 on the Colorado State CS machines?",
+    "survives": true
+  },
+  "deciding_fact": "the TensorFlow major version the starter code needs",
+  "exclusivity": "hard both ways",
+  "fork_check": {
+    "fired_on_authored_fork": true,
+    "judge_yes": true,
+    "margin": 0.0189,
+    "margin_small": true,
+    "matched_options": 2,
+    "query_attempts": 1
+  },
+  "fork_line_index": 6,
+  "is_correct": true,
+  "item_id": "S5b",
+  "key": "module load deprecated/tensorflow-1.15",
+  "key_logic": "TensorFlow 1 code does not run under TensorFlow 2 and vice versa; the page gives Anaconda (TF 2.x) and the deprecated/tensorflow-1.15 module (TF 1.x) as separate routes.",
+  "options": [
+    "module load python/anaconda",
+    "module load deprecated/tensorflow-1.15"
+  ],
+  "pair_id": "S5",
+  "question": "Which module do you load before running the TensorFlow 1 starter code?",
+  "recommendation_correct": true,
+  "recommendation_correctness": "correct",
+  "recommended_option": "module load deprecated/tensorflow-1.15",
+  "scripted_query": "How do I use TensorFlow on the CS machines?",
+  "selected": true,
+  "set": "3",
+  "source_a": {
+    "chunk_id": "p060-c01",
+    "heading": "How do I use TensorFlow version 1.x ?",
+    "highlight": "module load deprecated/tensorflow-1.15",
+    "label": "A",
+    "page_text": "##### How do I use TensorFlow version 2.x ?\n\nYou may use either Anaconda, or the modules bundle for Python 3.6/3.8/3.9.\nConfigure your environment as shown in the Python Libraries section.\nAfter you have configured it, you can use TensorFlow as:\n\n```\n$ python3\n\nPython 3.6.8 (default, Aug 24 2020, 17:57:11)\n[GCC 8.3.1 20191121 (Red Hat 8.3.1-5)] on linux\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\n>>> import tensorflow as tf\n>>> tf.version.VERSION\n'2.4.0'\n>>>\n```\n\n##### How do I use TensorFlow version 1.x ?\n\nWe have version 1.15 available, if you need to use the older version of TensorFlow. Both CPU and GPU packages are installed.\nUse the following command:\n\n```\nmodule load deprecated/tensorflow-1.15\n```\n\nAfter you have configured it, you can use TensorFlow as:\n\n```\n$ python3\n\nPython 3.6.8 (default, Aug 24 2020, 17:57:11)\n[GCC 8.3.1 20191121 (Red Hat 8.3.1-5)] on linux\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\n>>> import tensorflow as tf\n>>> tf.version.VERSION\n'1.15.0'\n>>>\n```",
+    "path": "/software/tensorflow/",
+    "title": "Using TensorFlow",
+    "updated": "2021-03-01",
+    "url": "https://sna.cs.colostate.edu/software/tensorflow/"
+  },
+  "source_b": {
+    "chunk_id": "p060-c00",
+    "heading": "How do I use TensorFlow version 2.x ?",
+    "highlight": "You may use either Anaconda, or the modules bundle for Python 3.6/3.8/3.9.",
+    "label": "B",
+    "page_text": "##### How do I use TensorFlow version 2.x ?\n\nYou may use either Anaconda, or the modules bundle for Python 3.6/3.8/3.9.\nConfigure your environment as shown in the Python Libraries section.\nAfter you have configured it, you can use TensorFlow as:\n\n```\n$ python3\n\nPython 3.6.8 (default, Aug 24 2020, 17:57:11)\n[GCC 8.3.1 20191121 (Red Hat 8.3.1-5)] on linux\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\n>>> import tensorflow as tf\n>>> tf.version.VERSION\n'2.4.0'\n>>>\n```\n\n##### How do I use TensorFlow version 1.x ?\n\nWe have version 1.15 available, if you need to use the older version of TensorFlow. Both CPU and GPU packages are installed.\nUse the following command:\n\n```\nmodule load deprecated/tensorflow-1.15\n```\n\nAfter you have configured it, you can use TensorFlow as:\n\n```\n$ python3\n\nPython 3.6.8 (default, Aug 24 2020, 17:57:11)\n[GCC 8.3.1 20191121 (Red Hat 8.3.1-5)] on linux\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\n>>> import tensorflow as tf\n>>> tf.version.VERSION\n'1.15.0'\n>>>\n```",
+    "path": "/software/tensorflow/",
+    "title": "Using TensorFlow",
+    "updated": "2021-03-01",
+    "url": "https://sna.cs.colostate.edu/software/tensorflow/"
+  },
+  "spec_sheet_line": "The starter code for the image model is written for TensorFlow 1 and has not been ported.",
+  "task_id": "S5b",
+  "trace": [
+    {
+      "delay_ms": 3146,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3928,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 4437,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Using TensorFlow › How do I use TensorFlow version 1.x ?"
+    },
+    {
+      "delay_ms": 4486,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Using TensorFlow › How do I use TensorFlow version 2.x ?"
+    },
+    {
+      "delay_ms": 4978,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 4245,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests module load deprecated/tensorflow-1.15.",
+      "text": "Use module load deprecated/tensorflow-1.15 (Source A)"
+    },
+    {
+      "delay_ms": 3383,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: module load deprecated/tensorflow-1.15. Filling the answer field."
+    }
+  ]
+}

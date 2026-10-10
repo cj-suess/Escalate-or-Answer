@@ -1,0 +1,109 @@
+{
+  "contamination_probe": {
+    "blind": "Your CS account username.",
+    "blind_correct": false,
+    "gold": "vmuser",
+    "informed": "vmuser",
+    "informed_correct": true,
+    "question": "What username do you log in with on a course virtual machine opened from the Colorado State CS VMware portal?",
+    "survives": true
+  },
+  "deciding_fact": "the guest operating system of your virtual machine",
+  "exclusivity": "hard both ways",
+  "fork_check": {
+    "fired_on_authored_fork": true,
+    "judge_yes": true,
+    "margin": 0.0218,
+    "margin_small": true,
+    "matched_options": 2,
+    "query_attempts": 2
+  },
+  "fork_line_index": 6,
+  "is_correct": true,
+  "item_id": "R9a",
+  "key": "create a new password at the first login",
+  "key_logic": "An Ubuntu VM has no SNA-issued password; you set your own at the first login. A Windows VM requires the temporary password SNA provided when the VM was created; an invented password is rejected.",
+  "options": [
+    "create a new password at the first login",
+    "enter the temporary password SNA gave you"
+  ],
+  "pair_id": "R9",
+  "question": "What do you do at the Ubuntu VM's first password prompt?",
+  "recommendation_correct": true,
+  "recommendation_correctness": "correct",
+  "recommended_option": "create a new password at the first login",
+  "scripted_query": "How do I log in to my course virtual machine for the first time?",
+  "selected": true,
+  "set": "2",
+  "source_a": {
+    "chunk_id": "p073-c00",
+    "heading": "Instructions",
+    "highlight": "you will have to create your password the first time you login.",
+    "label": "A",
+    "page_text": "##### Instructions\n\nFollow the instructions to login on the vmware portal and open a virtual machine in a browser window as discussed here\n\nOnce you have an Ubuntu VM open in a new window, proceed as per the screens below.\n\nLogin as the “vmuser”, you will have to create your password the first time you login.\n\nLog out from the guest OS, and close the browser window.",
+    "path": "/virtual-machines/ubuntu/",
+    "title": "Ubuntu VMs",
+    "updated": "2021-09-01",
+    "url": "https://sna.cs.colostate.edu/virtual-machines/ubuntu/"
+  },
+  "source_b": {
+    "chunk_id": "p074-c00",
+    "heading": "Instructions",
+    "highlight": "you will have to provide a temporary password the first time you login.",
+    "label": "B",
+    "page_text": "##### Instructions\n\nFollow the instructions to login on the vmware portal and open a virtual machine in a browser window as discussed here\n\nOnce you have your Windows VM opened in a new window, proceed as per the screens below.\n\nLogin as the “vmuser”, you will have to provide a temporary password the first time you login. This must have been provided when the VM was created for you by SNA.",
+    "path": "/virtual-machines/windows/",
+    "title": "Windows VMs",
+    "updated": "2021-09-01",
+    "url": "https://sna.cs.colostate.edu/virtual-machines/windows/"
+  },
+  "spec_sheet_line": "Your course virtual machine runs Ubuntu.",
+  "task_id": "R9a",
+  "trace": [
+    {
+      "delay_ms": 4470,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3467,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 3228,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Ubuntu VMs › Instructions"
+    },
+    {
+      "delay_ms": 3014,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Windows VMs › Instructions"
+    },
+    {
+      "delay_ms": 4726,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 4638,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests create a new password at the first login.",
+      "text": "Use create a new password at the first login (Source A)"
+    },
+    {
+      "delay_ms": 3496,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: create a new password at the first login. Filling the answer field."
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "contamination_probe": {
+    "blind": "nice -5",
+    "blind_correct": false,
+    "gold": "19",
+    "informed": "19",
+    "informed_correct": true,
+    "question": "What nice value does the Colorado State CS department require for long-running background jobs on its lab machines?",
+    "survives": true
+  },
+  "deciding_fact": "whether the job runs on a shared CS lab workstation or on Falcon",
+  "exclusivity": "hard one way (no Slurm on lab workstations), documented rule the other way (nothing runs on Falcon login nodes)",
+  "fork_check": {
+    "fired_on_authored_fork": true,
+    "judge_yes": true,
+    "margin": 0.0023,
+    "margin_small": true,
+    "matched_options": 2,
+    "query_attempts": 2
+  },
+  "fork_line_index": 6,
+  "is_correct": false,
+  "item_id": "J6b",
+  "key": "sbatch preprocess.sh",
+  "key_logic": "Lab workstations have no Slurm, so sbatch cannot run there, and the Compute Jobs policy makes nice 19 mandatory for long-running jobs. On Falcon, programs must not run on the login nodes (Job Handling: 'programs need to run on them and not on the login nodes'), so the job must be submitted with sbatch.",
+  "options": [
+    "nice -n 19 python preprocess.py",
+    "sbatch preprocess.sh"
+  ],
+  "pair_id": "J6",
+  "question": "How do you start the preprocessing run on Falcon?",
+  "recommendation_correct": false,
+  "recommendation_correctness": "wrong",
+  "recommended_option": "nice -n 19 python preprocess.py",
+  "scripted_query": "How do I run a long job on the CS machines?",
+  "selected": true,
+  "set": "1",
+  "source_a": {
+    "chunk_id": "p038-c04",
+    "heading": "What CPU priority should I use for my resource intensive jobs?",
+    "highlight": "It is mandatory social etiquette that all long-running and background jobs be run with a nice value of 19.",
+    "label": "A",
+    "page_text": "##### Where can I run my resource intensive jobs?\n\nThe CS Department network has been carefully configured to serve as a single integrated resource consisting of many powerful workstations physically distributed across all the labs and individual desktops. This open distributed configuration gives desktop users access to state-of-the-art hardware while simultaneously providing a powerful compute cluster for background jobs. Generally speaking, users may run resource intensive jobs on any machine which they can log onto, provided the jobs don’t interfere with other users.\n\nThe privilege to run background jobs, however, comes with a specific set of rules that must be followed and responsibilities which must be upheld. All long-running and/or background jobs should be run in a way that minimizes the impact on other users, and interactive users in particular. Scheduling priorities should be niced, memory constraints should be respected, and network and disk I/O loads should be kept within reason. If your jobs in any way annoy an interactive user then you are doing something wrong, and right or wrong aside, you must take action to correct the situation. Actions include terminating some or all of the jobs within a reasonable time-frame, and determining how to eliminate any interference before attempting to restart the jobs.\n\nOne of the best ways to avoid annoying another user is communication. Within the department there is a long tradition of using informal communication and coordination to mitigate resource competition, and this generally works quite well. In the event a user feels attempts to work out a problem with another user have not been productive, then that user should refer the matter to the systems administration staff. While rare, this may happen, for instance, when there is a dispute over who’s jobs are at fault, or there is no email response from the owner of interfering jobs. Jobs that are interfering may be terminated by systems administration without notice. Repeat offenders may face enforced limits on their use of machines on the CS Department network.\n\nSee the following section for hints on analyzing or minimizing the impact of your jobs.\n\n##### What are some commands that can help determine the resources that my job is using?\n\n`top` and `sar` are general purpose tools for viewing process resource utilization.\n`free` and `vmstat` are useful tools for viewing memory utilization.\n`iostat` is a useful tool for viewing I/O activity.\n`vnstat` is a useful tool for monitoring network throughput. (see the –live option)\n\n##### What CPU priority should I use for my resource intensive jobs?\n\nIt is mandatory social etiquette that all long-running and background jobs be run with a nice value of 19. To do this:\n\n```\nnice -n 19 COMMAND\n```\n\nor\n\n```\nnice +19 COMMAND\n```\n\nOr, on an already-running job (where PID is the process ID):\n\n```\nrenice +19 PID\n```\n\nFor further information, consult the `renice` and `nice` man pages.\n\nNote: If your job is multi-threaded, don’t forget to renice the individual threads.\n\n##### How can I kill a process?\n\nYou may use the `kill` command to kill a process. The command accepts various signal values which can be sent to the process. The default signal is SIGTERM (terminate the process).\nSo, to kill a process (gracefully)\n\n```\nkill PID\n```\n\nTo kill a process forcibly\n\n```\nkill -9 PID\n```\n\n##### How can I prevent a process from consuming too much memory?\n\nTypically, jobs should not use more physical memory than is available on the machine. Once a machine begins to swap pages to disk because of a shortage of memory, problems will result. In calculating the fit of your job to available memory, accommodation should also be made for memory to be used by other users. The amount of physical RAM available on each machine is listed in the file ~info/machines.\n\nA resource limit on virtual memory size can be set with the `ulimit` command in bash or with `limit` in tcsh.\n\nFor example, in bash:\n\n```\nulimit -v 2000000\n```\n\nor in tcsh:\n\n```\nlimit vmemoryuse 2000000\n```\n\nwill prevent a job from using more than about 2G of memory. This limit is set for the current login session only and the process will segfault if the limit is exceeded.\n\n##### How can I prevent a process from over-loading the file servers?\n\nThe CS department Linux clients share several NFS file servers. If a resource intensive job is performing many reads or writes to the NFS file servers, then performance will slow down for everyone.\n\nIf your job is performing many reads and writes or uses a large dataset, then you should consider keeping a copy on the local disk until the job has completed and then copy the data back to NFS. See the temporary disk space section more information on using local, temporary disk space.\n\n##### What I/O priority should I use for jobs that perform lots of local reads and writes?\n\nIf your job is performing many reads and/or writes to the local disks, the I/O priority should be set to 7 with the `ionice` command. To do this:\n\n```\nionice -n 7 COMMAND\n```\n\nOr, on an already-running job (where PID is the process ID):\n\n```\nionice -n 7 -p PID\n```\n\nFor further information, consult the `ionice` man pages.\n\n##### What is the significance of the linux load average?\n\nThe load average is an important indicator of how loaded (or overloaded) a machine is. It is represented by the three numbers in the upper right hand corner of the info displayed by the linux top or w commands, and is defined as the average length of the kernel process run queue over a period of time ( specifically 1, 5, and 15 minutes in the case of top and w). If the load average exceeds the number of cores on a machine, then context switching is taking place. The larger this excess, the more per-process performance will drop off, impacting everyone using the machine. As a general rule, background jobs should be configured so as not to cause the system load average to exceed the number of cores.\n\nYou can find the number of cores on a machine with the following command:\n`nproc`",
+    "path": "/policies/jobs/",
+    "title": "Compute Jobs",
+    "updated": "2021-03-01",
+    "url": "https://sna.cs.colostate.edu/policies/jobs/"
+  },
+  "source_b": {
+    "chunk_id": "p009-c01",
+    "heading": "Jobs",
+    "highlight": "you must ask the cluster’s scheduling system to run your program on the compute nodes.",
+    "label": "B",
+    "page_text": "This section describes how the scheduler is configured on the Falcon cluster and how to use it.\n\n##### Scheduler\n\nA scheduler, also known as a task manager or a batch-queuing system, acts as a resource manager to provide users access to the cluster’s resources (such as CPUs, GPUs, and memory) in a fair and efficient manner.\nThere are many different resource managers available, we use SLURM on Falcon.\n\n##### Jobs\n\nThe way a program is run on an HPC cluster differs from how it is run on a typical workstation.\nWe communicate with only the login node(s) when we log into the cluster.\nHowever, since the compute nodes are where the cluster’s actual computing power is located,\nprograms need to run on them and not on the login nodes.\n\nSince users cannot login on the compute nodes, you must ask the cluster’s scheduling system to run your program on the compute nodes.\nTo do this, you must submit a unique script with instructions on how to run your program on the compute nodes.\nThis script is then scheduled to be run on the compute nodes by the scheduler as a job.\n\n##### Partitions\n\nPartitions group nodes into logical sets of resources. They can be considered as queues for jobs, each having a set of resource limits.\nUsers submit their jobs to a specific partition which suits best to their job’s resource requirements.\n\nRefer to the sub-sections on the left for detailed information on partitions, QoS, submitting jobs, and more.",
+    "path": "/hpc/job-handling/",
+    "title": "Job Handling",
+    "updated": "2022-08-27",
+    "url": "https://sna.cs.colostate.edu/hpc/job-handling/"
+  },
+  "spec_sheet_line": "The data preprocessing runs on Falcon.",
+  "task_id": "J6b",
+  "trace": [
+    {
+      "delay_ms": 3029,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 4322,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 4575,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: Compute Jobs › What CPU priority should I use for my resource intensive jobs?"
+    },
+    {
+      "delay_ms": 4727,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Job Handling › Jobs"
+    },
+    {
+      "delay_ms": 3717,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 4788,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests nice -n 19 python preprocess.py.",
+      "text": "Use nice -n 19 python preprocess.py (Source A)"
+    },
+    {
+      "delay_ms": 3497,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: nice -n 19 python preprocess.py. Filling the answer field."
+    }
+  ]
+}

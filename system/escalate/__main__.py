@@ -1,16 +1,20 @@
 """Command line: python -m escalate <command>
 
-  setup     pull the pinned models through Ollama and write/verify data/models.lock.json
-  crawl     freeze a snapshot of the documentation site (refuses to overwrite; --force for a new version)
-  verify    re-hash the frozen snapshot against data/snapshot/SNAPSHOT_MANIFEST.json
-  chunk     split the snapshot into chunks
-  qa        FictionalQA-style generation + blind/informed filter
-  index     embed chunks
-  tasks     build frozen v4 task records from tasks/catalog.json (fork check + blind probe)
-  all       crawl, chunk, qa, index, tasks
-  rebuild   chunk, qa, index, tasks from the committed snapshot (no network crawl)
-  ask       run the agent once:  python -m escalate ask "question" ["situation"]
-  serve     start the playground at http://127.0.0.1:8567
+  setup      pull the pinned models through Ollama and write/verify data/models.lock.json
+  crawl      freeze a snapshot of the documentation site (refuses to overwrite; --force for a new version)
+  verify     re-hash the frozen snapshot against data/snapshot/SNAPSHOT_MANIFEST.json
+  chunk      split the snapshot into chunks
+  qa         FictionalQA-style generation + blind/informed filter
+  index      embed chunks
+  tasks      build frozen task records from tasks/catalog.json (fork check + blind probe), the sets,
+             the study text and the participant worksheet
+  worksheet  print and write the block/task assignment for participants 1..N (default 15) and check its balance
+  matching   per-task matching statistics (page words, passage words, query-passage overlap) -> data/tasks/_matching.json
+  catalog    regenerate Assets/checkpoint2/task_catalog.md from the catalog, records and fork-check log
+  all        crawl, chunk, qa, index, tasks
+  rebuild    chunk, qa, index, tasks from the committed snapshot (no network crawl)
+  ask        run the agent once:  python -m escalate ask "question" ["situation"]
+  serve      start the playground at http://127.0.0.1:8567
 """
 import json
 import sys
@@ -77,9 +81,17 @@ def main(argv):
     elif cmd == "verify":
         from . import crawl
         sys.exit(0 if crawl.verify() else 1)
-    elif cmd in ("chunk", "qa", "index", "tasks"):
+    elif cmd in ("chunk", "qa", "index", "tasks", "matching"):
         from importlib import import_module
         import_module(f".{cmd}", __package__).run()
+    elif cmd == "worksheet":
+        from . import rotation
+        rotation.run(int(argv[1]) if len(argv) > 1 else 15)
+    elif cmd == "catalog":
+        from . import catalog_report
+        from .common import ROOT
+        out = catalog_report.build(ROOT.parent / "Assets" / "checkpoint2" / "task_catalog.md")
+        print(f"wrote {out}")
     elif cmd in ("all", "rebuild"):
         from . import crawl, chunk, qa, index, tasks
         if cmd == "all":

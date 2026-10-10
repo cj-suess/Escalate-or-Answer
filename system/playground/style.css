@@ -95,3 +95,29 @@ table.qa td, table.qa th, .trace td, .trace th { border-bottom: 1px solid var(--
 
 .done-card { margin-top: 14px; max-width: 1180px; }
 .exp-btn { margin-left: 12px; font-size: 13px; border-style: dashed; }
+
+/* ---------------------------------------------------------- session screens (entry, break, instruments, closing) */
+.progress { font-size: 13px; }
+.screen { max-width: 1180px; }
+.entry-card { max-width: 720px; margin: 10px auto; }
+.entry-card.wide { max-width: 980px; }
+.entry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px; margin: 10px 0 6px; }
+.entry-grid label { display: grid; gap: 4px; font-size: 13px; }
+.entry-grid label.check { grid-template-columns: auto 1fr; align-items: center; gap: 8px; align-self: end; }
+.expdetails { margin: 12px 0 4px; padding: 6px 10px; border: 1px dashed #c7ccd4; border-radius: 8px; background: #fafbfc; }
+.expdetails summary { cursor: pointer; }
+.sheet-tag { display: inline-block; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); background: #f3ecc4; border-radius: 4px; padding: 0 5px; margin-right: 4px; }
+.item { margin: 10px 0 16px; }
+.item-q { margin-bottom: 6px; }
+.scale { display: grid; grid-template-columns: 90px 1fr 90px; gap: 10px; align-items: center; }
+.anchor { font-size: 12px; color: var(--muted); } .scale .anchor:last-child { text-align: right; }
+.ticks { display: flex; justify-content: space-between; gap: 2px; }
+.tick { display: grid; justify-items: center; gap: 2px; font-size: 10.5px; color: var(--muted); cursor: pointer; flex: 1; }
+.tick input { margin: 0; width: 15px; height: 15px; }
+.scale7 .ticks { max-width: 420px; }
+.manip-opt { display: block; padding: 6px 8px; margin: 4px 0; border: 1px solid var(--line); border-radius: 6px; background: #fff; cursor: pointer; }
+.rankbox { display: grid; gap: 8px; margin: 10px 0 14px; }
+.rankbox label { display: grid; grid-template-columns: 40px 1fr; align-items: center; gap: 8px; font-size: 13px; }
+label.stack { display: grid; gap: 6px; font-size: 13px; }
+textarea { font: inherit; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; width: 100%; }
+#resultsBox { margin-top: 14px; }

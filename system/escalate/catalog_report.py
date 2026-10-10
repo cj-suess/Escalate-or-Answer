@@ -30,25 +30,28 @@ def build(out_path):
 
     w("## Counts at a glance\n")
     w("| What | Count |\n|---|---|")
-    w("| Measured tasks per participant | 12 (3 blocks × 4) |")
-    w("| Practice tasks per participant | 2 (no fork, not scored) |")
-    w("| Task records seeded for the study | 14 (12 measured + 2 practice) |")
-    w("| Source pairs (forks) behind the 12 tasks | 6 (2 per set, each used twice) |")
-    w("| Distinct assistant traces | 6 + 2 practice (the two twins of a pair share one trace; only the sheet line and question differ) |")
-    w("| Spec sheets | 3 (one per block) + 1 practice sheet |")
-    w("| Recommendation correct / wrong | 6 / 6 (2 / 2 in every block) |")
+    n_forks = len(sel)
+    n_meas = sum(1 for r in recs.values() if r.get("selected") and r["set"] != "practice")
+    n_prac = sum(1 for r in recs.values() if r["set"] == "practice")
+    w(f"| Measured tasks per participant | {n_forks} (3 blocks × 3, one task per set in every block) |")
+    w(f"| Practice tasks per participant | {n_prac} (no fork, not scored) |")
+    w(f"| Task records frozen for the study | {n_meas} measured ({n_forks} forks × 2 twin versions) + {n_prac} practice |")
+    w(f"| Source pairs (forks) | {n_forks} ({n_forks // 3} per set); a participant meets each fork once, in one twin version |")
+    w(f"| Distinct assistant traces | {n_forks} + {n_prac} practice (the two twins of a fork share one trace; only the sheet line and question differ) |")
+    w("| Spec sheets | 3 per participant (one per block, three lines, one per task) + 1 practice sheet |")
+    w("| Recommendation correct / wrong per participant | 4 / 5 or 5 / 4; at least one of each in every block |")
     w(f"| Candidate forks authored | {len(cat['pairs'])} |")
     w(f"| Candidate queries evaluated by the fork check | {n_q} |")
     w(f"| Queries on which the check fired / fired on the authored fork | {n_fired} / {n_auth} |")
     w(f"| Candidate forks with a query that fired on the authored fork | {len(pairs_ok)} of {len(cat['pairs'])} ({', '.join(pairs_ok)}) |")
     w(f"| Candidate forks surviving the blind-vs-informed filter | {len(survivors)} of {len(cat['pairs'])} |")
-    w("| Trials at N = 18 | 216 (36 per Form × Correctness cell) |")
+    w(f"| Measured tasks at N = 12 | {12 * n_forks} ({12 * n_forks // 6} per Form × Correctness cell) |")
     w("")
 
-    w("## The 12 measured tasks\n")
+    w(f"## The {n_meas} task records behind the {n_forks} measured tasks\n")
     for sk, s in cat["sets"].items():
         w(f"### Set {sk}: {s['name']}\n")
-        w(f"Spec-sheet heading: *{s['assignment']}*\n")
+        w(f"Context label on the spec sheet: *{s['name']}* (the sheet itself carries the single cover story, one line per task)\n")
         w("| Task | Sheet line (deciding fact) | Question on the task card | Recommended → key | Rec. |")
         w("|---|---|---|---|---|")
         for p in [p for p in sel if p["set"] == sk]:
@@ -99,5 +102,7 @@ def build(out_path):
         w(f"| {e['pair_id']} | {e['query']} | {e['margin']} | {e['judge'].get('attribute', '')} | "
           f"{'; '.join(_short(g['value'], 28) for g in e['grounded_options']) or '—'} | {'yes' if e['fired'] else 'no'} | {'yes' if e['fired_on_authored'] else 'no'} |")
     w("")
-    out_path.write_text("\n".join(L), encoding="utf-8")
+    preamble = (ROOT / "tasks" / "catalog_preamble.md")
+    head = preamble.read_text(encoding="utf-8") if preamble.exists() else ""
+    out_path.write_text(head + "\n".join(L), encoding="utf-8")
     return out_path

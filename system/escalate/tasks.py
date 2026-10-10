@@ -1,4 +1,4 @@
-"""Build frozen v4 task records from tasks/catalog.json (proposal v4, Sections 3.1-3.5).
+"""Build frozen task records from tasks/catalog.json (paper, Tasks and Materials).
 
 For every candidate fork pair:
   1. locate each option's highlighted passage (and the rule/secondary passage) in the
@@ -29,8 +29,6 @@ from .qa import BLIND_SYSTEM, INFORMED_SYSTEM, _grade
 CATALOG = ROOT / "tasks" / "catalog.json"
 TASKS_DIR = DATA / "tasks"
 FORK_LOG = DATA / "fork_check_log.jsonl"
-# Proposal v4 / runbook Section 5: each task set is permanently tied to one escalation form.
-FORM_TIE = {"1": "S1", "2": "S2", "3": "S3"}
 
 
 def _delay_ms(task_id, line_idx, lo=3000, hi=5000):
@@ -187,7 +185,6 @@ def build(selected_only=False):
             tid = f"{pair['pair_id']}{'ab'[twin]}"
             records.append({
                 "task_id": tid, "item_id": tid, "pair_id": pair["pair_id"], "set": pair["set"], "selected": pair["selected"],
-                "form_tied_to": FORM_TIE.get(pair["set"], "none"),
                 "is_correct": key == rec_opt["value"],
                 "recommendation_correctness": "correct" if key == rec_opt["value"] else "wrong",
                 "spec_sheet_line": pair["sheet_lines"][key], "question": pair["questions"][key],
@@ -213,23 +210,38 @@ def build(selected_only=False):
         trace = _trace(pr["task_id"], srcs[0], srcs[1], pr["answer"], "Extracting the answer from the sources…")
         trace[5] = {"index": 6, "kind": "answer", "text": f"Both sources agree: {pr['answer']}", "delay_ms": trace[5]["delay_ms"]}
         records.append({"task_id": pr["task_id"], "item_id": pr["task_id"], "pair_id": None, "set": "practice",
-                        "selected": True, "form_tied_to": "none", "is_correct": True, "recommendation_correctness": "practice",
+                        "selected": True, "is_correct": True, "recommendation_correctness": "practice",
                         "spec_sheet_line": pr["sheet_line"], "question": pr["question"],
                         "scripted_query": pr["query"], "options": [pr["answer"]], "recommended_option": pr["answer"],
                         "key": pr["answer"], "recommendation_correct": True, "source_a": srcs[0], "source_b": srcs[1],
                         "trace": trace, "fork_line_index": None})
-    for f in TASKS_DIR.glob("*.json"):
-        f.unlink()
+    for f in TASKS_DIR.glob("*.json"):   # records only; the _-prefixed files are rewritten below
+        if not f.name.startswith("_"):
+            f.unlink()
     manifest = {}
     for r in records:
         write_json(TASKS_DIR / f"{r['task_id']}.json", r)
         manifest[r["task_id"]] = hashlib.sha256((TASKS_DIR / f"{r['task_id']}.json").read_bytes()).hexdigest()
-    sets = {k: dict(v, tasks=[r["task_id"] for r in records if r["set"] == k and r["selected"]])
+    # a set is no longer a block: every block takes one task from each set (paper, Design), so a set
+    # lists its selected forks (three are needed) and the twin records behind them
+    sets = {k: dict(v, tasks=[r["task_id"] for r in records if r["set"] == k and r["selected"]],
+                    forks=sorted({r["pair_id"] for r in records if r["set"] == k and r["selected"]}))
             for k, v in cat["sets"].items()}
     write_json(TASKS_DIR / "_sets.json", sets)
+    write_json(TASKS_DIR / "_study.json", {"cover_story": cat.get("cover_story", ""),
+                                           "set_labels": {k: v["name"] for k, v in cat["sets"].items()}})
     write_json(TASKS_DIR / "_manifest.json", {"records": manifest,
                                               "all_sha256": hashlib.sha256("".join(sorted(manifest.values())).encode()).hexdigest()})
     write_jsonl(FORK_LOG, log)
+    try:
+        from . import rotation
+        ws = rotation.worksheet(sets, {r["task_id"]: r for r in records}, 15)
+        write_json(TASKS_DIR / "_worksheet.json", ws)
+        print("worksheet: participants 1-15 written; balance over 1-12:", ws["balance_check_over_1_to_12"])
+    except ValueError as e:
+        print(f"worksheet not written: {e}")
+    from . import matching
+    matching.build()
     n = len(summary)
     print(f"{'pair':5} {'sel':4} {'fired':6} {'judge':6} {'margin':7} {'blind-filter':12} {'tries':5} recommended | query")
     for pid, sel, fired, jy, m, rec, surv, tries, q in summary:

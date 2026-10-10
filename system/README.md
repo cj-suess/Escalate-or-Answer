@@ -40,31 +40,32 @@ second. A new question calls the local model.
 | `python -m escalate chunk` | Split pages into heading-scoped chunks (≤180 words) |
 | `python -m escalate qa` | Generate span-checked QA pairs, then run the blind-vs-informed filter |
 | `python -m escalate index` | Embed all chunks |
-| `python -m escalate tasks` | Build the frozen v4 task records from `tasks/catalog.json`: fork check (margin ≤ 0.10 AND judge, grounded options must match the authored fork), blind-vs-informed probe, Source A/B passages, fixed 3–5 s line pacing. Writes `data/tasks/` and `data/fork_check_log.jsonl` |
+| `python -m escalate tasks` | Build the frozen task records from `tasks/catalog.json`: fork check (margin ≤ 0.10 AND judge, grounded options must match the authored fork), blind-vs-informed probe, Source A/B passages, fixed 3–5 s line pacing. Writes `data/tasks/` (records, `_sets.json`, `_study.json`, `_worksheet.json`) and `data/fork_check_log.jsonl` |
+| `python -m escalate worksheet [N]` | Print the block order and task assignment for participants 1..N and verify the design's balance |
+| `python -m escalate matching` | Per-task matching statistics (page words, passage words, query-passage overlap) to `data/tasks/_matching.json` |
+| `python -m escalate catalog` | Regenerate `Assets/checkpoint2/task_catalog.md` |
 | `python -m escalate rebuild` | `chunk` + `qa` + `index` + `tasks` from the committed snapshot (no crawl). The index is reused when it matches the chunks and embedding model; `--force` re-embeds |
 | `python -m escalate all [--force]` | `crawl` + `rebuild` |
 | `python -m escalate ask "question" ["situation"]` | Run the agent once and print the record |
 | `python -m escalate serve [port]` | Start the playground |
 
-## The study view (proposal v4)
+## The study view (paper, Apparatus and Procedure)
 
-The **Study task** tab runs a block as a participant sees it:
-- the spec sheet and task card are on the left
-- the scripted query, a **Send** button and the streamed trace are on the right
-- trace lines arrive at the record's fixed 3–5 s pace, with a typing indicator between lines
-- **Source A** and **Source B** are separate chips; each opens its own overlay with the cited lines highlighted
-- the fork line renders as S1 (blocking modal), S2 (inline warning) or S3 (citation only)
-- **Accept** confirms the answer; **Reject** opens the two-option picker, and pressing it again undoes
+The **Study** tab runs a whole session the way a participant sees it:
+- the experimenter enters the participant number (and the demographic and screening answers); the application assigns the block order group and the task rotation from that number (`escalate/rotation.py`), so nothing else is chosen by hand
+- two practice tasks, then three blocks of three tasks, one block per escalation form and one task from each task set in every block; a participant meets each of the nine forks once, in one of its two twin versions
+- every block has its own spec sheet: the single cover story plus three lines, one per task, each labelled with its context (jobs, access, storage and software)
+- on each task: the scripted query, a **Send** button and the streamed trace, with trace lines at the record's fixed 3–5 s pace and a typing indicator between lines; **Source A** and **Source B** chips open their own overlay with the cited lines highlighted; the fork line renders as S1 (blocking modal), S2 (inline warning) or S3 (citation only); **Accept** confirms the answer, **Reject** opens the two-option picker
+- after each block an instrument screen collects raw NASA-TLX (six 21-point subscales), the MiPP-Eval intrusion item (1–7) and a manipulation check (which form was just used)
+- at the end a closing screen collects a ranking of the three forms with a free-text reason, then a debrief screen; the experimenter can reveal the session's results there
 
-Every event is written to `data/sessions/events.sqlite`, which is git-ignored because it holds participant data. Logged events include each source's open and close with its duration. A per-task summary row records:
-- the final value and whether it is correct
-- whether the participant followed the recommendation
-- whether they viewed any source for at least 3 s of summed dwell (raw opens and dwell are logged too)
-- which sources they opened (recommended only, the other only, both, or neither)
-- dwell time on Source A and on Source B
-- decision time and total time
+Every event is written to `data/sessions/events.sqlite`, which is git-ignored because it holds participant data. Tables:
+- `events`: every interaction (Send, line onsets, fork onset, modal pick, source open and close with duration, source scroll position, focus lost and gained, Reject, picker choice, Accept)
+- `task_summary`: one row per task with the final value and whether it is correct, whether the participant followed the recommendation, whether a source was viewed for at least 3 s of summed dwell (raw opens and dwell are logged too), which sources were opened, dwell on Source A and B, whether a source was open at fork onset, decision time (fork onset to Accept), total time, and time with the window unfocused
+- `block_instruments`: the TLX subscales, the intrusion item and the manipulation-check answer per block
+- `session`: participant number, pilot flag, order group, rotation, block order, standing, gender, course of study, prior Falcon use, the final ranking and its reason
 
-The experimenter bar sets the participant code, form, task set and pace (study, pilot or debug). Deep links work too, e.g. `#form=S2&set=1&autostart=1`. The task catalog with all candidates and their fate is in `Assets/checkpoint2/task_catalog.md`.
+The dwell clock pauses while the browser window is unfocused or the tab hidden. The experimenter options (behind a disclosure on the entry screen) set the pace (study, pilot or debug) and let a crashed session resume at a given block. Deep links work for testing, e.g. `#p=7&pace=0.1&autostart=1&autosend=1` runs participant 7's whole session at debug pace with every answer accepted as filled. `python -m escalate worksheet` prints the assignment for participants 1–15 and checks its balance; `python -m escalate matching` writes per-task matching statistics; `python -m escalate catalog` regenerates `Assets/checkpoint2/task_catalog.md`, which lists all candidate forks and their fate.
 
 ## Rebuilding from scratch, and what to expect
 

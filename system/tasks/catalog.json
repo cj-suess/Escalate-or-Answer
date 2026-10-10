@@ -1,8 +1,9 @@
 {
   "_about": "Candidate context-dependent forks authored against the frozen SNA snapshot (proposal v4, Sections 3.1 and 3.4). Each pair names two options, the page passage that states each, and two spec-sheet lines: one under which each option is the documented answer. The pipeline (python -m escalate tasks) decides whether its fork check fires, which source ranks higher (that option becomes the assistant's recommendation), and whether the deciding fact survives the blind-vs-informed filter. 'selected' marks the six pairs proposed for the 12 measured tasks; the rest are backups and count toward the ~30-query candidate pool.",
+  "cover_story": "You are doing a course project on the CS systems: fine-tuning an image model on the Falcon cluster, working from the CS labs and from home, and managing the project's data and software. Each block's spec sheet gives the facts about your situation that the tasks in that block depend on.",
   "sets": {
     "1": {
-      "name": "Job submission",
+      "name": "Jobs",
       "assignment": "Fine-tune an image model on Falcon in stages."
     },
     "2": {
@@ -457,12 +458,12 @@
         }
       ],
       "sheet_lines": {
-        "your home directory": "Stage 5 saves the final 2 GB model, which you must keep.",
-        "/s/<hostname>/a/tmp": "Stage 1 writes about 40 GB of intermediate files you can regenerate."
+        "your home directory": "Your final 2 GB model must be kept, and nothing else needs to be stored.",
+        "/s/<hostname>/a/tmp": "Your job writes about 40 GB of intermediate files you can regenerate."
       },
       "questions": {
-        "your home directory": "Where does Stage 5 save the final model?",
-        "/s/<hostname>/a/tmp": "Where does Stage 1 write its intermediate files?"
+        "your home directory": "Where do you save the final model?",
+        "/s/<hostname>/a/tmp": "Where does the job write its intermediate files?"
       },
       "key_logic": "40 GB exceeds the home quota (16000 MB undergraduate, 24000 MB graduate), so only tmp works. Data that must be kept cannot live in tmp, which is 'regularly, automatically scrubbed' and not backed up; the page says important data belongs in home.",
       "exclusivity": "hard both ways",
@@ -587,6 +588,205 @@
         "question": "Which environment module provides the code command on CS machines?",
         "answer": "ide/visual-studio-code"
       }
+    },
+    {
+      "pair_id": "J6",
+      "set": "1",
+      "selected": true,
+      "query": "How should I run my long preprocessing job on the CS systems?",
+      "deciding_fact": "whether the job runs on a shared CS lab workstation or on Falcon",
+      "options": [
+        {
+          "value": "nice -n 19 python preprocess.py",
+          "source": "/policies/jobs/",
+          "highlight": "It is mandatory social etiquette that all long-running and background jobs be run with a nice value of 19.",
+          "condition": "the job runs on a shared CS lab workstation"
+        },
+        {
+          "value": "sbatch preprocess.sh",
+          "source": "/hpc/job-handling/",
+          "highlight": "you must ask the cluster’s scheduling system to run your program on the compute nodes.",
+          "condition": "the job runs on Falcon"
+        }
+      ],
+      "sheet_lines": {
+        "nice -n 19 python preprocess.py": "Your Falcon account is not active yet, so the data preprocessing runs overnight on a CS lab workstation.",
+        "sbatch preprocess.sh": "The data preprocessing runs on Falcon."
+      },
+      "questions": {
+        "nice -n 19 python preprocess.py": "How do you start the preprocessing run on the lab workstation?",
+        "sbatch preprocess.sh": "How do you start the preprocessing run on Falcon?"
+      },
+      "key_logic": "Lab workstations have no Slurm, so sbatch cannot run there, and the Compute Jobs policy makes nice 19 mandatory for long-running jobs. On Falcon, programs must not run on the login nodes (Job Handling: 'programs need to run on them and not on the login nodes'), so the job must be submitted with sbatch.",
+      "exclusivity": "hard one way (no Slurm on lab workstations), documented rule the other way (nothing runs on Falcon login nodes)",
+      "blind_probe": {
+        "question": "What nice value does the Colorado State CS department require for long-running background jobs on its lab machines?",
+        "answer": "19"
+      },
+      "alt_queries": [
+        "How do I run a long job on the CS machines?",
+        "What is the right way to start a job that runs for hours?"
+      ]
+    },
+    {
+      "pair_id": "J5",
+      "set": "1",
+      "selected": false,
+      "query": "How do I check on my GPU job after I submit it?",
+      "deciding_fact": "whether you need to know if the job has started or how much GPU memory it is using",
+      "options": [
+        {
+          "value": "squeue",
+          "source": "/hpc/job-handling/monitoring-jobs/",
+          "highlight": "The command `squeue` provides an overview of jobs in the scheduling queue (state information, allocated resources, runtime, etc.).",
+          "condition": "you want to know whether the job has started"
+        },
+        {
+          "value": "sgpu <jobid>",
+          "source": "/hpc/samples/gpu-jobs/",
+          "highlight": "you can monitor the GPU usage to check the memory usage of one or more GPUs in your job.",
+          "condition": "you want to know how much GPU memory the running job uses"
+        }
+      ],
+      "sheet_lines": {
+        "squeue": "You submitted the training run ten minutes ago and want to know whether it has started.",
+        "sgpu <jobid>": "The training run is running and you want to know whether the batch size fits in GPU memory."
+      },
+      "questions": {
+        "squeue": "Which command tells you whether the run has started?",
+        "sgpu <jobid>": "Which command shows the run's GPU memory use?"
+      },
+      "key_logic": "squeue reports queue state (pending or running) but no GPU memory; sgpu reports the GPU memory usage of a running job but no queue state.",
+      "exclusivity": "hard both ways",
+      "blind_probe": {
+        "question": "On the Falcon cluster at Colorado State CS, which command shows the GPU memory usage of your running job?",
+        "answer": "sgpu"
+      },
+      "alt_queries": [
+        "How do I monitor my GPU job on Falcon?",
+        "How can I see what my job is doing?"
+      ]
+    },
+    {
+      "pair_id": "S5",
+      "set": "3",
+      "selected": true,
+      "query": "How do I use TensorFlow on the CS machines?",
+      "deciding_fact": "the TensorFlow major version the starter code needs",
+      "options": [
+        {
+          "value": "module load python/anaconda",
+          "source": "/software/tensorflow/",
+          "highlight": "You may use either Anaconda, or the modules bundle for Python 3.6/3.8/3.9.",
+          "condition": "the code needs TensorFlow 2"
+        },
+        {
+          "value": "module load deprecated/tensorflow-1.15",
+          "source": "/software/tensorflow/",
+          "highlight": "module load deprecated/tensorflow-1.15",
+          "condition": "the code needs TensorFlow 1"
+        }
+      ],
+      "sheet_lines": {
+        "module load python/anaconda": "The starter code for the image model is written for TensorFlow 2.",
+        "module load deprecated/tensorflow-1.15": "The starter code for the image model is written for TensorFlow 1 and has not been ported."
+      },
+      "questions": {
+        "module load python/anaconda": "Which module do you load before running the TensorFlow 2 starter code?",
+        "module load deprecated/tensorflow-1.15": "Which module do you load before running the TensorFlow 1 starter code?"
+      },
+      "key_logic": "TensorFlow 1 code does not run under TensorFlow 2 and vice versa; the page gives Anaconda (TF 2.x) and the deprecated/tensorflow-1.15 module (TF 1.x) as separate routes.",
+      "exclusivity": "hard both ways",
+      "blind_probe": {
+        "question": "Which environment module provides TensorFlow 1.15 on the Colorado State CS machines?",
+        "answer": "deprecated/tensorflow-1.15"
+      },
+      "alt_queries": [
+        "Which module do I load to use TensorFlow?",
+        "How do I set up TensorFlow for my project on the CS machines?"
+      ]
+    },
+    {
+      "pair_id": "R8",
+      "set": "2",
+      "selected": false,
+      "query": "How do I close my remote desktop session on the CS machine?",
+      "deciding_fact": "whether you will come back to the same remote desktop session",
+      "options": [
+        {
+          "value": "close the RDP window",
+          "source": "/remote-connection/gui/",
+          "highlight": "If you disconnect from a RDP session, you can reconnect to the same session in the next 48 hours.",
+          "condition": "you want to come back to the session later"
+        },
+        {
+          "value": "log out from the desktop's logout menu",
+          "source": "/remote-connection/gui/",
+          "highlight": "you need to log out inside of your RDP session, using the logout menu item of the desktop environment.",
+          "condition": "you want to end the session completely"
+        }
+      ],
+      "rule_source": {
+        "source": "/remote-connection/gui/",
+        "highlight": "All sessions, which are not connected for over 48 hours, are automatically terminated."
+      },
+      "sheet_lines": {
+        "close the RDP window": "Your training monitor is open in a remote desktop session from home and you will check it again tomorrow.",
+        "log out from the desktop's logout menu": "You have finished with the remote desktop machine for the semester and must end the session."
+      },
+      "questions": {
+        "close the RDP window": "How do you leave the remote desktop for today?",
+        "log out from the desktop's logout menu": "How do you end the remote desktop session?"
+      },
+      "key_logic": "Logging out ends the session, so the open monitor would be lost; closing the window keeps the session for up to 48 hours. Closing the window does not end a session; the page says that to end one completely you must log out inside the session rather than interrupt the connection.",
+      "exclusivity": "hard both ways (log out destroys the session you need tomorrow; closing the window leaves the session running)",
+      "blind_probe": {
+        "question": "For how long can you reconnect to a disconnected remote desktop (RDP) session on a Colorado State CS Linux machine?",
+        "answer": "48 hours"
+      },
+      "alt_queries": [
+        "How do I disconnect from the remote desktop on a CS Linux machine?",
+        "What do I do when I am done with my RDP session?"
+      ]
+    },
+    {
+      "pair_id": "R9",
+      "set": "2",
+      "selected": true,
+      "query": "What password do I use the first time I log in to my course VM as vmuser?",
+      "deciding_fact": "the guest operating system of your virtual machine",
+      "options": [
+        {
+          "value": "create a new password at the first login",
+          "source": "/virtual-machines/ubuntu/",
+          "highlight": "you will have to create your password the first time you login.",
+          "condition": "the VM runs Ubuntu"
+        },
+        {
+          "value": "enter the temporary password SNA gave you",
+          "source": "/virtual-machines/windows/",
+          "highlight": "you will have to provide a temporary password the first time you login.",
+          "condition": "the VM runs Windows"
+        }
+      ],
+      "sheet_lines": {
+        "create a new password at the first login": "Your course virtual machine runs Ubuntu.",
+        "enter the temporary password SNA gave you": "Your course virtual machine runs Windows."
+      },
+      "questions": {
+        "create a new password at the first login": "What do you do at the Ubuntu VM's first password prompt?",
+        "enter the temporary password SNA gave you": "What do you do at the Windows VM's first password prompt?"
+      },
+      "key_logic": "An Ubuntu VM has no SNA-issued password; you set your own at the first login. A Windows VM requires the temporary password SNA provided when the VM was created; an invented password is rejected.",
+      "exclusivity": "hard both ways",
+      "blind_probe": {
+        "question": "What username do you log in with on a course virtual machine opened from the Colorado State CS VMware portal?",
+        "answer": "vmuser"
+      },
+      "alt_queries": [
+        "How do I log in to my course virtual machine for the first time?",
+        "What is the first-login password for the course VM?"
+      ]
     }
   ],
   "practice": [

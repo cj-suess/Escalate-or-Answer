@@ -60,7 +60,7 @@ The first run of this test exposed three problems, all fixed:
 | Judge asked the literal question | Deviates | The prompt contains the question plus instructions to return grounded options |
 | Fires only on margin AND judge | Matches | Both conditions required |
 | Log every evaluation | Matches | `data/fork_check_log.jsonl`: query, top-k, margin, judge output, fired |
-| Report the hit rate | Matches | 17 of 25 phrasings fired; 8 of 25 fired on the authored fork (`task_catalog.md`) |
+| Report the hit rate | Matches | 24 of 36 phrasings fired; 12 of 36 fired on the authored fork (`task_catalog.md`, 10 October 2026) |
 | Extra rule: the fork found must match the authored fork | Deviates | Added because 9 firings were on a *different* fork. The proposal should state this rule |
 
 ## 5. Curating items
@@ -72,11 +72,11 @@ The first run of this test exposed three problems, all fixed:
 | Blind-vs-informed filter and survivor count | Matches | 13 of 15 forks survive; logged per fork |
 | Five-line pre-fork template | Matches | Reading, searching, Source A, Source B, extracting |
 | Recommendation is the higher-ranked option; key from the passage plus the sheet line | Matches | |
-| Set → form tie (1→S1, 2→S2, 3→S3) preserved | Fixed | `form_tied_to` field on records; the UI auto-selects the tied set and warns on a mismatch |
-| Sets match the runbook's examples (2.1 VPN, and so on) | Deviates | The VPN fork never fired on itself, so Set 2 is now R3 and R6 (see `task_catalog.md`) |
-| 2 correct + 2 wrong per set; no source pair shared across sets | Matches | |
+| Set → form tie (1→S1, 2→S2, 3→S3) preserved | Deviates | Dropped on 10 October 2026: task set is crossed with form (one task per set in every block, nine forks), as the paper's Design section states; see `PLANNED_CHANGES.md`, change 1 |
+| Sets match the runbook's examples (2.1 VPN, and so on) | Deviates | The VPN fork never fired on itself. Set 1 is J1, J2, J6; Set 2 is R3, R6, R9; Set 3 is S1, S2, S5 (see `task_catalog.md`) |
+| 2 correct + 2 wrong per set; no source pair shared across sets | Deviates | Now 3 forks per set; each participant gets 4 or 5 correct recommendations over 9 tasks with at least one of each per block (`escalate/rotation.py`); no source pair is shared across forks |
 | Two practice items | Matches | P1, P2 |
-| Required record fields | Fixed | Added `item_id`, `form_tied_to`, `is_correct`, `recommendation_correctness`. `trace` holds the runbook's `trace_lines` |
+| Required record fields | Fixed | Added `item_id`, `is_correct`, `recommendation_correctness` (`form_tied_to` was removed with the tie). `trace` holds the runbook's `trace_lines` |
 | SHA-256 per record and a manifest hash | Matches | `data/tasks/_manifest.json` |
 | Matching statistics (trace length, fork line, overlap band, fork type) | Not built | Not computed |
 

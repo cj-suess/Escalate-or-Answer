@@ -19,7 +19,6 @@
     "query_attempts": 3
   },
   "fork_line_index": 6,
-  "form_tied_to": "S2",
   "is_correct": false,
   "item_id": "R2a",
   "key": "run ssh-keygen on a CS machine and append id_rsa.pub to ~/.ssh/authorized_keys",

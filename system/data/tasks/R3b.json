@@ -19,7 +19,6 @@
     "query_attempts": 1
   },
   "fork_line_index": 6,
-  "form_tied_to": "S2",
   "is_correct": true,
   "item_id": "R3b",
   "key": "jupyter-notebook --no-browser --port=9090 with an SSH tunnel",

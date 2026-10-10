@@ -19,7 +19,6 @@
     "query_attempts": 4
   },
   "fork_line_index": 6,
-  "form_tied_to": "S2",
   "is_correct": false,
   "item_id": "R1b",
   "key": "connect to the CSU VPN, then ssh falcon.cs.colostate.edu",

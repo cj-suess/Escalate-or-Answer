@@ -19,7 +19,6 @@
     "query_attempts": 2
   },
   "fork_line_index": 6,
-  "form_tied_to": "S3",
   "is_correct": false,
   "item_id": "S1a",
   "key": "your home directory",
@@ -29,7 +28,7 @@
     "/s/<hostname>/a/tmp"
   ],
   "pair_id": "S1",
-  "question": "Where does Stage 5 save the final model?",
+  "question": "Where do you save the final model?",
   "recommendation_correct": false,
   "recommendation_correctness": "wrong",
   "recommended_option": "/s/<hostname>/a/tmp",
@@ -58,7 +57,7 @@
     "updated": "2021-03-01",
     "url": "https://sna.cs.colostate.edu/storage/home-dirs/"
   },
-  "spec_sheet_line": "Stage 5 saves the final 2 GB model, which you must keep.",
+  "spec_sheet_line": "Your final 2 GB model must be kept, and nothing else needs to be stored.",
   "task_id": "S1a",
   "trace": [
     {

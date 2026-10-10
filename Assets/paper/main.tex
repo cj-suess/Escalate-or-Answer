@@ -155,7 +155,7 @@ initiate only when the expected utility of acting exceeds the cost of
 interrupting, and use dialogue to resolve uncertainty. Read against this
 work, and as our own interpretation, a modal stop is closest to
 McFarlane's immediate method, an inline warning to a negotiated one, and a
-provenance-only answer does not interrupt at all. \verify{} In these studies the
+provenance-only answer does not interrupt at all. In these studies the
 interruption carried no fallible content; what they leave open is whether
 the coordination method also changes the accuracy of the decision the
 interruption asks the person to make.
@@ -281,20 +281,18 @@ embedded with \texttt{nomic-embed-text}.
 \paragraph{Drafting pipeline.} The assistant's retrieval and escalation
 decisions were produced before the study by a local pipeline
 (\texttt{qwen2.5:7b-instruct} through Ollama 0.35.1; temperature 0, seed
-567) and frozen as task records, so no model ran during a session. \verify{} Three
-elements of each task came from the pipeline: the retrieved passages and
-their ranking (an embedding search over the snapshot for the scripted
-query, top four chunks); the decision that the question was a fork, made
-by the fork check, which fired when the cosine margin between the top two
-chunks was at most 0.10 and an LLM judge found that the passages gave
-different correct answers depending on a fact the query did not state; and
-the recommendation, which was always the option whose passage ranked
-higher. \verify{} The two options, the highlighted passage for each, the
+567) and frozen as task records, so no model ran during a session. The pipeline produced three elements for each task:
+\begin{enumerate}
+    \item Retrieved passages and their ranking: an embedding search over the snapshot for the scripted query, top four chunks.
+    \item The decision that the question was a fork, made by the fork check, which fired when the cosine margin between the top two chunks was at most 0.10 and an LLM judge found that the passages gave different correct answers depending on a fact the query did not state.
+    \item The recommendation, which was always the option whose passage ranked higher.
+\end{enumerate} 
+The two options, the highlighted passage for each, the
 spec-sheet lines and the answer keys were written by us from the snapshot.
 The pipeline then had to find the same fork on its own: shown the
 retrieved passages, the judge named the options it saw, and a fork was
 used only when those options matched the two we had authored, which held
-for 8 of 25 query phrasings over 15 candidate forks. The seven-line trace
+for 12 of 36 query phrasings over 20 candidate forks. The seven-line trace
 shown to participants was a fixed template; the pipeline supplied what
 filled it: which page was Source A and which Source B (its retrieval
 ranking), that line 6 was a fork (its fork check), and which option line 6
@@ -304,11 +302,10 @@ themselves (``Reading the question\ldots'', ``Found Source A: \ldots'',
 that every task presented the same structure and the form of the fork
 line was the only variable.
 
-\paragraph{Interface.} \verify{} The study ran as a single-page web application in a
-desktop browser: the block's spec sheet, the task question, one answer
-field and Accept and Reject buttons on the left; the scripted query, a Send
-button and the assistant's seven-line trace on the right, in which Source A
-and Source B appeared as chips that opened the frozen page with the cited
+\paragraph{Interface.} The study ran as a single-page web application in a
+desktop browser with two primary panels of information. The block's spec sheet, the task question, and one answer
+field (with Accept and Reject buttons) resided on the left. The right side contained the scripted query and a "Send"
+button along with the assistant's seven-line trace. Within the trace, two clickable sources were made available (Source A and Source B) and appeared as chips that opened the frozen page with the cited
 lines highlighted. Trace lines arrived one at a time at a fixed delay of
 3--5 s stored in the task record, and only line 6, the fork line, was
 rendered differently across forms. Instrument screens between blocks and
@@ -317,11 +314,13 @@ application assigned each participant's block order and task rotation
 from the participant number.
 
 \paragraph{Logging.} Every interaction (Send, each line onset, fork onset,
-modal pick, each source open and close with its duration, Reject, picker
+modal pick, each source open and close with its duration, scroll position
+inside an open source, loss and return of window focus, Reject, picker
 choice, Accept) was written to a local SQLite database under a participant
 code, together with a per-task summary of the final value, accuracy,
-following, verification, source pattern, dwell per source and decision
-time.
+following, verification, source pattern, dwell per source, whether a
+source was open at the fork, and decision time. The dwell clock paused
+while the browser window was unfocused.
 
 \subsection{Tasks and Materials}
 \label{sec:tasks}
@@ -353,22 +352,21 @@ crossed with form rather than tied to it; the twin assignment was
 constrained so that every block contained at least one correct and one
 wrong recommendation and every participant received four or five of each.
 Block order was counterbalanced across the six permutations of the three
-forms, two participants per order, and the fork-to-form rotation was
-balanced within each order. With 12 participants this gave 108 measured
-tasks, 18 per Form $\times$ Correctness cell.
+forms, two participants per order, and the two participants in an order
+received opposite twin versions, so that over the twelve participants
+every fork appeared under every form twice in each version. With 12
+participants this gave 108 measured tasks, 18 per Form $\times$
+Correctness cell.
 
 \subsection{Procedure}
 \label{sec:procedure}
-\verify{} Sessions lasted about one hour: instructions stating that the
+Sessions lasted about one hour with instructions for the participant stating that the
 assistant was usually right but could be wrong and that any cited source
-could be opened; two practice tasks, during which the experimenter had
-participants open a source and use Reject and Accept once each; three
-blocks of three tasks, one block per form, each block's three-line spec
-sheet staying on screen; the instrument screens after each block; and a
-closing ranking screen followed by a debrief. On each task the
-participant pressed Send, watched the trace, could open either source,
-and pressed Accept, or Reject followed by a choice from the two-option
-picker; no feedback on correctness was given.
+could be opened. There were two practice tasks, during which the experimenter had
+participants open a source and use Reject and Accept once each. Following this the participant then performed three
+blocks of three tasks with one block per form and each block's three-line spec
+sheet staying on screen. The instrument screens after each block and offers a
+closing ranking screen followed by a debrief. On each task, the participant pressed Send, watched the trace, could open either source, and pressed Accept, or Reject followed by a choice from the two-option picker. No feedback on correctness was given.
 
 \subsection{Measures}
 \label{sec:measures}
