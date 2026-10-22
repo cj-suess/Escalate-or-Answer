@@ -14,7 +14,7 @@ These changes were agreed by the authors and are described in the paper's Method
 | 7 Stale descriptions | Built | `catalog_report.py` + `tasks/catalog_preamble.md` (regenerated `task_catalog.md`), `README.md`, `RUNBOOK_CHECK.md`, paper figures |
 | 8 Regression test | Built | `REGRESSION_2026-10-10.md`: worksheet balance, byte-identical rebuild, API, full browser session for P07, dwell pausing, screenshots, static checks all pass. Open item: confirm the dwell pause once in a real (non-headless) browser before the pilot |
 | 9 Gender self-describe text box | Built | `playground/index.html` (`genderSelf`, shown only for "self-describe"), `study.js`, `server.py` (`session.gender_self_describe`, added in place) |
-| 10 Block start on prior Falcon use | To build | `playground/study.js` |
+| 10 Block start on prior Falcon use | Built | `playground/study.js` (`screenedOut`, `onScreening`; "Start session" stays disabled while prior Falcon use is "yes") |
 
 
 ## 1. Cross task set with escalation form
@@ -180,7 +180,9 @@ Files: `playground/index.html`, `playground/study.js`, `escalate/server.py`.
 
 ## 10. Block the session start on prior Falcon use
 
-**Now.** The screening item "prior Falcon use" is only recorded; a participant who answers "yes" can still start the session, although prior use of Falcon rules them out (paper, Participants).
+**Done.** Built as described below.
+
+**Before.** The screening item "prior Falcon use" is only recorded; a participant who answers "yes" can still start the session, although prior use of Falcon rules them out (paper, Participants).
 
 **Change.** While "yes" is selected, keep the "Start session" button disabled so the session cannot be submitted; re-enable it when the answer changes. No session row is written for a participant who cannot take part.
 

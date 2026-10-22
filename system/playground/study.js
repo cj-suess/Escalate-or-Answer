@@ -447,13 +447,19 @@ const Study = (() => {
       $("assignPreview").textContent = `Assigned: order group ${p.order_group} (${p.block_order.join(" → ")}), rotation ${p.rotation_id}.`;
     } catch (e) { $("assignPreview").textContent = `Cannot assign: ${e.message}`; }
   }
+  const screenedOut = () => $("priorFalcon").value === "yes";   // prior Falcon use rules a participant out (paper, Participants)
+  function onScreening() {
+    $("startSession").disabled = screenedOut();
+    $("entryMsg").textContent = screenedOut() ? "Prior use of the Falcon cluster: this person cannot take part." : "";
+  }
   async function startSession() {
+    if (screenedOut()) return;
     const n = +$("pnum").value;
     if (!n || n < 1) { $("entryMsg").textContent = "Enter the participant number."; return; }
     $("startSession").disabled = true; $("entryMsg").textContent = "";
     let plan;
     try { plan = await api(`/api/plan?participant=${n}`); }
-    catch (e) { $("entryMsg").textContent = `Cannot build the plan: ${e.message}`; $("startSession").disabled = false; return; }
+    catch (e) { $("entryMsg").textContent = `Cannot build the plan: ${e.message}`; $("startSession").disabled = screenedOut(); return; }
     const pcode = `P${String(n).padStart(2, "0")}`;
     session = { n, pcode, pilot: $("pilot").checked, id: `${pcode}-${Date.now()}`, plan, pace: +$("pace").value,
       results: [], instruments: [], autosend: session?.autosend || false };
@@ -465,7 +471,7 @@ const Study = (() => {
         gender_self_describe: $("gender").value === "self-describe" ? $("genderSelf").value.trim() || null : null, course_of_study: $("course").value.trim() || null,
         prior_falcon_use: $("priorFalcon").value || null, started_utc: utc() });
     } catch (e) { console.warn("session row failed", e); }
-    $("startSession").disabled = false;
+    $("startSession").disabled = screenedOut();
     if (startAt === "practice") startBlock({ block_index: 0, form: "practice", tasks: plan.practice.map((id) => ({ task_id: id })) });
     else runBlock(+startAt);
   }
@@ -476,6 +482,7 @@ const Study = (() => {
     DATA.study = DATA.study || {};
     $("pnum").oninput = previewAssignment;
     $("startSession").onclick = startSession;
+    $("priorFalcon").onchange = onScreening;
     $("send").onclick = () => { $("send").disabled = true; log("send"); playTrace(token); };
     $("accept").onclick = accept;
     $("reject").onclick = () => { log("reject"); showPicker(); };
