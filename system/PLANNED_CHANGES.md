@@ -13,6 +13,8 @@ These changes were agreed by the authors and are described in the paper's Method
 | 6 Participants fields | Built | entry screen and `session` table: standing, gender, course of study, prior Falcon use, pilot flag |
 | 7 Stale descriptions | Built | `catalog_report.py` + `tasks/catalog_preamble.md` (regenerated `task_catalog.md`), `README.md`, `RUNBOOK_CHECK.md`, paper figures |
 | 8 Regression test | Built | `REGRESSION_2026-10-10.md`: worksheet balance, byte-identical rebuild, API, full browser session for P07, dwell pausing, screenshots, static checks all pass. Open item: confirm the dwell pause once in a real (non-headless) browser before the pilot |
+| 9 Gender self-describe text box | To build | `playground/index.html`, `study.js`, `server.py` |
+| 10 Block start on prior Falcon use | To build | `playground/study.js` |
 
 
 ## 1. Cross task set with escalation form
@@ -165,6 +167,22 @@ Once changes 1 to 7 are in, run a scripted regression pass (a Fable agent drivin
 - a full session (practice, three blocks, instruments, closing screen) runs end to end at debug pace and writes 9 `task_summary` rows, 3 `block_instruments` rows and 1 `session` row, with `decision_time_s` measured from `fork_onset` and `verified` set only when summed dwell reaches 3 s;
 - dwell stops accumulating while the tab is hidden;
 - `python -m escalate tasks` still reproduces `_manifest.json` from the catalog, and `catalog_report` regenerates `task_catalog.md` without the stale counts.
+
+## 9. Gender self-describe text box
+
+**Now.** The gender pick list on the entry screen has a "self-describe" option, but choosing it gives the participant nowhere to enter a description, so only the word "self-describe" is stored. Change 6 asked for a free-text option.
+
+**Change.** When "self-describe" is selected, show a text box below the pick list for the participant's own description; hide it again for any other choice. Store the description in the `session` row (a new `gender_self_describe` column, added in place like `focus_lost_s`), leaving `gender` as "self-describe".
+
+Files: `playground/index.html`, `playground/study.js`, `escalate/server.py`.
+
+## 10. Block the session start on prior Falcon use
+
+**Now.** The screening item "prior Falcon use" is only recorded; a participant who answers "yes" can still start the session, although prior use of Falcon rules them out (paper, Participants).
+
+**Change.** While "yes" is selected, keep the "Start session" button disabled so the session cannot be submitted; re-enable it when the answer changes. No session row is written for a participant who cannot take part.
+
+Files: `playground/study.js`.
 
 ## Cross-check against the paper (10 October 2026)
 
