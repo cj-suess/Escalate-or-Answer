@@ -84,7 +84,7 @@ const Study = (() => {
     task.dwellAtOpen = task.dwell[label];   // so source_close can report this open's own duration
     task.opens[label] += 1;
     log("source_open", label);
-    $("srcBody").addEventListener("scroll", onScroll, { passive: true });
+    $("srcBody").addEventListener("scroll", () => onScroll(false), { passive: true });
     onScroll(true);
   }
   function hlInView(body) {
@@ -127,7 +127,8 @@ const Study = (() => {
     task.open = null;
     $("srcOverlay").classList.add("hidden");
   }
-  document.addEventListener("visibilitychange", () => document.hidden ? pauseDwell("tab_hidden") : resumeDwell("tab_visible"));
+  // a visible tab is not enough to resume: the window must also have focus
+  document.addEventListener("visibilitychange", () => document.hidden ? pauseDwell("tab_hidden") : document.hasFocus() && resumeDwell("tab_visible"));
   window.addEventListener("blur", () => pauseDwell("window_blur"));
   window.addEventListener("focus", () => resumeDwell("window_focus"));
 
@@ -301,6 +302,7 @@ const Study = (() => {
     $("traceBox").innerHTML = ""; $("forkModal").classList.add("hidden"); $("srcOverlay").classList.add("hidden");
     $("send").disabled = false;
     log("task_start");
+    if (document.hidden || !document.hasFocus()) pauseDwell("task_start");   // focus left during the pause between tasks
     if (session.autosend) $("send").click();
   }
 
