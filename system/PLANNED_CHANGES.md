@@ -15,6 +15,7 @@ These changes were agreed by the authors and are described in the paper's Method
 | 8 Regression test | Built | `REGRESSION_2026-10-10.md`: worksheet balance, byte-identical rebuild, API, full browser session for P07, dwell pausing, screenshots, static checks all pass. Open item: confirm the dwell pause once in a real (non-headless) browser before the pilot |
 | 9 Gender self-describe text box | Built | `playground/index.html` (`genderSelf`, shown only for "self-describe"), `study.js`, `server.py` (`session.gender_self_describe`, added in place) |
 | 10 Block start on prior Falcon use | Built | `playground/study.js` (`screenedOut`, `onScreening`; "Start session" stays disabled while prior Falcon use is "yes") |
+| 11 Session data integrity | To build | `playground/study.js`, `common.js`, `escalate/server.py`: retry and warn on failed writes, stream task events, resume without duplicates, duplicate participant warning, strict payloads |
 
 
 ## 1. Cross task set with escalation form
@@ -187,6 +188,29 @@ Files: `playground/index.html`, `playground/study.js`, `escalate/server.py`.
 **Change.** While "yes" is selected, keep the "Start session" button disabled so the session cannot be submitted; re-enable it when the answer changes. No session row is written for a participant who cannot take part.
 
 Files: `playground/study.js`.
+
+## 11. Session data integrity (database review, 22 October 2026)
+
+**Now.** The schema and the client payloads agree, each task's events and summary row are written in one transaction, `data/sessions/` is git-ignored and the server listens on `127.0.0.1` only. The weak points are failed writes and restarted sessions:
+
+- High: a failed write is lost silently. `accept()` posts a task's events and summary once; on failure it only warns in the console, still shows "Saved." and moves on. `/api/instruments` and the closing `/api/session` call do the same.
+- High: a crash or reload mid-task loses that task's events, because they are held in the browser until Accept (only `block_start` and `block_end` are sent at once).
+- Medium: resuming a crashed session at a block creates a new `session_id`, so tasks finished before the crash are written twice under two ids and the first session row never gets `finished_utc`; nothing links the two.
+- Medium: nothing stops a participant number being used twice, which silently reruns the same assignment and breaks the counterbalancing.
+- Medium: `_insert` and `upsert_session` drop keys that are not in the column lists, so a renamed client field is stored as NULL without an error.
+- Low: each new column is added in three places (column tuple, `SCHEMA`, the upgrade code in `_connect`).
+- Low: a write that throws skips `con.close()`.
+
+**Change.**
+- Retry failed writes and keep anything unsent in a client-side outbox until the server confirms it; show the experimenter a visible warning instead of "Saved." while a write is outstanding.
+- Send task events as they happen (or flush them at short intervals and on `pagehide`), keeping the summary row at Accept.
+- On resume, reuse the earlier `session_id` (or log the earlier id on the new session row) and skip tasks that already have a `task_summary` row; document the dedupe rule for analysis either way.
+- Warn on the entry screen when the participant number already has a session row, unless the start is a resume.
+- Reject payloads with unknown keys (400) so field drift fails loudly.
+- Derive the upgrade code from one column list with types; wrap connections in `contextlib.closing`.
+- Before the first real session, delete `data/sessions/events.sqlite`; it currently holds test rows (1 session, 9 task rows).
+
+Files: `playground/study.js`, `playground/common.js`, `escalate/server.py`.
 
 ## Cross-check against the paper (10 October 2026)
 
