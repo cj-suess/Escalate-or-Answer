@@ -13,7 +13,7 @@ These changes were agreed by the authors and are described in the paper's Method
 | 6 Participants fields | Built | entry screen and `session` table: standing, gender, course of study, prior Falcon use, pilot flag |
 | 7 Stale descriptions | Built | `catalog_report.py` + `tasks/catalog_preamble.md` (regenerated `task_catalog.md`), `README.md`, `RUNBOOK_CHECK.md`, paper figures |
 | 8 Regression test | Built | `REGRESSION_2026-10-10.md`: worksheet balance, byte-identical rebuild, API, full browser session for P07, dwell pausing, screenshots, static checks all pass. Open item: confirm the dwell pause once in a real (non-headless) browser before the pilot |
-| 9 Gender self-describe text box | To build | `playground/index.html`, `study.js`, `server.py` |
+| 9 Gender self-describe text box | Built | `playground/index.html` (`genderSelf`, shown only for "self-describe"), `study.js`, `server.py` (`session.gender_self_describe`, added in place) |
 | 10 Block start on prior Falcon use | To build | `playground/study.js` |
 
 
@@ -170,7 +170,9 @@ Once changes 1 to 7 are in, run a scripted regression pass (a Fable agent drivin
 
 ## 9. Gender self-describe text box
 
-**Now.** The gender pick list on the entry screen has a "self-describe" option, but choosing it gives the participant nowhere to enter a description, so only the word "self-describe" is stored. Change 6 asked for a free-text option.
+**Done.** Built as described below.
+
+**Before.** The gender pick list on the entry screen has a "self-describe" option, but choosing it gives the participant nowhere to enter a description, so only the word "self-describe" is stored. Change 6 asked for a free-text option.
 
 **Change.** When "self-describe" is selected, show a text box below the pick list for the participant's own description; hide it again for any other choice. Store the description in the `session` row (a new `gender_self_describe` column, added in place like `focus_lost_s`), leaving `gender` as "self-describe".
 

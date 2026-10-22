@@ -27,7 +27,7 @@ INSTRUMENT_COLS = ("participant_code", "session_id", "block_index", "form", "tlx
                    "tlx_performance", "tlx_effort", "tlx_frustration", "intrusion", "manip_response", "manip_correct",
                    "timestamp_utc")
 SESSION_COLS = ("participant_code", "session_id", "participant_number", "pilot", "order_group", "rotation_id",
-                "block_order", "standing", "gender", "course_of_study", "prior_falcon_use", "ranking", "ranking_reason",
+                "block_order", "standing", "gender", "gender_self_describe", "course_of_study", "prior_falcon_use", "ranking", "ranking_reason",
                 "started_utc", "finished_utc")
 
 SCHEMA = f"""
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS block_instruments (
 CREATE TABLE IF NOT EXISTS session (
     participant_code TEXT, session_id TEXT, participant_number INTEGER, pilot INTEGER, order_group INTEGER,
     rotation_id INTEGER, block_order TEXT, standing TEXT, gender TEXT, course_of_study TEXT, prior_falcon_use TEXT,
-    ranking TEXT, ranking_reason TEXT, started_utc TEXT, finished_utc TEXT,
+    ranking TEXT, ranking_reason TEXT, started_utc TEXT, finished_utc TEXT, gender_self_describe TEXT,
     PRIMARY KEY (participant_code, session_id));
 """
 
@@ -61,6 +61,8 @@ def _connect():
     for col, typ in (("source_open_at_fork", "TEXT"), ("focus_lost_s", "REAL")):
         if col not in have:
             con.execute(f"ALTER TABLE task_summary ADD COLUMN {col} {typ}")
+    if "gender_self_describe" not in {r[1] for r in con.execute("PRAGMA table_info(session)")}:
+        con.execute("ALTER TABLE session ADD COLUMN gender_self_describe TEXT")
     return con
 
 

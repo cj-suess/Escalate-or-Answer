@@ -461,7 +461,8 @@ const Study = (() => {
     try {
       await api("/api/session", { participant_code: pcode, session_id: session.id, participant_number: n, pilot: session.pilot ? 1 : 0,
         order_group: plan.order_group, rotation_id: plan.rotation_id, block_order: plan.block_order,
-        standing: $("standing").value || null, gender: $("gender").value || null, course_of_study: $("course").value.trim() || null,
+        standing: $("standing").value || null, gender: $("gender").value || null,
+        gender_self_describe: $("gender").value === "self-describe" ? $("genderSelf").value.trim() || null : null, course_of_study: $("course").value.trim() || null,
         prior_falcon_use: $("priorFalcon").value || null, started_utc: utc() });
     } catch (e) { console.warn("session row failed", e); }
     $("startSession").disabled = false;
@@ -479,6 +480,7 @@ const Study = (() => {
     $("accept").onclick = accept;
     $("reject").onclick = () => { log("reject"); showPicker(); };
     $("traceBox").addEventListener("click", (e) => { const c = e.target.closest(".src-chip"); if (c) openSource(c.dataset.src); });
+    $("gender").onchange = () => $("genderSelfWrap").classList.toggle("hidden", $("gender").value !== "self-describe");
     $("instrumentForm").onsubmit = submitInstruments;
     $("closingSubmit").onclick = submitClosing;
     $("showResults").onclick = () => { $("resultsBox").innerHTML = resultsHtml(); $("showResults").classList.add("hidden"); };
