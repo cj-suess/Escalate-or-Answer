@@ -1,0 +1,1521 @@
+{
+  "balance_check_over_1_to_12": "ok",
+  "note": "Three pilot participants run first and are excluded; give them numbers 13 to 15 (or any numbers) and start real participants at 1.",
+  "participants": [
+    {
+      "block_order": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "J1",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J1b"
+            },
+            {
+              "correct": false,
+              "pair_id": "R6",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R6a"
+            },
+            {
+              "correct": true,
+              "pair_id": "S5",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S5b"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "R9",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R9a"
+            },
+            {
+              "correct": false,
+              "pair_id": "S1",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S1a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J2",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J2b"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "S2",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S2a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J6",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J6b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R3",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R3b"
+            }
+          ]
+        }
+      ],
+      "order_group": 1,
+      "participant": 1,
+      "participant_code": "P01",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 0
+    },
+    {
+      "block_order": [
+        "S1",
+        "S3",
+        "S2"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "R6",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R6a"
+            },
+            {
+              "correct": true,
+              "pair_id": "S5",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S5b"
+            },
+            {
+              "correct": false,
+              "pair_id": "J1",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J1b"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "S1",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S1a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J2",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J2b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R9",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R9a"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "J6",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J6b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R3",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R3b"
+            },
+            {
+              "correct": true,
+              "pair_id": "S2",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S2a"
+            }
+          ]
+        }
+      ],
+      "order_group": 2,
+      "participant": 2,
+      "participant_code": "P02",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 0
+    },
+    {
+      "block_order": [
+        "S2",
+        "S1",
+        "S3"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "S5",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S5b"
+            },
+            {
+              "correct": false,
+              "pair_id": "J1",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J1b"
+            },
+            {
+              "correct": false,
+              "pair_id": "R6",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R6a"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "J2",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J2b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R9",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R9a"
+            },
+            {
+              "correct": false,
+              "pair_id": "S1",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S1a"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "R3",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R3b"
+            },
+            {
+              "correct": true,
+              "pair_id": "S2",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S2a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J6",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J6b"
+            }
+          ]
+        }
+      ],
+      "order_group": 3,
+      "participant": 3,
+      "participant_code": "P03",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 0
+    },
+    {
+      "block_order": [
+        "S2",
+        "S3",
+        "S1"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "J1",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J1b"
+            },
+            {
+              "correct": false,
+              "pair_id": "R6",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R6a"
+            },
+            {
+              "correct": true,
+              "pair_id": "S5",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S5b"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "R9",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R9a"
+            },
+            {
+              "correct": false,
+              "pair_id": "S1",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S1a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J2",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J2b"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "S2",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S2a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J6",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J6b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R3",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R3b"
+            }
+          ]
+        }
+      ],
+      "order_group": 4,
+      "participant": 4,
+      "participant_code": "P04",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 0
+    },
+    {
+      "block_order": [
+        "S3",
+        "S1",
+        "S2"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "R6",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R6a"
+            },
+            {
+              "correct": true,
+              "pair_id": "S5",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S5b"
+            },
+            {
+              "correct": false,
+              "pair_id": "J1",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J1b"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "S1",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S1a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J2",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J2b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R9",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R9a"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "J6",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J6b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R3",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R3b"
+            },
+            {
+              "correct": true,
+              "pair_id": "S2",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S2a"
+            }
+          ]
+        }
+      ],
+      "order_group": 5,
+      "participant": 5,
+      "participant_code": "P05",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 0
+    },
+    {
+      "block_order": [
+        "S3",
+        "S2",
+        "S1"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "S5",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S5b"
+            },
+            {
+              "correct": false,
+              "pair_id": "J1",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J1b"
+            },
+            {
+              "correct": false,
+              "pair_id": "R6",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R6a"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "J2",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J2b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R9",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R9a"
+            },
+            {
+              "correct": false,
+              "pair_id": "S1",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S1a"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "R3",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R3b"
+            },
+            {
+              "correct": true,
+              "pair_id": "S2",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S2a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J6",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J6b"
+            }
+          ]
+        }
+      ],
+      "order_group": 6,
+      "participant": 6,
+      "participant_code": "P06",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 0
+    },
+    {
+      "block_order": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "J1",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J1a"
+            },
+            {
+              "correct": true,
+              "pair_id": "R6",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R6b"
+            },
+            {
+              "correct": false,
+              "pair_id": "S5",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S5a"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "R9",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R9b"
+            },
+            {
+              "correct": true,
+              "pair_id": "S1",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S1b"
+            },
+            {
+              "correct": true,
+              "pair_id": "J2",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J2a"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "S2",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S2b"
+            },
+            {
+              "correct": true,
+              "pair_id": "J6",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J6a"
+            },
+            {
+              "correct": false,
+              "pair_id": "R3",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R3a"
+            }
+          ]
+        }
+      ],
+      "order_group": 1,
+      "participant": 7,
+      "participant_code": "P07",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 1
+    },
+    {
+      "block_order": [
+        "S1",
+        "S3",
+        "S2"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "R6",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R6b"
+            },
+            {
+              "correct": false,
+              "pair_id": "S5",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S5a"
+            },
+            {
+              "correct": true,
+              "pair_id": "J1",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J1a"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "S1",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S1b"
+            },
+            {
+              "correct": true,
+              "pair_id": "J2",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J2a"
+            },
+            {
+              "correct": false,
+              "pair_id": "R9",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R9b"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "J6",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J6a"
+            },
+            {
+              "correct": false,
+              "pair_id": "R3",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R3a"
+            },
+            {
+              "correct": false,
+              "pair_id": "S2",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S2b"
+            }
+          ]
+        }
+      ],
+      "order_group": 2,
+      "participant": 8,
+      "participant_code": "P08",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 1
+    },
+    {
+      "block_order": [
+        "S2",
+        "S1",
+        "S3"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "S5",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S5a"
+            },
+            {
+              "correct": true,
+              "pair_id": "J1",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J1a"
+            },
+            {
+              "correct": true,
+              "pair_id": "R6",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R6b"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "J2",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J2a"
+            },
+            {
+              "correct": false,
+              "pair_id": "R9",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R9b"
+            },
+            {
+              "correct": true,
+              "pair_id": "S1",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S1b"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "R3",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R3a"
+            },
+            {
+              "correct": false,
+              "pair_id": "S2",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S2b"
+            },
+            {
+              "correct": true,
+              "pair_id": "J6",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J6a"
+            }
+          ]
+        }
+      ],
+      "order_group": 3,
+      "participant": 9,
+      "participant_code": "P09",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 1
+    },
+    {
+      "block_order": [
+        "S2",
+        "S3",
+        "S1"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "J1",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J1a"
+            },
+            {
+              "correct": true,
+              "pair_id": "R6",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R6b"
+            },
+            {
+              "correct": false,
+              "pair_id": "S5",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S5a"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "R9",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R9b"
+            },
+            {
+              "correct": true,
+              "pair_id": "S1",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S1b"
+            },
+            {
+              "correct": true,
+              "pair_id": "J2",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J2a"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "S2",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S2b"
+            },
+            {
+              "correct": true,
+              "pair_id": "J6",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J6a"
+            },
+            {
+              "correct": false,
+              "pair_id": "R3",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R3a"
+            }
+          ]
+        }
+      ],
+      "order_group": 4,
+      "participant": 10,
+      "participant_code": "P10",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 1
+    },
+    {
+      "block_order": [
+        "S3",
+        "S1",
+        "S2"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "R6",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R6b"
+            },
+            {
+              "correct": false,
+              "pair_id": "S5",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S5a"
+            },
+            {
+              "correct": true,
+              "pair_id": "J1",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J1a"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "S1",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S1b"
+            },
+            {
+              "correct": true,
+              "pair_id": "J2",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J2a"
+            },
+            {
+              "correct": false,
+              "pair_id": "R9",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R9b"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "J6",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J6a"
+            },
+            {
+              "correct": false,
+              "pair_id": "R3",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R3a"
+            },
+            {
+              "correct": false,
+              "pair_id": "S2",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S2b"
+            }
+          ]
+        }
+      ],
+      "order_group": 5,
+      "participant": 11,
+      "participant_code": "P11",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 1
+    },
+    {
+      "block_order": [
+        "S3",
+        "S2",
+        "S1"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "S5",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S5a"
+            },
+            {
+              "correct": true,
+              "pair_id": "J1",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J1a"
+            },
+            {
+              "correct": true,
+              "pair_id": "R6",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R6b"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "J2",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J2a"
+            },
+            {
+              "correct": false,
+              "pair_id": "R9",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R9b"
+            },
+            {
+              "correct": true,
+              "pair_id": "S1",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S1b"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "R3",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R3a"
+            },
+            {
+              "correct": false,
+              "pair_id": "S2",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S2b"
+            },
+            {
+              "correct": true,
+              "pair_id": "J6",
+              "recommendation_correctness": "correct",
+              "set": "1",
+              "task_id": "J6a"
+            }
+          ]
+        }
+      ],
+      "order_group": 6,
+      "participant": 12,
+      "participant_code": "P12",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 1
+    },
+    {
+      "block_order": [
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "J1",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J1b"
+            },
+            {
+              "correct": false,
+              "pair_id": "R6",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R6a"
+            },
+            {
+              "correct": true,
+              "pair_id": "S5",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S5b"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "R9",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R9a"
+            },
+            {
+              "correct": false,
+              "pair_id": "S1",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S1a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J2",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J2b"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "S2",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S2a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J6",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J6b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R3",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R3b"
+            }
+          ]
+        }
+      ],
+      "order_group": 1,
+      "participant": 13,
+      "participant_code": "P13",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 0
+    },
+    {
+      "block_order": [
+        "S1",
+        "S3",
+        "S2"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "R6",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R6a"
+            },
+            {
+              "correct": true,
+              "pair_id": "S5",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S5b"
+            },
+            {
+              "correct": false,
+              "pair_id": "J1",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J1b"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "S1",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S1a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J2",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J2b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R9",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R9a"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "J6",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J6b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R3",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R3b"
+            },
+            {
+              "correct": true,
+              "pair_id": "S2",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S2a"
+            }
+          ]
+        }
+      ],
+      "order_group": 2,
+      "participant": 14,
+      "participant_code": "P14",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 0
+    },
+    {
+      "block_order": [
+        "S2",
+        "S1",
+        "S3"
+      ],
+      "blocks": [
+        {
+          "block_index": 1,
+          "form": "S2",
+          "form_name": "inline warning",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "S5",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S5b"
+            },
+            {
+              "correct": false,
+              "pair_id": "J1",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J1b"
+            },
+            {
+              "correct": false,
+              "pair_id": "R6",
+              "recommendation_correctness": "wrong",
+              "set": "2",
+              "task_id": "R6a"
+            }
+          ]
+        },
+        {
+          "block_index": 2,
+          "form": "S1",
+          "form_name": "modal stop",
+          "tasks": [
+            {
+              "correct": false,
+              "pair_id": "J2",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J2b"
+            },
+            {
+              "correct": true,
+              "pair_id": "R9",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R9a"
+            },
+            {
+              "correct": false,
+              "pair_id": "S1",
+              "recommendation_correctness": "wrong",
+              "set": "3",
+              "task_id": "S1a"
+            }
+          ]
+        },
+        {
+          "block_index": 3,
+          "form": "S3",
+          "form_name": "provenance-only",
+          "tasks": [
+            {
+              "correct": true,
+              "pair_id": "R3",
+              "recommendation_correctness": "correct",
+              "set": "2",
+              "task_id": "R3b"
+            },
+            {
+              "correct": true,
+              "pair_id": "S2",
+              "recommendation_correctness": "correct",
+              "set": "3",
+              "task_id": "S2a"
+            },
+            {
+              "correct": false,
+              "pair_id": "J6",
+              "recommendation_correctness": "wrong",
+              "set": "1",
+              "task_id": "J6b"
+            }
+          ]
+        }
+      ],
+      "order_group": 3,
+      "participant": 15,
+      "participant_code": "P15",
+      "practice": [
+        "P1",
+        "P2"
+      ],
+      "rotation_id": 0
+    }
+  ]
+}

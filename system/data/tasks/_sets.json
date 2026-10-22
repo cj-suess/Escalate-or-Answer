@@ -1,32 +1,53 @@
 {
   "1": {
     "assignment": "Fine-tune an image model on Falcon in stages.",
-    "name": "Job submission",
+    "forks": [
+      "J1",
+      "J2",
+      "J6"
+    ],
+    "name": "Jobs",
     "tasks": [
       "J1a",
       "J1b",
       "J2a",
-      "J2b"
+      "J2b",
+      "J6a",
+      "J6b"
     ]
   },
   "2": {
     "assignment": "Set up and run the course project from your laptop and the CS labs.",
+    "forks": [
+      "R3",
+      "R6",
+      "R9"
+    ],
     "name": "Access and remote connection",
     "tasks": [
       "R3a",
       "R3b",
       "R6a",
-      "R6b"
+      "R6b",
+      "R9a",
+      "R9b"
     ]
   },
   "3": {
     "assignment": "Prepare the data and software environment for the project.",
+    "forks": [
+      "S1",
+      "S2",
+      "S5"
+    ],
     "name": "Storage and software",
     "tasks": [
       "S1a",
       "S1b",
       "S2a",
-      "S2b"
+      "S2b",
+      "S5a",
+      "S5b"
     ]
   }
 }

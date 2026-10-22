@@ -1,0 +1,109 @@
+{
+  "contamination_probe": {
+    "blind": "nvidia-smi",
+    "blind_correct": false,
+    "gold": "sgpu",
+    "informed": "sgpu <your-jobid-here>",
+    "informed_correct": true,
+    "question": "On the Falcon cluster at Colorado State CS, which command shows the GPU memory usage of your running job?",
+    "survives": true
+  },
+  "deciding_fact": "whether you need to know if the job has started or how much GPU memory it is using",
+  "exclusivity": "hard both ways",
+  "fork_check": {
+    "fired_on_authored_fork": false,
+    "judge_yes": false,
+    "margin": 0.0484,
+    "margin_small": true,
+    "matched_options": 0,
+    "query_attempts": 3
+  },
+  "fork_line_index": 6,
+  "is_correct": false,
+  "item_id": "J5a",
+  "key": "squeue",
+  "key_logic": "squeue reports queue state (pending or running) but no GPU memory; sgpu reports the GPU memory usage of a running job but no queue state.",
+  "options": [
+    "squeue",
+    "sgpu <jobid>"
+  ],
+  "pair_id": "J5",
+  "question": "Which command tells you whether the run has started?",
+  "recommendation_correct": false,
+  "recommendation_correctness": "wrong",
+  "recommended_option": "sgpu <jobid>",
+  "scripted_query": "How do I check on my GPU job after I submit it?",
+  "selected": false,
+  "set": "1",
+  "source_a": {
+    "chunk_id": "p020-c03",
+    "heading": "Monitor GPU Usage",
+    "highlight": "you can monitor the GPU usage to check the memory usage of one or more GPUs in your job.",
+    "label": "A",
+    "page_text": "GPUs are available on the peregrine  and kestrel nodes through the `peregrine-gpu` and `kestrel-gpu` partitions.\nThere are three types of GPUs on these nodes:\n\nperegrine-gpu\n\n- Nvidia A100 80GB - 6 available\n\n- Nvidia A100 40GB - 4 available\n\nkestrel-gpu\n\n- Nvidia GeForce RTX 3090 24GB - 12 available\n\n#### How to use GPUs\n\nTo use GPUs in your SLURM job:\n\n-\n\nAdd an additional SBATCH statement: `#SBATCH --gres=gpu:<type>:<number_of_gpus>` to your job script.\n\n  - For A100 80GB, use\n\n```\n#SBATCH --gres=gpu:a100-sxm4-80gb:1\n```\n\n  - For A100 40GB, use\n\n```\n#SBATCH --gres=gpu:nvidia_a100_3g.40gb:1\n```\n\n  - For RTX 3090 24GB, use\n\n```\n#SBATCH --gres=gpu:3090:1\n```\n\n-\n\nSubmit to the `peregrine-gpu` partition for A100s or `kestrel-gpu` partition for the 3090s.\n\n-\n\nNote that the number at the end of the SBATCH statement is the quantity of GPUs. In the statements above, we have requested for 1 GPU.\n\nAdding the `--gres` option to a Slurm script for a CPU-only code WILL NOT magically speed-up your code.\n\nOnly software/code that has been explicitly written to run on GPUs can benefit from GPUs.\n\nRequesting a GPU for a CPU-only code will waste resources and might as well lower down the priority of your future jobs.\n\nThe GPU type must be specified in the SLURM script.\n\nIt is not possible to mix and match GPU types in a single job.\n\nDo not ask for multiple GPUs if your codes is only written to use a single GPU.\n\nDoing so will waste resources and might as well lower down the priority  of your future jobs.\n\n#### CPU-GPU ratio\n\nOn the peregrine nodes, the ratio of CPUs to GPUs is 6:1.\nSo, your job can request 6 CPU cores for 1 GPU.\n\n#### Monitor GPU Usage\n\nAfter you submit your GPU job via `sbatch` command, you can monitor the GPU usage to check the memory usage of one or more GPUs in your job.\nUse the following command to get GPU usage of your job:\n\n```\nsgpu <your-jobid-here>\n```\n\nThe above command runs within your job’s resource allocation. Though the resources required for this task are not too high, and should not impact your job performance, it is recommened to use this on an “as needed” basis, and not in a script which runs it in a loop.",
+    "path": "/hpc/samples/gpu-jobs/",
+    "title": "GPU Jobs",
+    "updated": "2022-09-02",
+    "url": "https://sna.cs.colostate.edu/hpc/samples/gpu-jobs/"
+  },
+  "source_b": {
+    "chunk_id": "p013-c02",
+    "heading": "squeue",
+    "highlight": "The command `squeue` provides an overview of jobs in the scheduling queue (state information, allocated resources, runtime, etc.).",
+    "label": "B",
+    "page_text": "#### Job Progress\n\nOnce you submit your job, it goes through several states. The most common states are PENDING, RUNNING, SUSPENDED, COMPLETING, and COMPLETED.\nBelow is a listing of all the states, with their short codes:\n\n```\nPD     Pending. Job is waiting for resource allocation\nR      Running. Job has an allocation and is running\nS      Suspended. Execution has been suspended and resources have been released for other jobs\nCA     Cancelled. Job was explicitly cancelled by the user or the system administrator\nCG     Completing. Job is in the process of completing. Some processes on some nodes may still be active\nCD     Completed. Job has terminated all processes on all nodes with an exit code of zero\nF      Failed. Job has terminated with non-zero exit code or other failure condition\n```\n\nSlurm provides commands which you can use to monitor your jobs. You can also use the Live Cluster Status web page for a quick glance at all jobs.\nAnd you can specify your email address within your job script to be alerted at specific job events, see the  Sample Job Scripts section for help configuring email alerts.\n\n#### Monitoring Commands\n\n##### squeue\n\nThe command `squeue` provides an overview of jobs in the scheduling queue (state information, allocated resources, runtime, etc.).\n\nSyntax\n\n```\nsqueue [options]\n```\n\nCommon options\n\n```\n--user=<user[,user[,...]]>          Request jobs from a comma separated list of users.\n--jobs=<job_id[,job_id[,...]]>      Request specific jobs to be displayed\n--partition=<part[,part[,...]]>     Request jobs to be displayed from a comma separated list of partitions\n--states=<state[,state[,...]]>      Display jobs in specific states. Comma separated list or \"all\". Default: \"PD,R,CG\"\n```\n\nThe default output format is as follows:\n\n```\nJOBID PARTITION NAME USER ST TIME NODES NODELIST(REASON)\n```\n\nwhere\n\n```\nJOBID              Job or step ID. For array jobs, the job ID format will be of the form <job_id>_<index>\nPARTITION          Partition of the job/step\nNAME               Name of the job/step\nUSER               Owner of the job/step\nST                 State of the job/step. See above for a description of the most common states\nTIME               Time used by the job/step. Format is days-hours:minutes:seconds\n                   (days,hours only printed as needed)\nNODES              Number of nodes allocated to the job or the minimum amount of nodes required\n                   by a pending job\nNODELIST(REASON)   For pending jobs: Reason why pending.\n\t\t   For failed jobs: Reason why failed.\n                   For all other job states: List of allocated nodes.\n```\n\nExamples\n\nList all currently running jobs of user foo:\n\n```\nsqueue --user=foo\n```\n\nList all currently running jobs of user foo in partition bar, in running state:\n\n```\nsqueue --user=foo --partition=bar --states=R\n```\n\n##### sfqueue\n\nThe `sfqueue` command provides the queue status including number of CPUs and GPUs used. The output is similar to that displayed on the live status webpage.\n\nExamples\n\n```\nsfqueue\n```\n\n##### sgpu\n\nTo see the GPU memory usage use the `sgpu` command:\n\n```\nsgpu <your-jobid-here>\n```\n\n##### scontrol\n\nThe `scontrol` command provides detailed information about jobs and job steps.\n\nSyntax\n\n```\nscontrol [options] [command]\n```\n\nExamples\n\nShow detailed information about job with ID 1536:\n\n```\nscontrol show jobid 1536\n```\n\nShow even more detailed information about job with ID 1396 (including the jobscript):\n\n```\nscontrol -dd show jobid 1396\n```\n\n##### sstat\n\nThe command `sstat` provides detailed usage information about running jobs.\n\nSyntax\n\n```\nsstat [options] -j <job(.stepid)>\n```\n\nExamples\n\nShow detailed information about job with ID 1536:\n\n```\nsstat -j 1536\n```\n\nShow even more detailed information about job with ID 1396:\n\n```\nsstat -v -j 1396\n```",
+    "path": "/hpc/job-handling/monitoring-jobs/",
+    "title": "Monitoring Jobs",
+    "updated": "2022-08-27",
+    "url": "https://sna.cs.colostate.edu/hpc/job-handling/monitoring-jobs/"
+  },
+  "spec_sheet_line": "You submitted the training run ten minutes ago and want to know whether it has started.",
+  "task_id": "J5a",
+  "trace": [
+    {
+      "delay_ms": 4884,
+      "index": 1,
+      "kind": "status",
+      "text": "Reading the question and planning steps…"
+    },
+    {
+      "delay_ms": 3743,
+      "index": 2,
+      "kind": "status",
+      "text": "Searching the CS systems documentation…"
+    },
+    {
+      "delay_ms": 3460,
+      "index": 3,
+      "kind": "source",
+      "source": "A",
+      "text": "Found Source A: GPU Jobs › Monitor GPU Usage"
+    },
+    {
+      "delay_ms": 3524,
+      "index": 4,
+      "kind": "source",
+      "source": "B",
+      "text": "Found Source B: Monitoring Jobs › squeue"
+    },
+    {
+      "delay_ms": 4424,
+      "index": 5,
+      "kind": "status",
+      "text": "Extracting the answer from the sources…"
+    },
+    {
+      "delay_ms": 4902,
+      "index": 6,
+      "kind": "fork",
+      "recommendation_text": "Source A suggests sgpu <jobid>.",
+      "text": "Use sgpu <jobid> (Source A)"
+    },
+    {
+      "delay_ms": 4407,
+      "index": 7,
+      "kind": "decision",
+      "text": "Decision: sgpu <jobid>. Filling the answer field."
+    }
+  ]
+}

@@ -1,6 +1,5 @@
 {
   "fork_line_index": null,
-  "form_tied_to": "none",
   "is_correct": true,
   "item_id": "P1",
   "key": "sbatch job.sh",

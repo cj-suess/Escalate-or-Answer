@@ -1,0 +1,520 @@
+\documentclass[9pt,letterpaper]{extarticle}
+\usepackage[margin=0.7in,top=0.65in,bottom=0.7in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{helvet}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{colortbl}
+\newcommand{\rowsep}{\noalign{\vskip 1.5pt}\arrayrulecolor{black!35}\hline\arrayrulecolor{black}\noalign{\vskip 1.5pt}}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{needspace}
+
+%% ---------------------------------------------------------------- palette
+\definecolor{accent}{HTML}{1F5F8B}   % deep blue
+\definecolor{accentlight}{HTML}{E8F0F7}
+\definecolor{warn}{HTML}{9A3B1C}     % rust
+\definecolor{warnlight}{HTML}{F8ECE6}
+\definecolor{keep}{HTML}{2E6B3A}     % green
+\definecolor{keeplight}{HTML}{E9F3EB}
+\definecolor{ink}{HTML}{222222}
+\definecolor{muted}{HTML}{666666}
+
+\color{ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+%% ---------------------------------------------------------------- headings
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+  {-10pt \@plus -2pt \@minus -1pt}{3pt}%
+  {\sffamily\bfseries\large\color{accent}}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+  {-8pt \@plus -2pt \@minus -1pt}{2pt}%
+  {\sffamily\bfseries\color{accent}}}
+\makeatother
+
+%% ---------------------------------------------------------------- boxes
+\newtcolorbox{callout}[2][]{enhanced, breakable, colback=accentlight, colframe=accent,
+  boxrule=0.6pt, arc=2pt, left=7pt, right=7pt, top=4pt, bottom=4pt,
+  fonttitle=\sffamily\bfseries, coltitle=white, colbacktitle=accent,
+  title={#2}, #1}
+\newtcolorbox{answerbox}[2][]{enhanced, breakable, colback=warnlight, colframe=warn,
+  boxrule=0.6pt, arc=2pt, left=7pt, right=7pt, top=4pt, bottom=4pt,
+  fonttitle=\sffamily\bfseries, coltitle=white, colbacktitle=warn,
+  title={#2}, #1}
+\newtcolorbox{keepbox}[2][]{enhanced, breakable, colback=keeplight, colframe=keep,
+  boxrule=0.6pt, arc=2pt, left=7pt, right=7pt, top=4pt, bottom=4pt,
+  fonttitle=\sffamily\bfseries, coltitle=white, colbacktitle=keep,
+  title={#2}, #1}
+
+%% What / Why / How table (longtable breaks across pages)
+\setlength{\LTpre}{4pt}
+\setlength{\LTpost}{2pt}
+\setlength{\arrayrulewidth}{0.3pt}
+
+\newcommand{\hd}[1]{\textbf{#1}}
+\let\oldsection\section
+\renewcommand{\section}{\needspace{7\baselineskip}\oldsection}
+\newcommand{\wwh}{\toprule
+\sffamily\bfseries\color{accent} What & \sffamily\bfseries\color{accent} Why & \sffamily\bfseries\color{accent} How \\
+\midrule}
+\newenvironment{wwhtable}{\footnotesize
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\linewidth}>{\raggedright\arraybackslash}p{0.355\linewidth}>{\raggedright\arraybackslash}p{0.355\linewidth}@{}}
+\wwh}{\bottomrule\end{longtable}}
+
+\begin{document}
+
+%% ---------------------------------------------------------------- title
+{\sffamily
+{\Large\bfseries\color{accent} What needs to change, why, and how}\\[3pt]
+{\large Checkpoint-2 memo for \emph{Escalate or Answer} (design v3)}\\[2pt]
+{\color{muted} For Coen Petto and Cameron Suess \,$\cdot$\, CS 567, Fall 2026 \,$\cdot$\, prepared 28 September 2026}
+}
+
+\vspace{4pt}
+\noindent{\color{accent}\rule{\linewidth}{1.2pt}}
+
+\begin{callout}{Bottom line}
+The instructor's verdict is right and the fix is smaller than it looks. Keep the
+interest (an agent that hands a decision back to a person), keep the
+within-subjects machinery, the replayed traces, the FictionalQA filter and the
+MiPP anchor, and drop what could not be run: the expert population, the
+learning post-test, the invented corpus, and the ``escalates vs.\ never
+escalates'' manipulation. What replaces them is Option~1: fix the escalation
+points, vary the \emph{form} of the escalation (modal stop, inline flag,
+provenance-only) within subjects, on a frozen snapshot of the CSU CS systems
+documentation, with students new to that system. The escalation points are
+\emph{context-dependent forks}: two pages give different answers, both correct
+for someone, and which applies depends on a fact about the participant that
+the assistant was never told. On each trial the assistant streams a short cited
+procedure and pre-fills a card of dropdowns; the participant may check the
+pages, then submits. Whether they checked, whether they kept or changed the
+agent's default when it was right and wrong, and what it cost are what is
+measured. The redesigned proposal is \texttt{new\_proposal.pdf} (about five
+pages including the mock-ups); this memo explains every change and what you
+still have to do by hand.
+\end{callout}
+
+\section{Framing and title}
+\begin{wwhtable}
+Retitle as a question, and fit the new fork type. &
+The old title asserted the result; the instructor's C1 asks for the question.
+``When its sources conflict'' no longer fits: both pages are right, for
+different users. &
+``Escalate or Answer: How Should an Agentic RAG Assistant Hand Back a Decision
+That Depends on the User?'' Keep ``agentic'' only while the four conditions in
+the answer box hold. \\
+\rowsep
+One study, one RQ. &
+Two experiments on two populations with two DVs doubled the work and
+neither was runnable. &
+RQ: when the assistant finds mid-task that the right answer depends on an
+unstated fact about the user and hands the choice back, how does the form of
+that hand-back affect verification, appropriate reliance and cost? \\
+\rowsep
+Author block without role labels; roles in one ``Team'' paragraph. &
+The rubric asks for the group name, members and what each person does; the
+instructor said role labels must not sit next to author names and that roles
+leave the PDF from checkpoint 3. &
+Two \verb|\author| lines with \verb|\email|, one affiliation. A three-line
+\textbf{Team} paragraph at the end of Deliverables (Coen: study design, web
+app, sessions; Cameron: pipeline, item authoring, corpus snapshot), marked
+\texttt{TODO authors: confirm roles}. Delete it at checkpoint 3. \\
+\rowsep
+Fix ``these three papers''. &
+No antecedent. &
+Gone; every ``this'' and ``these'' now has a noun after it. \\
+\end{wwhtable}
+
+\section{Why the ``newer page wins'' rule was dropped (new in v3)}
+\begin{wwhtable}
+Replace date conflicts with context-dependent forks. &
+Version 2 keyed every conflict on ``last updated'' dates. Coen identified the
+flaw and it is real: (1) a competent agent could resolve a date conflict
+itself, so escalating it is bad agent design and a reviewer would say ``fix
+the agent'' (MiPP and Mishra justify handing a decision to a human only when
+the system cannot resolve it); (2) it turned verification into a mechanical
+instruction-following task (compare two dates); (3) it did not fit the RQ,
+which is about when a human is actually needed. &
+Escalate only forks the documents cannot settle alone: two pages give
+different answers, each correct for someone, and which applies depends on a
+fact about the user the question does not state. Example: GPU Jobs lists RTX
+3090s (24\,GB) on \texttt{kestrel-gpu} and A100s (40/80\,GB) on
+\texttt{peregrine-gpu}; ``set up a GPU job for my PyTorch model'' does not say
+how much memory the model needs. \\
+\rowsep
+Split the task card: ``Your situation'' / ``What you asked''. &
+The deciding fact must exist for the participant but not for the assistant,
+and people ask short questions. &
+\emph{Your situation}: one or two lines only the participant sees (``your
+model needs about 30\,GB''). \emph{What you asked the assistant}: the short
+question, the only input the assistant receives. \\
+\rowsep
+Keys from page scope plus situation; no dates, no authority rule, no rule
+card. &
+The key must be derivable from the frozen snapshot alone (no time or money
+for administrator verification) and must not depend on a stated rule. &
+Each page states its own scope (memory per GPU; ``off campus, use the VPN'';
+``not backed up, scrubbed''). Key $=$ page scope $\times$ situation line.
+Default $=$ the higher-ranked retrieval option. Default-correct items reuse the
+same pages with a different situation line (a model that fits in 16\,GB). \\
+\rowsep
+Escalation names the options, not their conditions. &
+If the escalation said ``24\,GB vs.\ 80\,GB'', nobody would need to open a
+page and verification would be undefined. &
+``Two pages give different GPU options: kestrel-gpu (RTX 3090) or
+peregrine-gpu (A100). I'll use kestrel-gpu.'' Deciding requires opening a page
+and checking it against one's situation; in provenance-only, opening a page is
+the only way to notice at all. \\
+\rowsep
+Say why the agent does not ask up front. &
+A reviewer will ask why the agent does not collect the user's situation
+first. &
+One sentence: the agent cannot know which user facts matter until retrieval
+reveals the fork mid-task; hence mid-task escalation. \\
+\rowsep
+Sharpen the C5 tension. &
+MiPP's C5 says stay silent or downgrade when uncertain about the
+\emph{user's context}, which is exactly this case. &
+Stated in Related Work: here silence means quietly applying a default that is
+wrong for this user; provenance-only is C5 taken literally, and the study
+tests it. \\
+\end{wwhtable}
+
+\section{Citations and integrity}
+\begin{wwhtable}
+Rebuild every BibTeX entry from the publisher page. &
+Thirteen wrong first names, each keeping the correct initial, is the
+signature of a model expanding initials. The instructor treats it as an
+integrity issue. &
+\texttt{references.bib} was rebuilt against Crossref, IEEE Xplore, Springer,
+ACM camera-ready reference lines, ICLR proceedings and arXiv, and is unchanged
+in v3. \textbf{You must still open each publisher page and check it yourself
+before submitting.} \\
+\rowsep
+Cite published versions; drop non-references. &
+Chakraborti is HRI 2019; FictionalQA is ICLR 2026; MiPP and M\"ohle need LNCS
+16744, editors and DOIs. Course slides, the internal RAG guide, Sharma et al.\
+and Clegg et al.\ do not belong. &
+All fixed or removed. Mishra et al.\ stays arXiv-only because no published
+version exists as of 28 Sept 2026; the entry and the text say so. \\
+\rowsep
+Fill the fields the tools could not confirm. &
+Two ACM article numbers (Bansal CHI '21, Ravi \& Sindhgatta CHI EA '25) and
+the ICLR booktitle wording could not be fetched. &
+Search \texttt{TODO authors} in both files (four comments in the
+\texttt{.tex}, five in the \texttt{.bib}); add \texttt{articleno} from the
+ACM DL; confirm the Schemmer spelling (Crossref ``Kuehl'', ACM DL
+``K\"uhl''). \\
+\end{wwhtable}
+
+\section{Claims that overstated their sources}
+\begin{wwhtable}
+Mishra et al.\ ``non-escalating baseline'' and ``use ECE''. &
+They evaluate nothing; one-shot retrieval is a taxonomy class, and ECE is a
+\emph{proposed} criterion under an open challenge. &
+Cited only for the human-in-the-loop pattern (``request disambiguation'') and
+for proposed criteria; described as a survey available only as a preprint. \\
+\rowsep
+FictionalQA ``removes'' the pretraining confound. &
+It reduces it, for the model that ran the check, and says nothing about
+human prior knowledge. &
+Now ``reduces''; screening plus item selection plus logs handle participants'
+prior knowledge (someone who knows a 3090 has 24\,GB). \\
+\rowsep
+M\"ohle: ``fluency inflates trust independently of accuracy''. &
+Their convincingness main effect was non-significant; the finding is an
+interaction with \emph{stated} accuracy; actual accuracy was never varied. &
+Cited for the interaction and as the reason to log behavior; Bansal et al.\
+2021 carries the ``explanations raise acceptance regardless of correctness''
+claim. \\
+\rowsep
+Chakraborti ``supplies the procedure'' for calibration. &
+Their dataset had no incorrect plans. &
+Cited in one sentence as precedent that students given the ground truth can
+judge an agent's plans, with the caveat. \\
+\rowsep
+``MiPP has never been tested''. &
+MiPP ran a within-subjects $n{=}48$ study of its three forms. &
+Precise gap: MiPP compared bundled policy families on a system that is never
+wrong, so verification had no consequence and forms were not compared at fixed
+decision points. \\
+\end{wwhtable}
+
+\section{Study design}
+
+\textit{Note added 10 October 2026.} The paper draft (\texttt{Assets/paper/main.tex}) supersedes the design below on one point: task set is no longer tied to escalation form, nor arranged in a $3\times3$ Latin square of set and form. Each block holds three tasks, one from each set, so set is crossed with form; the pool holds nine forks, three per set, each in two twin versions, and the assignment of forks to forms and twins to participants rotates with the participant number (\texttt{system/escalate/rotation.py}). The target is $N=12$, two participants per block order, giving 108 measured tasks.
+
+\begin{wwhtable}
+Review-and-submit trial with a dropdown-only run card. &
+Reproducing a procedure is slow and hard to score; typed answers need
+adjudication; the earlier draft left the participant's task undefined. &
+Task card $\rightarrow$ assistant streams 3--4 cited steps (about 3\,s each)
+$\rightarrow$ run card of 3--4 \emph{dropdowns} (3--4 options each, drawn
+from the corpus) pre-selected with the assistant's choices $\rightarrow$ submit.
+60--90\,s per item; participants never type; scoring is automatic (scored
+field $=$ key); nothing is adjudicated. \\
+\rowsep
+Score one field, hide which one; do not ask ``is the assistant correct?''. &
+A card that asked only for the forked value, or a correctness question,
+would announce the fork in every condition and erase the manipulation;
+people act on output rather than grade it. &
+The scored field's options include both diverging options plus 1--2
+plausible alternatives; the other fields are correct, uncontested decoys.
+Control items cite two agreeing pages so two chips never signal a fork and
+give a baseline page-opening rate. \\
+\rowsep
+Define the forms by two properties, not by MiPP's families. &
+In the earlier draft the quiet form still had a ``sources differ'' badge. &
+Announced? Blocking? Modal: yes/yes (stream pauses, overlay, card disabled
+until a choice). Inline: yes/no (same sentence on the fork step, card
+pre-filled, ignorable). Provenance-only: no/no (plain step with two citation
+chips). Same steps, default, pages, controls and undo in all three. Figure~1
+of the proposal shows all three for item G1. \\
+\rowsep
+6 items per block; three hypotheses; trimmed measures. &
+21 items did not fit an hour; five hypotheses and a dozen measures at
+$N{=}12$--18 reads as fishing. &
+4 flagged (2 default-correct, 2 default-wrong) $+$ 2 control per block;
+2-item practice block; about 45 min. H1 verification, H2 appropriate reliance
+(form $\times$ default-correctness), H3 cost. Measures: verified, scored-field
+decision, time, raw TLX, one intrusion item, manipulation check, ranking with
+reason. Cut: need for cognition, other MiPP-Eval items, dwell thresholds. \\
+\rowsep
+Stay within subjects; handle carry-over explicitly. &
+Between subjects needs about three times the participants (4--6 per
+condition at class scale). &
+Each critical fact in one item only; task sets from disjoint sections; tell
+everyone up front the assistant can be wrong; all six orders; position
+covariate; first-block descriptive check. \\
+\rowsep
+Frozen JSON item records; written difficulty matching. &
+Participants must see identical content; the Latin square assumes
+exchangeable task sets. &
+Record $=$ situation, question, steps with citations, fork step index,
+options, default, card fields with options and pre-fill, scored field, key.
+Match sets on steps, card fields, question--page overlap band, fork type,
+fork position; pilot; item random effect. \\
+\rowsep
+Power in one sentence. &
+The power table cost a quarter page and said one thing. &
+``A paired $t$-test at $N{=}12$ detects only large participant-level effects
+($d_z \approx 0.9$), which is why trial-level models are primary; H2 power is
+simulated from the pilot.'' \\
+\end{wwhtable}
+
+\section{Corpus and contamination}
+\begin{wwhtable}
+Corpus: CSU CS systems documentation (SNA); sections still open;
+requirements fixed. &
+Which sections to use is undecided; the constraints on any choice are not. &
+Frozen snapshot; key derivable from snapshot $+$ situation line; snapshot and
+item records released together; 18 $+$ 2 items from three disjoint sections
+(e.g., GPU/jobs, access/remote connection, storage/software); a system many
+students have not used. \\
+\rowsep
+Ground the illustrative items in the real pages. &
+The instructor asked for a real corpus; the item table must not invent
+facts. &
+Table~1 of the proposal uses facts from the crawled pages (GPU Jobs,
+Partitions, Connecting to Falcon, SSH guide, Home Directories, Temporary Disk
+Space, FAQ, Monitoring Jobs). The pairings are labelled illustrative until
+the snapshot is frozen; re-check each one against the snapshot. \\
+\rowsep
+No authored older revisions, no dated pairs. &
+The date rule is gone, so no page needs to be written or back-dated. &
+Forks come from existing pages whose scopes differ; nothing is added to the
+corpus. Report how many forks the check found and how many survived the
+blind-vs-informed filter. \\
+\end{wwhtable}
+
+\section{Population and recruitment}
+\begin{wwhtable}
+Name the population and the route. &
+``Domain experts'' and ``new hires'' had no route. &
+CSU students with no prior use of the chosen system; screening item; class
+data-collection form; realistic pool is new graduate students and
+upper-division undergraduates. \\
+\rowsep
+IRB only if publishing, and early. &
+Recruitment cannot start before approval. &
+Talk to Ortega in the first two weeks of October; if going for IRB, file
+before the pilot. \\
+\end{wwhtable}
+
+\section{The agentic claim}
+\begin{answerbox}{Direct answer: does this need agentic RAG, and is extending MiPP necessary?}
+\textbf{Strictly, no, the question does not require an agentic system.} It
+requires a system-initiated, mid-task escalation with provenance and a
+fallible default; any RAG assistant with a fork detector that fires while
+producing a multi-step procedure satisfies that, and the outcomes are human
+behaviours that do not depend on the pipeline behind the trigger.
+
+\textbf{What ``agentic'' buys is a real decision point that a chatbot cannot
+produce.} A chatbot answers the question as asked. Only a loop that retrieves
+per step and inspects its own retrieval can discover mid-task that the answer
+depends on a fact the user did not state, and choose to hand the decision back.
+That is the course's ``if a chatbot can do it'' test, passed without agency
+being the IV, and it is stronger in v3 than in v2: escalating a date conflict
+was something the agent should have resolved itself, whereas escalating a
+context-dependent fork is the one case where handing back is correct. The word
+stays honest only while four things hold: the task is multi-step; the
+escalation is agent-initiated at the affected step; the trigger is the
+pipeline's own recorded decision (the fork check: retrieval-score margin plus
+an LLM judge asked whether the chunks give different answers depending on a
+user attribute the question does not state), not a hand-seeded flag; and the
+loop is described in one figure and one paragraph. If any fails, say ``a RAG
+assistant with system-initiated escalation.''
+
+\textbf{Extending MiPP is the frame, not the paper.} Use MiPP for three things
+only: the constraints held constant across forms (C1 brevity, C2 one-step undo,
+C3 provenance); the C5 tension that provenance-only tests; and the
+perceived-intrusion item for comparability. The forms are not MiPP's families
+and are not claimed to be. The theory for the DVs comes from the CHI/CSCW/IUI
+reliance literature (Bu\c{c}inca, Bansal, Vasconcelos, Schemmer) and McFarlane
+for interruption. Never write ``first test of MiPP''.
+\end{answerbox}
+
+\section{MiPP positioning}
+\begin{wwhtable}
+Do not map the forms onto MiPP's families. &
+MiPP's families differ in trigger and in action authority (direct alert acts
+then offers undo; confirmatory prompt asks first). Our modal asks first and our
+inline acts first, so a one-to-one mapping would be wrong. &
+One sentence: the forms are defined by announced/blocking; we take MiPP's
+constraints, not its taxonomy. \\
+\rowsep
+Verification anchored to the item, not the initiation. &
+MiPP's measure is undefined when nothing is announced, which is the
+provenance-only case. &
+``Verified'' $=$ opened a diverging page between item onset and submit, in
+every form. \\
+\rowsep
+McFarlane as interpretation only. &
+MiPP never maps its families onto McFarlane's methods. &
+One sentence, stated as the authors' reading: modal $\approx$ immediate,
+inline $\approx$ negotiated, provenance-only does not interrupt. \\
+\end{wwhtable}
+
+\section{Implementation}
+\begin{wwhtable}
+One web app, one condition flag. &
+The fork step must be the only thing that differs between blocks. &
+React or plain JavaScript in a desktop browser. Left: task card and run card;
+center: assistant pane with citation chips; right: source panel (page with
+the passage highlighted). Replay engine reads the JSON record. About two
+weeks. \\
+\rowsep
+Drafting pipeline, run offline. &
+The agentic claim needs the escalation to be the loop's own decision. &
+Python: chunk by heading, embed, retrieve top-$k$ per sub-step, fork check
+(margin $+$ LLM judge); only items where it fired become flagged items;
+report its hit rate. About one week. \\
+\rowsep
+State that behavior is pre-generated and replayed. &
+Participants never meet a live agent. That is the fixed-advice paradigm of
+the reliance studies and is legitimate, but only if disclosed, and only if
+the escalation decisions are the pipeline's own. &
+New paragraph in the Approach: pre-generated and replayed; local open-weight
+model at temperature 0 with a fixed seed; authors edit wording, never a
+decision or default; correctness set by the situation line; participants
+told responses were prepared in advance; scope excludes multi-turn
+interaction. Citations marked [verify] in red until checked. \\
+\rowsep
+Log everything as events. &
+Verification is the primary DV and must be logged, not self-reported. &
+Page opens and duration, control uses, dropdown changes, submitted card and its
+correctness, timestamps; SQLite, participant code only. \\
+\end{wwhtable}
+
+\section{Length, mock-ups and AI disclosure}
+\begin{wwhtable}
+Cut from eight pages to about five, including the mock-ups. &
+The rubric says about two pages excluding references and figure pages; you
+chose to target about five pages total with the required mock-ups, and v2's
+eight was too long. &
+Cut: the power table (one sentence instead), the design-at-a-glance table,
+the forms table (the figure now carries it), the long McFarlane and Ravi
+paragraphs, and repeated statements of the design. Related work is about one
+page and closes with the gap. Body is pages 1--5; references end on page 6. \\
+\rowsep
+Add the mock-ups the rubric requires. &
+System Vision must show a mockup; the three forms must be seen on the same
+item. &
+Figure~1: item G1 at the fork under all three forms, as TikZ wireframes (task
+card with the situation/asked split, dropdown run card, assistant pane with
+steps and chips; modal overlay / inline flag / plain citations). Figure~2: the
+drafting loop with the fork check. Table~1: five illustrative items including
+a default-correct and a control item. \\
+\rowsep
+Name each tool and what it did. &
+Instructor C2/C3: name tools; if a tool produced bib entries, say so and say
+you verified them. &
+Use of AI names Claude Code (Anthropic) running Claude Opus 5.5 with Claude
+Fable 5.1 subagents and lists: critique, MiPP reading, citation verification,
+drafting, TikZ mock-ups; states that the authors verify every reference and
+revise the text. Add any tool used on the original draft (there is a TODO). \\
+\end{wwhtable}
+
+\begin{keepbox}{What we keep from the original}
+\begin{itemize}[leftmargin=1.2em, itemsep=1pt]
+  \item \hd{The name and the interest.} ``Escalate or Answer'' and human
+  escalation in agentic RAG, now as a question.
+  \item \hd{Within-subjects, counterbalanced design} with paired analysis, now
+  three conditions in a $3\times3$ Latin square.
+  \item \hd{Cognitive load and accuracy as DVs.} NASA-TLX per block; the
+  scored field and the keep/change decision at each fork.
+  \item \hd{One interface shell, pre-generated and replayed responses,} now
+  described as records drafted by the deployed loop and frozen.
+  \item \hd{MiPP-shaped escalation} (brief, reversible, provenance): the
+  constraints held identical across forms.
+  \item \hd{The FictionalQA blind-vs-informed check}, as a stimulus filter on
+  real items.
+  \item \hd{Difficulty-matched task sets}, with the method written down.
+  \item \hd{Forced choice plus thematic coding}, as an end-of-session ranking
+  with a free-text reason.
+  \item \hd{The ``given the retrievals'' idea}, transformed: novices are given
+  the cited pages in a source panel, which is what lets them verify.
+\end{itemize}
+\end{keepbox}
+
+\section{Prioritized checklist for checkpoint 2}
+\begin{enumerate}[leftmargin=1.6em, itemsep=2pt, label=\sffamily\bfseries\color{accent}\arabic*.]
+  \item \hd{Verify all 13 references on the publisher pages}; fill the two
+  ACM article numbers and the ICLR booktitle; remove every
+  \texttt{TODO authors} comment once done. (Integrity item; do first.)
+  \item \hd{Read the new proposal end to end} and change anything that is not
+  your view. Confirm in particular: the title; the situation/asked split;
+  dropdown-only cards with automatic scoring; $N{=}18$ target / 12 minimum;
+  6 items per block; three hypotheses; the Team paragraph and roles.
+  \item \hd{Decide which SNA sections form the three task sets}, freeze the
+  snapshot, and check every illustrative pairing in Table~1 against it (R1
+  and S1 especially); relabel or replace any whose scope statement is not
+  on the page.
+  \item \hd{Talk to Ortega about IRB} in the first two weeks of October;
+  decide publish-or-not; if publishing, file before the pilot.
+  \item \hd{Build the drafting pipeline first}, run it over about 30
+  candidate questions, and record where the fork check fired; that record
+  is what makes ``agentic'' honest.
+  \item \hd{Run the blind-vs-informed filter} on every candidate item and
+  record the survivor count.
+  \item \hd{Assemble three task sets} with the written matching procedure;
+  pilot with 3--4 people; rebalance.
+  \item \hd{Build the web app}: condition flag, replay of the JSON records,
+  dropdown run card, source panel, event log. Test that page opens are logged
+  identically in all three forms.
+  \item \hd{Quote McFarlane (2002) from the paper} for the
+  negotiated-vs-immediate sentence, and confirm the Ravi \& Sindhgatta
+  participant count before adding it.
+  \item \hd{Add any other AI tools} used on the original draft to the Use-of-AI
+  section.
+\end{enumerate}
+
+\end{document}

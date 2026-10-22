@@ -3,85 +3,162 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Escalate or Answer · Playground</title>
+<title>Escalate or Answer · Study</title>
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <header class="top">
-  <div class="brand">Escalate or Answer <span>playground</span></div>
+  <div class="brand">Escalate or Answer <span id="brandSub">study</span></div>
   <nav class="tabs">
-    <button data-tab="study" class="on">Study task</button>
+    <button data-tab="study" class="on">Study</button>
     <button data-tab="agent">Agent (live)</button>
     <button data-tab="corpus">Corpus &amp; QA</button>
   </nav>
+  <span id="progress" class="progress muted"></span>
   <div id="status" class="status">checking…</div>
 </header>
 
-<!-- ============================================================ study (proposal v4) -->
+<!-- ============================================================ study -->
 <section id="tab-study" class="tab on">
-  <div class="expbar">
-    <span class="exp-label">Experimenter</span>
-    <label>Participant <input id="pcode" value="P00" size="5"></label>
-    <label>Form
-      <select id="form">
-        <option value="S1">S1 modal stop</option>
-        <option value="S2">S2 inline warning</option>
-        <option value="S3">S3 provenance-only</option>
-      </select>
-    </label>
-    <label>Task set <select id="setPick"></select></label>
-    <label>Order group
-      <select id="orderGroup">
-        <option value="1">1: S1 S2 S3</option><option value="2">2: S1 S3 S2</option>
-        <option value="3">3: S2 S1 S3</option><option value="4">4: S2 S3 S1</option>
-        <option value="5">5: S3 S1 S2</option><option value="6">6: S3 S2 S1</option>
-      </select>
-    </label>
-    <label>Pace
-      <select id="pace">
-        <option value="1">study pace (3–5 s per line)</option>
-        <option value="0.4">pilot (faster)</option>
-        <option value="0.1">debug (very fast)</option>
-      </select>
-    </label>
-    <button id="startBlock" class="primary">Start block</button>
-    <span id="progress" class="muted"></span>
-  </div>
 
-  <div class="study">
-    <aside class="lpane">
-      <div class="card sheet">
-        <h4>Spec sheet</h4>
-        <div id="sheetTitle" class="sheet-title">Start a block to see the assignment.</div>
-        <ul id="sheetLines"></ul>
+  <!-- entry: participant number in, everything else assigned -->
+  <div id="screen-entry" class="screen">
+    <div class="card entry-card">
+      <h3>Session setup</h3>
+      <div class="entry-grid">
+        <label>Participant number <input id="pnum" type="number" min="1" step="1" value="" placeholder="e.g. 7"></label>
+        <label class="check"><input id="pilot" type="checkbox"> pilot participant (excluded from analysis)</label>
+        <label>Standing
+          <select id="standing"><option value="">—</option><option>undergraduate</option><option>graduate</option><option>other</option></select>
+        </label>
+        <label>Gender
+          <select id="gender"><option value="">—</option><option>woman</option><option>man</option><option>non-binary</option><option>prefer not to say</option><option>self-describe</option></select>
+        </label>
+        <label>Course of study <input id="course" placeholder="e.g. CS BS, 3rd year"></label>
+        <label>Used the Falcon cluster before?
+          <select id="priorFalcon"><option value="">—</option><option value="no">no</option><option value="yes">yes</option></select>
+        </label>
       </div>
-      <div class="card taskcard">
-        <h4 id="taskNo">Task</h4>
-        <p id="taskQ" class="taskq muted">—</p>
-        <h4>Answer</h4>
-        <div id="answer" class="answer empty">&nbsp;</div>
+      <div id="assignPreview" class="muted small"></div>
+      <details class="expdetails">
+        <summary class="exp-label">Experimenter options</summary>
         <div class="row">
-          <button id="accept" class="primary" disabled>Accept</button>
-          <button id="reject" disabled>Reject</button>
+          <label>Pace
+            <select id="pace">
+              <option value="1">study pace (3–5 s per line)</option>
+              <option value="0.4">pilot (faster)</option>
+              <option value="0.1">debug (very fast)</option>
+            </select>
+          </label>
+          <label>Start at
+            <select id="startAt">
+              <option value="practice">practice (normal)</option>
+              <option value="1">block 1 (skip practice)</option>
+              <option value="2">block 2 (resume)</option>
+              <option value="3">block 3 (resume)</option>
+            </select>
+          </label>
+          <a class="muted small" href="/api/worksheet?n=15" target="_blank">worksheet (participants 1–15)</a>
         </div>
-        <div id="picker" class="picker hidden"></div>
-        <div id="taskMsg" class="muted small"></div>
+      </details>
+      <div class="row">
+        <button id="startSession" class="primary">Start session</button>
+        <span id="entryMsg" class="muted small"></span>
       </div>
-    </aside>
-
-    <main class="rpane">
-      <h4>Assistant</h4>
-      <div class="querybox">
-        <div><span class="muted small">Your query</span><div id="qtext" class="qtext">—</div></div>
-        <button id="send" class="primary" disabled>Send</button>
-      </div>
-      <div id="traceBox" class="trace-lines"></div>
-      <div id="forkModal" class="fork-modal hidden"></div>
-      <div id="srcOverlay" class="src-overlay hidden"></div>
-    </main>
+    </div>
   </div>
 
-  <div id="blockSummary"></div>
+  <!-- task screen: spec sheet + task card left, assistant right -->
+  <div id="screen-task" class="screen hidden">
+    <div class="study">
+      <aside class="lpane">
+        <div class="card sheet">
+          <h4>Spec sheet</h4>
+          <div id="sheetTitle" class="sheet-title"></div>
+          <ul id="sheetLines"></ul>
+        </div>
+        <div class="card taskcard">
+          <h4 id="taskNo">Task</h4>
+          <p id="taskQ" class="taskq muted">—</p>
+          <h4>Answer</h4>
+          <div id="answer" class="answer empty">&nbsp;</div>
+          <div class="row">
+            <button id="accept" class="primary" disabled>Accept</button>
+            <button id="reject" disabled>Reject</button>
+          </div>
+          <div id="picker" class="picker hidden"></div>
+          <div id="taskMsg" class="muted small"></div>
+        </div>
+      </aside>
+      <main class="rpane">
+        <h4>Assistant</h4>
+        <div class="querybox">
+          <div><span class="muted small">Your query</span><div id="qtext" class="qtext">—</div></div>
+          <button id="send" class="primary" disabled>Send</button>
+        </div>
+        <div id="traceBox" class="trace-lines"></div>
+        <div id="forkModal" class="fork-modal hidden"></div>
+        <div id="srcOverlay" class="src-overlay hidden"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- between blocks: a short pause screen, then the instruments -->
+  <div id="screen-break" class="screen hidden">
+    <div class="card entry-card">
+      <h3 id="breakTitle">Block complete</h3>
+      <p id="breakText" class="muted"></p>
+      <button id="breakNext" class="primary">Continue</button>
+    </div>
+  </div>
+
+  <div id="screen-instrument" class="screen hidden">
+    <div class="card entry-card wide">
+      <h3>About the block you just finished</h3>
+      <p class="muted small">Please answer every item. Click the box that best matches your experience.</p>
+      <form id="instrumentForm">
+        <h4>Workload (NASA-TLX)</h4>
+        <div id="tlxBox"></div>
+        <h4>Interruption</h4>
+        <div class="item">
+          <div class="item-q">How intrusive was the assistant's interruption?</div>
+          <div class="scale7" id="intrusionBox"></div>
+        </div>
+        <h4>In this block</h4>
+        <div class="item">
+          <div class="item-q">When the sources disagreed, what did the assistant do?</div>
+          <div class="manip" id="manipBox"></div>
+        </div>
+        <div class="row">
+          <button id="instrumentSubmit" class="primary" type="submit">Submit</button>
+          <span id="instrumentMsg" class="muted small"></span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="screen-closing" class="screen hidden">
+    <div class="card entry-card wide">
+      <h3>Last questions</h3>
+      <p>You met the assistant in three versions, one per block. Please rank them from the one you would most like to work with (1) to the one you would least like to work with (3).</p>
+      <div id="rankBox" class="rankbox"></div>
+      <label class="stack">Why did you rank them this way?<textarea id="rankReason" rows="4"></textarea></label>
+      <div class="row">
+        <button id="closingSubmit" class="primary">Finish</button>
+        <span id="closingMsg" class="muted small"></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-done" class="screen hidden">
+    <div class="card entry-card wide">
+      <h3>Thank you</h3>
+      <p>The session is complete. Please tell the experimenter.</p>
+      <button id="showResults" class="exp-btn">Experimenter: show session results</button>
+      <button id="newSession" class="exp-btn">Experimenter: new session</button>
+      <div id="resultsBox"></div>
+    </div>
+  </div>
 </section>
 
 <!-- ============================================================ agent (live) -->

@@ -1,0 +1,8 @@
+{
+  "cover_story": "You are doing a course project on the CS systems: fine-tuning an image model on the Falcon cluster, working from the CS labs and from home, and managing the project's data and software. Each block's spec sheet gives the facts about your situation that the tasks in that block depend on.",
+  "set_labels": {
+    "1": "Jobs",
+    "2": "Access and remote connection",
+    "3": "Storage and software"
+  }
+}

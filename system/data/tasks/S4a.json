@@ -19,7 +19,6 @@
     "query_attempts": 1
   },
   "fork_line_index": 6,
-  "form_tied_to": "S3",
   "is_correct": true,
   "item_id": "S4a",
   "key": "module load ide/visual-studio-code, then run code",
