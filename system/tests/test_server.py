@@ -147,6 +147,31 @@ class IdempotencyTest(DbTest):
         self.assertEqual(self.query("SELECT COUNT(*) FROM events"), [(2,)])
 
 
+class HistoryTest(DbTest):
+    def test_history_empty_for_unknown_code(self):
+        self.assertEqual(server.session_history("P99"), [])
+
+    def test_history_reports_progress(self):
+        server.upsert_session(SESSION_START)
+        server.log_events([{**EV, "seq": n} for n in range(1, 6)])
+        server.log_events([], {**SUMMARY, "item_id": "R6b"})
+        server.log_events([], SUMMARY)
+        server.log_instruments(INSTRUMENTS)
+        [h] = server.session_history("P07")
+        self.assertEqual(h["session_id"], "P07-1")
+        self.assertEqual(h["pilot"], 0)
+        self.assertEqual(h["started_utc"], "2026-10-27T12:00:00Z")
+        self.assertIsNone(h["finished_utc"])
+        self.assertEqual(h["max_seq"], 5)
+        self.assertEqual(h["tasks_done"], ["J1a", "R6b"])
+        self.assertEqual(h["blocks_done"], [1])
+
+    def test_history_only_this_participant(self):
+        server.upsert_session({**SESSION_START, "participant_code": "P08", "session_id": "P08-1"})
+        self.assertEqual(server.session_history("P07"), [])
+        self.assertEqual(server.session_history("P08")[0]["max_seq"], 0)
+
+
 class HttpTest(DbTest):
     def setUp(self):
         super().setUp()
@@ -172,6 +197,17 @@ class HttpTest(DbTest):
         status, body = self.request("/api/events", {"events": [{**EV, "bogus": 1}]})
         self.assertEqual(status, 400)
         self.assertIn("bogus", body["error"])
+
+    def test_http_history_requires_code(self):
+        status, body = self.request("/api/session")
+        self.assertEqual(status, 400)
+        self.assertIn("participant_code is required", body["error"])
+
+    def test_http_history_returns_sessions(self):
+        server.upsert_session(SESSION_START)
+        status, body = self.request("/api/session?participant_code=P07")
+        self.assertEqual(status, 200)
+        self.assertEqual([s["session_id"] for s in body["sessions"]], ["P07-1"])
 
 
 if __name__ == "__main__":

@@ -144,6 +144,21 @@ def upsert_session(row):
             _insert(con, "session", SESSION_COLS, row)
 
 
+def session_history(participant_code):
+    with _db() as con:
+        rows = con.execute("SELECT session_id, pilot, started_utc, finished_utc FROM session WHERE participant_code=? "
+                           "ORDER BY started_utc", (participant_code,)).fetchall()
+        out = []
+        for sid, pilot, started, finished in rows:
+            max_seq = con.execute("SELECT COALESCE(MAX(seq), 0) FROM events WHERE session_id=?", (sid,)).fetchone()[0]
+            tasks = [r[0] for r in con.execute("SELECT item_id FROM task_summary WHERE session_id=? ORDER BY item_id", (sid,))]
+            blocks = [r[0] for r in con.execute(
+                "SELECT block_index FROM block_instruments WHERE session_id=? ORDER BY block_index", (sid,))]
+            out.append({"session_id": sid, "pilot": pilot, "started_utc": started, "finished_utc": finished,
+                        "max_seq": max_seq, "tasks_done": tasks, "blocks_done": blocks})
+    return out
+
+
 _agent_lock = threading.Lock()  # one model call stream at a time keeps outputs deterministic
 _state = {}
 
@@ -228,6 +243,10 @@ class Handler(BaseHTTPRequestHandler):
                 recs, sets, _ = _tasks()
                 n = rotation.participant_number(q.get("participant", ""))
                 return self._send(200, rotation.resolve(rotation.plan(n, sets), recs))
+            if url.path == "/api/session":
+                if not q.get("participant_code"):
+                    raise ValueError("participant_code is required")
+                return self._send(200, {"sessions": session_history(q["participant_code"])})
             if url.path == "/api/worksheet":
                 recs, sets, _ = _tasks()
                 return self._send(200, rotation.worksheet(sets, recs, int(q.get("n", 15))))
