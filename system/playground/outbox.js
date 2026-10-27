@@ -6,7 +6,10 @@ function memoryStore() {
   };
 }
 
-function localStore(key, storage = globalThis.localStorage) {
+function localStore(key, storage) {
+  if (storage === undefined) {
+    try { storage = globalThis.localStorage; } catch { storage = null; }
+  }
   const mem = memoryStore();
   return {
     load() {
@@ -81,4 +84,11 @@ function createOutbox({ send, store, retryDelaysMs = [1000, 2000, 5000, 10000], 
   return { enqueue, flush, status, stop, rejected: () => rejected.slice() };
 }
 
-if (typeof module === "object") module.exports = { createOutbox, localStore, memoryStore };
+function saveStateText({ pending, rejected }) {
+  const parts = [];
+  if (pending) parts.push(`${pending} write(s) not saved yet, retrying. Keep this window open.`);
+  if (rejected) parts.push(`${rejected} write(s) rejected by the server; see the console.`);
+  return parts.join(" ");
+}
+
+if (typeof module === "object") module.exports = { createOutbox, localStore, memoryStore, saveStateText };

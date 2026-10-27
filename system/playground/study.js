@@ -48,23 +48,22 @@ const Study = (() => {
   function setProgress(text) { $("progress").textContent = text; }
 
   const outbox = createOutbox({ send: api, store: localStore("eoa-outbox"), onChange: showSaveState });
-  let saveTimer = null, reportedRejected = 0;
+  let saveTimer = null, pendingShown = false, reportedRejected = 0;
   function renderSaveState() {
     const { pending, rejected } = outbox.status();
-    $("saveState").textContent = rejected ? `${rejected} write(s) rejected by the server; see the console.`
-      : pending ? `${pending} write(s) not saved yet, retrying. Keep this window open.` : "";
-    $("saveState").classList.toggle("warn", !!(pending || rejected));
+    if (!pending) pendingShown = false;
+    const text = saveStateText({ pending: pendingShown ? pending : 0, rejected });
+    $("saveState").textContent = text;
+    $("saveState").classList.toggle("warn", !!text);
   }
   function showSaveState({ pending, rejected }) {
     if (rejected > reportedRejected) {
       console.error("writes rejected by the server", outbox.rejected().slice(reportedRejected));
       reportedRejected = rejected;
     }
-    if (pending && !rejected) {
-      if (!saveTimer) saveTimer = setTimeout(() => { saveTimer = null; renderSaveState(); }, 1500);
-      return;
+    if (pending && !pendingShown && !saveTimer) {
+      saveTimer = setTimeout(() => { saveTimer = null; pendingShown = outbox.status().pending > 0; renderSaveState(); }, 1500);
     }
-    clearTimeout(saveTimer); saveTimer = null;
     renderSaveState();
   }
 
@@ -524,7 +523,7 @@ const Study = (() => {
   // ---------------------------------------------------------------- wiring
   async function init() {
     outbox.flush();
-    renderSaveState();
+    showSaveState(outbox.status());
     DATA = await api("/api/tasks");
     DATA.study = DATA.study || {};
     $("pnum").oninput = previewAssignment;

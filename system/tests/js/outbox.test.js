@@ -3,7 +3,7 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
-const { createOutbox, localStore, memoryStore } = require("../../playground/outbox.js");
+const { createOutbox, localStore, memoryStore, saveStateText } = require("../../playground/outbox.js");
 
 const httpError = (status) => Object.assign(new Error(`HTTP ${status}`), { status });
 const netError = () => new Error("Failed to fetch");
@@ -94,6 +94,27 @@ test("localStore falls back to memory when storage throws", async () => {
   const ob = createOutbox({ send: srv.send, store: localStore("eoa-outbox", storage), retryDelaysMs: [5] });
   assert.equal(await ob.enqueue("/api/events", { n: 1 }), true);
   assert.equal(await createOutbox({ send: srv.send, store: localStore("eoa-outbox", undefined) }).enqueue("/x", {}), true);
+});
+
+test("localStore falls back to memory when reading localStorage itself throws", async () => {
+  const had = Object.getOwnPropertyDescriptor(globalThis, "localStorage");
+  Object.defineProperty(globalThis, "localStorage", { configurable: true, get() { throw new Error("SecurityError: Access is denied"); } });
+  try {
+    const srv = fakeServer();
+    const ob = createOutbox({ send: srv.send, store: localStore("eoa-outbox"), retryDelaysMs: [5] });
+    assert.equal(await ob.enqueue("/api/events", { n: 1 }), true);
+  } finally {
+    if (had) Object.defineProperty(globalThis, "localStorage", had);
+    else delete globalThis.localStorage;
+  }
+});
+
+test("saveStateText shows pending and rejected together", () => {
+  assert.equal(saveStateText({ pending: 0, rejected: 0 }), "");
+  assert.equal(saveStateText({ pending: 2, rejected: 0 }), "2 write(s) not saved yet, retrying. Keep this window open.");
+  assert.equal(saveStateText({ pending: 0, rejected: 1 }), "1 write(s) rejected by the server; see the console.");
+  assert.equal(saveStateText({ pending: 3, rejected: 1 }),
+    "3 write(s) not saved yet, retrying. Keep this window open. 1 write(s) rejected by the server; see the console.");
 });
 
 test("onChange reports pending and rejected counts", async () => {
