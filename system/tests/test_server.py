@@ -13,7 +13,7 @@ from escalate import server
 
 EV = {"participant_code": "P07", "session_id": "P07-1", "block_order_group": 2, "block_index": 1, "form": "S1",
       "timestamp_utc": "2026-10-27T12:00:00Z", "source_open_duration_s": None, "item_id": "J1a",
-      "recommendation_correctness": "correct", "event_type": "send", "event_detail": None, "t_ms": 120}
+      "recommendation_correctness": "correct", "event_type": "send", "event_detail": None, "t_ms": 120, "seq": 1}
 SUMMARY = {"participant_code": "P07", "session_id": "P07-1", "block_order_group": 2, "block_index": 1, "form": "S1",
            "item_id": "J1a", "recommendation_correctness": "correct", "final_value": "gpu_short", "accuracy": 1,
            "followed": 1, "verified": 1, "source_pattern": "both", "dwell_a_s": 3.5, "dwell_b_s": 4.0, "opens_a": 1,
@@ -118,6 +118,33 @@ class PayloadTest(DbTest):
         self.assertEqual(self.query("SELECT COUNT(*) FROM block_instruments"), [(1,)])
         self.assertEqual(self.query("SELECT gender_self_describe, finished_utc FROM session"),
                          [("agender", "2026-10-27T12:40:00Z")])
+
+
+class IdempotencyTest(DbTest):
+    def test_event_twice_stores_one_row(self):
+        self.assertEqual(server.log_events([EV]), 1)
+        self.assertEqual(server.log_events([EV]), 0)
+        self.assertEqual(self.query("SELECT COUNT(*) FROM events"), [(1,)])
+
+    def test_summary_twice_stores_one_row(self):
+        server.log_events([], SUMMARY)
+        server.log_events([], SUMMARY)
+        self.assertEqual(self.query("SELECT COUNT(*) FROM task_summary"), [(1,)])
+
+    def test_instruments_twice_stores_one_row(self):
+        server.log_instruments(INSTRUMENTS)
+        server.log_instruments(INSTRUMENTS)
+        self.assertEqual(self.query("SELECT COUNT(*) FROM block_instruments"), [(1,)])
+
+    def test_event_without_seq_rejected(self):
+        ev = dict(EV)
+        del ev["seq"]
+        with self.assertRaises(server.PayloadError):
+            server.log_events([ev])
+
+    def test_same_seq_other_session_is_kept(self):
+        server.log_events([EV, {**EV, "session_id": "P07-2"}])
+        self.assertEqual(self.query("SELECT COUNT(*) FROM events"), [(2,)])
 
 
 class HttpTest(DbTest):

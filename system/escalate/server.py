@@ -22,7 +22,7 @@ TABLES = {
     "events": (
         ("participant_code", "TEXT"), ("session_id", "TEXT"), ("block_order_group", "INTEGER"), ("block_index", "INTEGER"),
         ("form", "TEXT"), ("item_id", "TEXT"), ("recommendation_correctness", "TEXT"), ("event_type", "TEXT"),
-        ("event_detail", "TEXT"), ("t_ms", "INTEGER"), ("timestamp_utc", "TEXT"), ("source_open_duration_s", "REAL")),
+        ("event_detail", "TEXT"), ("t_ms", "INTEGER"), ("timestamp_utc", "TEXT"), ("source_open_duration_s", "REAL"), ("seq", "INTEGER")),
     "task_summary": (
         ("participant_code", "TEXT"), ("session_id", "TEXT"), ("block_order_group", "INTEGER"), ("block_index", "INTEGER"),
         ("form", "TEXT"), ("item_id", "TEXT"), ("recommendation_correctness", "TEXT"), ("final_value", "TEXT"),
@@ -41,6 +41,8 @@ TABLES = {
         ("ranking", "TEXT"), ("ranking_reason", "TEXT"), ("started_utc", "TEXT"), ("finished_utc", "TEXT")),
 }
 PRIMARY_KEYS = {"session": ("participant_code", "session_id")}
+UNIQUE_KEYS = {"events": ("session_id", "seq"), "task_summary": ("session_id", "item_id"),
+               "block_instruments": ("session_id", "block_index")}
 EVENT_COLS, SUMMARY_COLS, INSTRUMENT_COLS, SESSION_COLS = (
     tuple(c for c, _ in TABLES[t]) for t in ("events", "task_summary", "block_instruments", "session"))
 
@@ -65,6 +67,8 @@ def _connect():
         for col, typ in cols:
             if col not in have:
                 con.execute(f"ALTER TABLE {table} ADD COLUMN {col} {typ}")
+    for table, cols in UNIQUE_KEYS.items():
+        con.execute(f"CREATE UNIQUE INDEX IF NOT EXISTS {table}_{'_'.join(cols)} ON {table} ({', '.join(cols)})")
     return con
 
 
@@ -91,7 +95,7 @@ def _db():
 
 
 def _insert(con, table, cols, row):
-    con.execute(f"INSERT INTO {table} ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})",
+    con.execute(f"INSERT OR IGNORE INTO {table} ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})",
                 tuple(row.get(c) for c in cols))
 
 
@@ -103,14 +107,17 @@ def log_events(events, summary=None):
     source_open_duration_s on source_close)."""
     for e in events:
         _check(e, EVENT_COLS, "event")
+        if type(e.get("seq")) is not int:
+            raise PayloadError("event: seq must be an integer")
     if summary:
         _check(summary, SUMMARY_COLS, "summary")
     with _db() as con:
-        con.executemany(f"INSERT INTO events ({','.join(EVENT_COLS)}) VALUES ({','.join('?' * len(EVENT_COLS))})",
-                        [tuple(e.get(c) for c in EVENT_COLS) for e in events])
+        before = con.total_changes
+        for e in events:
+            _insert(con, "events", EVENT_COLS, e)
         if summary:
             _insert(con, "task_summary", SUMMARY_COLS, summary)
-    return len(events)
+        return con.total_changes - before
 
 
 def log_instruments(row):
