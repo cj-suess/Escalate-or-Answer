@@ -47,19 +47,40 @@ const Study = (() => {
   }
   function setProgress(text) { $("progress").textContent = text; }
 
+  const outbox = createOutbox({ send: api, store: localStore("eoa-outbox"), onChange: showSaveState });
+  let saveTimer = null, reportedRejected = 0;
+  function renderSaveState() {
+    const { pending, rejected } = outbox.status();
+    $("saveState").textContent = rejected ? `${rejected} write(s) rejected by the server; see the console.`
+      : pending ? `${pending} write(s) not saved yet, retrying. Keep this window open.` : "";
+    $("saveState").classList.toggle("warn", !!(pending || rejected));
+  }
+  function showSaveState({ pending, rejected }) {
+    if (rejected > reportedRejected) {
+      console.error("writes rejected by the server", outbox.rejected().slice(reportedRejected));
+      reportedRejected = rejected;
+    }
+    if (pending && !rejected) {
+      if (!saveTimer) saveTimer = setTimeout(() => { saveTimer = null; renderSaveState(); }, 1500);
+      return;
+    }
+    clearTimeout(saveTimer); saveTimer = null;
+    renderSaveState();
+  }
+
   function log(type, detail = null, extra = {}) {
     if (!block) return;
     const base = { participant_code: session.pcode, session_id: session.id, block_order_group: session.plan.order_group,
-      block_index: block.index, form: block.form, timestamp_utc: utc(), source_open_duration_s: null };
+      block_index: block.index, form: block.form, timestamp_utc: utc(), source_open_duration_s: null, seq: ++session.seq };
     if (!task) {   // block-level event (block_start, block_end)
       const ev = { ...base, item_id: null, recommendation_correctness: null, event_type: type,
         event_detail: detail == null ? null : String(detail), t_ms: null, ...extra };
-      api("/api/events", { events: [ev] }).catch(() => {});
+      outbox.enqueue("/api/events", { events: [ev] });
       return ev;
     }
     const ev = { ...base, item_id: task.rec.task_id, recommendation_correctness: task.rec.recommendation_correctness,
       event_type: type, event_detail: detail == null ? null : String(detail), t_ms: Math.round(now() - task.t0), ...extra };
-    task.events.push(ev);
+    outbox.enqueue("/api/events", { events: [ev] });
     return ev;
   }
 
@@ -257,8 +278,9 @@ const Study = (() => {
       source_open_at_fork: task.sourceOpenAtFork, focus_lost_s: +task.focusLost.toFixed(2),
     };
     session.results.push(summary);
-    try { await api("/api/events", { events: task.events, summary }); } catch (e) { console.warn("log failed", e); }
-    $("taskMsg").textContent = "Saved. Next task in a moment…";
+    const saved = await outbox.enqueue("/api/events", { events: [], summary });
+    $("taskMsg").textContent = saved ? "Saved. Next task in a moment…"
+      : "Not saved yet: the app keeps retrying. Keep this window open. Next task in a moment…";
     await sleep(1500 * Math.max(session.pace, 0.2));
     nextTask();
   }
@@ -289,7 +311,7 @@ const Study = (() => {
     block.i += 1;
     if (block.i >= block.order.length) return endBlock();
     const rec = DATA.tasks[block.order[block.i]];
-    task = { rec, t0: now(), events: [], opens: { A: 0, B: 0 }, dwell: { A: 0, B: 0 }, open: null, value: null, forkT: null,
+    task = { rec, t0: now(), opens: { A: 0, B: 0 }, dwell: { A: 0, B: 0 }, open: null, value: null, forkT: null,
       sourceOpenAtFork: null, focusLost: 0, focusLostAt: null };
     const label = block.practice ? "Practice" : `Block ${block.index} of 3`;
     setProgress(`${session.pcode} · ${label} · task ${block.i + 1} of ${block.order.length}`);
@@ -363,9 +385,7 @@ const Study = (() => {
       intrusion: val("intrusion"), manip_response: f.get("manip"), manip_correct: f.get("manip") === block.form ? 1 : 0,
       timestamp_utc: utc() };
     session.instruments.push(row);
-    $("instrumentSubmit").disabled = true;
-    try { await api("/api/instruments", row); } catch (err) { console.warn("instrument log failed", err); }
-    $("instrumentSubmit").disabled = false;
+    outbox.enqueue("/api/instruments", row);
     const next = block.index + 1;
     if (next <= 3) {
       $("breakTitle").textContent = `Block ${block.index} complete`;
@@ -398,11 +418,7 @@ const Study = (() => {
     const reason = $("rankReason").value.trim();
     if (!reason) { $("closingMsg").textContent = "Please write a short reason."; return; }
     session.ranking = ranking; session.reason = reason;
-    $("closingSubmit").disabled = true;
-    try {
-      await api("/api/session", { participant_code: session.pcode, session_id: session.id, ranking, ranking_reason: reason, finished_utc: utc() });
-    } catch (err) { console.warn("session log failed", err); }
-    $("closingSubmit").disabled = false;
+    outbox.enqueue("/api/session", { participant_code: session.pcode, session_id: session.id, ranking, ranking_reason: reason, finished_utc: utc() });
     block = null; task = null;
     setProgress(`${session.pcode} · done`);
     $("resultsBox").innerHTML = "";
@@ -462,15 +478,13 @@ const Study = (() => {
     catch (e) { $("entryMsg").textContent = `Cannot build the plan: ${e.message}`; $("startSession").disabled = screenedOut(); return; }
     const pcode = `P${String(n).padStart(2, "0")}`;
     session = { n, pcode, pilot: $("pilot").checked, id: `${pcode}-${Date.now()}`, plan, pace: +$("pace").value,
-      results: [], instruments: [], autosend: session?.autosend || false };
+      results: [], instruments: [], seq: 0, autosend: session?.autosend || false };
     const startAt = $("startAt").value;
-    try {
-      await api("/api/session", { participant_code: pcode, session_id: session.id, participant_number: n, pilot: session.pilot ? 1 : 0,
+    outbox.enqueue("/api/session", { participant_code: pcode, session_id: session.id, participant_number: n, pilot: session.pilot ? 1 : 0,
         order_group: plan.order_group, rotation_id: plan.rotation_id, block_order: plan.block_order,
         standing: $("standing").value || null, gender: $("gender").value || null,
         gender_self_describe: $("gender").value === "self-describe" ? $("genderSelf").value.trim() || null : null, course_of_study: $("course").value.trim() || null,
         prior_falcon_use: $("priorFalcon").value || null, started_utc: utc() });
-    } catch (e) { console.warn("session row failed", e); }
     $("startSession").disabled = screenedOut();
     if (startAt === "practice") startBlock({ block_index: 0, form: "practice", tasks: plan.practice.map((id) => ({ task_id: id })) });
     else runBlock(+startAt);
@@ -478,6 +492,8 @@ const Study = (() => {
 
   // ---------------------------------------------------------------- wiring
   async function init() {
+    outbox.flush();
+    renderSaveState();
     DATA = await api("/api/tasks");
     DATA.study = DATA.study || {};
     $("pnum").oninput = previewAssignment;
