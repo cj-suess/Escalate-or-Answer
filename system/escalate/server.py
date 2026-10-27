@@ -68,6 +68,22 @@ def _connect():
     return con
 
 
+class PayloadError(ValueError):
+    pass
+
+
+def _check(row, cols, what):
+    if not isinstance(row, dict):
+        raise PayloadError(f"{what}: expected an object")
+    extra = set(row) - set(cols)
+    if extra:
+        raise PayloadError(f"{what}: unknown keys: {', '.join(sorted(extra))}")
+    for k in ("participant_code", "session_id"):
+        if not row.get(k):
+            raise PayloadError(f"{what}: {k} is required")
+    return row
+
+
 @contextlib.contextmanager
 def _db():
     with _db_lock, contextlib.closing(_connect()) as con, con:
@@ -85,6 +101,10 @@ def log_events(events, summary=None):
     Event columns follow the runbook schema (participant_code, block_index, form,
     item_id, recommendation_correctness, event_type, event_detail, timestamp, and
     source_open_duration_s on source_close)."""
+    for e in events:
+        _check(e, EVENT_COLS, "event")
+    if summary:
+        _check(summary, SUMMARY_COLS, "summary")
     with _db() as con:
         con.executemany(f"INSERT INTO events ({','.join(EVENT_COLS)}) VALUES ({','.join('?' * len(EVENT_COLS))})",
                         [tuple(e.get(c) for c in EVENT_COLS) for e in events])
@@ -95,13 +115,14 @@ def log_events(events, summary=None):
 
 def log_instruments(row):
     """One row per block: raw NASA-TLX, the intrusion item and the manipulation check (paper, Measures)."""
+    _check(row, INSTRUMENT_COLS, "instruments")
     with _db() as con:
         _insert(con, "block_instruments", INSTRUMENT_COLS, row)
 
 
 def upsert_session(row):
     """Session row: written at the start (demographics, assignment) and completed at the end (ranking)."""
-    row = dict(row)
+    row = dict(_check(row, SESSION_COLS, "session"))
     for k in ("ranking", "block_order"):
         if isinstance(row.get(k), (list, dict)):
             row[k] = json.dumps(row[k], ensure_ascii=False)
@@ -226,6 +247,9 @@ class Handler(BaseHTTPRequestHandler):
                     rec = agent.run(body["question"].strip(), (body.get("situation") or "").strip() or None)
                 return self._send(200, rec)
             if url.path == "/api/events":
+                extra = set(body) - {"events", "summary"}
+                if extra:
+                    raise PayloadError(f"events body: unknown keys: {', '.join(sorted(extra))}")
                 n = log_events(body.get("events", []), body.get("summary"))
                 return self._send(200, {"logged": n})
             if url.path == "/api/instruments":
@@ -241,6 +265,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(404, {"error": "not found"})
         except llm.OllamaError as e:
             return self._send(503, {"error": str(e)})
+        except ValueError as e:
+            return self._send(400, {"error": str(e)})
         except Exception as e:
             traceback.print_exc()
             return self._send(500, {"error": str(e)})
