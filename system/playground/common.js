@@ -6,9 +6,11 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 async function api(path, body) {
   const opt = body ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {};
   const r = await fetch(path, opt);
-  const j = await r.json();
-  if (!r.ok) throw new Error(j.error || r.statusText);
-  return j;
+  if (!r.ok) {
+    const j = await r.json().catch(() => ({}));
+    throw Object.assign(new Error(j.error || r.statusText), { status: r.status });
+  }
+  return r.json();
 }
 
 // Render the snapshot's light Markdown (headings, pipe tables, code fences, lists) as HTML,
