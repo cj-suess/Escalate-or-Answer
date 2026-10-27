@@ -15,7 +15,7 @@ These changes were agreed by the authors and are described in the paper's Method
 | 8 Regression test | Built | `REGRESSION_2026-10-10.md`: worksheet balance, byte-identical rebuild, API, full browser session for P07, dwell pausing, screenshots, static checks all pass. Open item: confirm the dwell pause once in a real (non-headless) browser before the pilot |
 | 9 Gender self-describe text box | Built | `playground/index.html` (`genderSelf`, shown only for "self-describe"), `study.js`, `server.py` (`session.gender_self_describe`, added in place) |
 | 10 Block start on prior Falcon use | Built | `playground/study.js` (`screenedOut`, `onScreening`; "Start session" stays disabled while prior Falcon use is "yes") |
-| 11 Session data integrity | To build | `playground/study.js`, `common.js`, `escalate/server.py`: retry and warn on failed writes, stream task events, resume without duplicates, duplicate participant warning, strict payloads |
+| 11 Session data integrity | Built | `playground/study.js`, `common.js`, `outbox.js` (retrying outbox, header warning), `resume.js` (new / resume / duplicate), `escalate/server.py` (column registry, strict payloads, event `seq` and unique indexes, `GET /api/session`); tests in `tests/` |
 
 
 ## 1. Cross task set with escalation form
@@ -190,6 +190,8 @@ Files: `playground/index.html`, `playground/study.js`, `escalate/server.py`.
 Files: `playground/study.js`.
 
 ## 11. Session data integrity (database review, 22 October 2026)
+
+**Done.** Built as described below (27 October 2026). Still to do by hand: set aside `data/sessions/events.sqlite` before the first real session.
 
 **Now.** The schema and the client payloads agree, each task's events and summary row are written in one transaction, `data/sessions/` is git-ignored and the server listens on `127.0.0.1` only. The weak points are failed writes and restarted sessions:
 

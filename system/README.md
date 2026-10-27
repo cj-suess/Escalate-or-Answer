@@ -48,6 +48,8 @@ second. A new question calls the local model.
 | `python -m escalate all [--force]` | `crawl` + `rebuild` |
 | `python -m escalate ask "question" ["situation"]` | Run the agent once and print the record |
 | `python -m escalate serve [port]` | Start the playground |
+| `python -m unittest discover -s tests -t . -v` | Server storage tests (schema, strict payloads, idempotent writes, session history) |
+| `node --test tests/js/*.test.js` | Playground tests (write outbox, resume decision) |
 
 ## The study view (paper, Apparatus and Procedure)
 
@@ -63,7 +65,15 @@ Every event is written to `data/sessions/events.sqlite`, which is git-ignored be
 - `events`: every interaction (Send, line onsets, fork onset, modal pick, source open and close with duration, source scroll position, focus lost and gained, Reject, picker choice, Accept)
 - `task_summary`: one row per task with the final value and whether it is correct, whether the participant followed the recommendation, whether a source was viewed for at least 3 s of summed dwell (raw opens and dwell are logged too), which sources were opened, dwell on Source A and B, whether a source was open at fork onset, decision time (fork onset to Accept), total time, and time with the window unfocused
 - `block_instruments`: the TLX subscales, the intrusion item and the manipulation-check answer per block
-- `session`: participant number, pilot flag, order group, rotation, block order, standing, gender, course of study, prior Falcon use, the final ranking and its reason
+- `session`: participant number, pilot flag, order group, rotation, block order, standing, gender (and the self-description), course of study, prior Falcon use, the final ranking and its reason
+
+Writes cannot be lost or duplicated silently:
+- every write goes through an outbox kept in the browser's `localStorage` (`eoa-outbox`) and is retried until the server confirms it; while anything is unsaved the header shows a warning, and Accept says "Not saved yet" instead of "Saved."; anything left after a crash or reload is sent when the page next loads
+- events are sent as they happen, each with a per-session `seq`; the server ignores a repeated `(session_id, seq)`, a second `task_summary` row for the same `(session_id, item_id)` and a second `block_instruments` row for the same `(session_id, block_index)`, so a retry never adds a row
+- a payload with a key the server does not know is rejected with 400 (and shown in the header as rejected) instead of being stored as NULL
+- "Start at block N" resumes the latest unfinished session for that participant number and pilot flag: it reuses the `session_id`, skips tasks and questionnaires already stored, and logs a `session_resume` event; starting a number that already has a session otherwise needs the "start a new session for this number anyway" box ticked (deep link `dupok=1`). Pilot and real sessions with the same number do not count against each other
+
+Dedupe rule for analysis: `task_summary` and `block_instruments` hold at most one row per task and per block of a session. A task interrupted by a crash leaves partial events, and the task is run again after the resume; for each `(session_id, item_id)` use only the events with `seq` greater than that item's last `task_start`.
 
 The dwell clock pauses while the browser window is unfocused or the tab hidden. The experimenter options (behind a disclosure on the entry screen) set the pace (study, pilot or debug) and let a crashed session resume at a given block. Deep links work for testing, e.g. `#p=7&pace=0.1&autostart=1&autosend=1` runs participant 7's whole session at debug pace with every answer accepted as filled. `python -m escalate worksheet` prints the assignment for participants 1–15 and checks its balance; `python -m escalate matching` writes per-task matching statistics; `python -m escalate catalog` regenerates `Assets/checkpoint2/task_catalog.md`, which lists all candidate forks and their fate.
 
