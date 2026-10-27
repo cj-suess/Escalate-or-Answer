@@ -297,6 +297,7 @@ const Study = (() => {
     block = { index: b.block_index, form: b.form, order: b.tasks.map((t) => t.task_id), i: -1, practice: b.form === "practice" };
     task = null;
     log("block_start", block.practice ? "practice" : `${block.form} tasks ${block.order.join(",")}`);
+    if (session.resumedAt != null) { log("session_resume", `block ${session.resumedAt}`); session.resumedAt = null; }
     const recs = block.order.map((id) => DATA.tasks[id]);
     $("sheetTitle").textContent = block.practice ? "Practice: two warm-up tasks." : DATA.study.cover_story || "";
     // one line per task, labelled with its context, in set order (not task order)
@@ -308,7 +309,7 @@ const Study = (() => {
   }
 
   function nextTask() {
-    block.i += 1;
+    do block.i += 1; while (block.i < block.order.length && session.done.has(block.order[block.i]));
     if (block.i >= block.order.length) return endBlock();
     const rec = DATA.tasks[block.order[block.i]];
     task = { rec, t0: now(), opens: { A: 0, B: 0 }, dwell: { A: 0, B: 0 }, open: null, value: null, forkT: null,
@@ -339,6 +340,7 @@ const Study = (() => {
       if (session.autosend) $("breakNext").click();
       return;
     }
+    if (session.blocksDone.has(block.index)) return afterInstruments();
     showInstruments();
   }
 
@@ -386,6 +388,9 @@ const Study = (() => {
       timestamp_utc: utc() };
     session.instruments.push(row);
     outbox.enqueue("/api/instruments", row);
+    afterInstruments();
+  }
+  function afterInstruments() {
     const next = block.index + 1;
     if (next <= 3) {
       $("breakTitle").textContent = `Block ${block.index} complete`;
@@ -455,37 +460,63 @@ const Study = (() => {
   }
 
   // ---------------------------------------------------------------- session start
+  let entryHistory = [], previewToken = 0;
+  const pcodeOf = (n) => `P${String(n).padStart(2, "0")}`;
+  const fetchHistory = async (pcode) => (await api(`/api/session?participant_code=${pcode}`)).sessions;
   async function previewAssignment() {
-    const n = +$("pnum").value;
-    if (!n) { $("assignPreview").textContent = ""; return; }
+    const n = +$("pnum").value, my = ++previewToken;
+    entryHistory = [];
+    if (!n) { $("assignPreview").textContent = ""; updateStart(); return; }
     try {
       const p = await api(`/api/plan?participant=${n}`);
+      const history = await fetchHistory(pcodeOf(n));
+      if (my !== previewToken) return;
+      entryHistory = history;
       $("assignPreview").textContent = `Assigned: order group ${p.order_group} (${p.block_order.join(" → ")}), rotation ${p.rotation_id}.`;
-    } catch (e) { $("assignPreview").textContent = `Cannot assign: ${e.message}`; }
+    } catch (e) { if (my === previewToken) $("assignPreview").textContent = `Cannot assign: ${e.message}`; }
+    updateStart();
   }
   const screenedOut = () => $("priorFalcon").value === "yes";   // prior Falcon use rules a participant out (paper, Participants)
-  function onScreening() {
-    $("startSession").disabled = screenedOut();
-    $("entryMsg").textContent = screenedOut() ? "Prior use of the Falcon cluster: this person cannot take part." : "";
+  const entryDecision = () => decideStart(entryHistory, { startAt: $("startAt").value, pilot: $("pilot").checked });
+  function updateStart() {
+    const d = entryDecision(), dup = d.mode === "duplicate";
+    $("dupOkWrap").classList.toggle("hidden", !dup);
+    $("resumeNote").textContent = d.mode === "resume"
+      ? `Resumes session ${d.session.session_id}: ${d.session.tasks_done.length} tasks done.` : "";
+    $("entryMsg").textContent = screenedOut() ? "Prior use of the Falcon cluster: this person cannot take part."
+      : dup ? `${pcodeOf(+$("pnum").value)} already has a session (started ${d.session.started_utc}). Tick the box to start a new session anyway.` : "";
+    $("startSession").disabled = screenedOut() || (dup && !$("dupOk").checked);
   }
   async function startSession() {
     if (screenedOut()) return;
     const n = +$("pnum").value;
     if (!n || n < 1) { $("entryMsg").textContent = "Enter the participant number."; return; }
     $("startSession").disabled = true; $("entryMsg").textContent = "";
+    const pcode = pcodeOf(n), startAt = $("startAt").value, pilot = $("pilot").checked;
     let plan;
-    try { plan = await api(`/api/plan?participant=${n}`); }
-    catch (e) { $("entryMsg").textContent = `Cannot build the plan: ${e.message}`; $("startSession").disabled = screenedOut(); return; }
-    const pcode = `P${String(n).padStart(2, "0")}`;
-    session = { n, pcode, pilot: $("pilot").checked, id: `${pcode}-${Date.now()}`, plan, pace: +$("pace").value,
-      results: [], instruments: [], seq: 0, autosend: session?.autosend || false };
-    const startAt = $("startAt").value;
-    outbox.enqueue("/api/session", { participant_code: pcode, session_id: session.id, participant_number: n, pilot: session.pilot ? 1 : 0,
+    try {
+      plan = await api(`/api/plan?participant=${n}`);
+      await outbox.flush();
+      entryHistory = await fetchHistory(pcode);
+    } catch (e) { updateStart(); $("entryMsg").textContent = `Cannot start: ${e.message}`; return; }
+    if (outbox.status().pending) {
+      updateStart();
+      $("entryMsg").textContent = "Writes from the last session are not saved yet. Check that the server is running, then try again.";
+      return;
+    }
+    const d = decideStart(entryHistory, { startAt, pilot });
+    if (d.mode === "duplicate" && !$("dupOk").checked) { updateStart(); return; }
+    const resume = d.mode === "resume" ? d.session : null;
+    session = { n, pcode, pilot, id: resume ? resume.session_id : `${pcode}-${Date.now()}`, plan, pace: +$("pace").value,
+      results: [], instruments: [], seq: resume ? resume.max_seq : 0, done: new Set(resume ? resume.tasks_done : []),
+      blocksDone: new Set(resume ? resume.blocks_done : []), resumedAt: resume ? startAt : null,
+      autosend: session?.autosend || false };
+    if (!resume) outbox.enqueue("/api/session", { participant_code: pcode, session_id: session.id, participant_number: n, pilot: session.pilot ? 1 : 0,
         order_group: plan.order_group, rotation_id: plan.rotation_id, block_order: plan.block_order,
         standing: $("standing").value || null, gender: $("gender").value || null,
         gender_self_describe: $("gender").value === "self-describe" ? $("genderSelf").value.trim() || null : null, course_of_study: $("course").value.trim() || null,
         prior_falcon_use: $("priorFalcon").value || null, started_utc: utc() });
-    $("startSession").disabled = screenedOut();
+    updateStart();
     if (startAt === "practice") startBlock({ block_index: 0, form: "practice", tasks: plan.practice.map((id) => ({ task_id: id })) });
     else runBlock(+startAt);
   }
@@ -498,7 +529,10 @@ const Study = (() => {
     DATA.study = DATA.study || {};
     $("pnum").oninput = previewAssignment;
     $("startSession").onclick = startSession;
-    $("priorFalcon").onchange = onScreening;
+    $("priorFalcon").onchange = updateStart;
+    $("startAt").onchange = updateStart;
+    $("pilot").onchange = updateStart;
+    $("dupOk").onchange = updateStart;
     $("send").onclick = () => { $("send").disabled = true; log("send"); playTrace(token); };
     $("accept").onclick = accept;
     $("reject").onclick = () => { log("reject"); showPicker(); };
@@ -507,13 +541,14 @@ const Study = (() => {
     $("instrumentForm").onsubmit = submitInstruments;
     $("closingSubmit").onclick = submitClosing;
     $("showResults").onclick = () => { $("resultsBox").innerHTML = resultsHtml(); $("showResults").classList.add("hidden"); };
-    $("newSession").onclick = () => { session = null; block = null; task = null; setProgress(""); $("pnum").value = ""; $("assignPreview").textContent = ""; show("screen-entry"); };
+    $("newSession").onclick = () => { session = null; block = null; task = null; setProgress(""); $("pnum").value = ""; $("assignPreview").textContent = ""; $("dupOk").checked = false; entryHistory = []; updateStart(); show("screen-entry"); };
     // deep link for testing: #p=7&pace=0.1&start=2&autostart=1&autosend=1&pilot=1
     const h = new URLSearchParams(location.hash.slice(1));
     if (h.get("p")) { $("pnum").value = h.get("p"); previewAssignment(); }
     if (h.get("pace")) $("pace").value = h.get("pace");
     if (h.get("start")) $("startAt").value = h.get("start");
     if (h.get("pilot")) $("pilot").checked = true;
+    if (h.get("dupok")) $("dupOk").checked = true;
     if (h.get("autostart")) { session = { autosend: !!h.get("autosend") }; startSession(); }
     if (h.get("opensrc")) {   // debugging aid: open a source as soon as its chip exists
       const t = setInterval(() => { if (document.querySelector(`.src-chip[data-src="${h.get("opensrc")}"]`)) { clearInterval(t); openSource(h.get("opensrc")); } }, 100);
