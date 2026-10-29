@@ -1,4 +1,5 @@
 """Playground server (standard library only): JSON API + static front end."""
+import contextlib
 import json
 import mimetypes
 import sqlite3
@@ -17,57 +18,84 @@ TASKS_DIR = ROOT / "data" / "tasks"
 SESSIONS_DB = ROOT / "data" / "sessions" / "events.sqlite"
 _db_lock = threading.Lock()
 
-EVENT_COLS = ("participant_code", "session_id", "block_order_group", "block_index", "form", "item_id",
-              "recommendation_correctness", "event_type", "event_detail", "t_ms", "timestamp_utc", "source_open_duration_s")
-SUMMARY_COLS = ("participant_code", "session_id", "block_order_group", "block_index", "form", "item_id",
-                "recommendation_correctness", "final_value", "accuracy", "followed", "verified", "source_pattern",
-                "dwell_a_s", "dwell_b_s", "opens_a", "opens_b", "decision_time_s", "total_time_s",
-                "source_open_at_fork", "focus_lost_s")
-INSTRUMENT_COLS = ("participant_code", "session_id", "block_index", "form", "tlx_mental", "tlx_physical", "tlx_temporal",
-                   "tlx_performance", "tlx_effort", "tlx_frustration", "intrusion", "manip_response", "manip_correct",
-                   "timestamp_utc")
-SESSION_COLS = ("participant_code", "session_id", "participant_number", "pilot", "order_group", "rotation_id",
-                "block_order", "standing", "gender", "gender_self_describe", "course_of_study", "prior_falcon_use", "ranking", "ranking_reason",
-                "started_utc", "finished_utc")
+TABLES = {
+    "events": (
+        ("participant_code", "TEXT"), ("session_id", "TEXT"), ("block_order_group", "INTEGER"), ("block_index", "INTEGER"),
+        ("form", "TEXT"), ("item_id", "TEXT"), ("recommendation_correctness", "TEXT"), ("event_type", "TEXT"),
+        ("event_detail", "TEXT"), ("t_ms", "INTEGER"), ("timestamp_utc", "TEXT"), ("source_open_duration_s", "REAL"), ("seq", "INTEGER")),
+    "task_summary": (
+        ("participant_code", "TEXT"), ("session_id", "TEXT"), ("block_order_group", "INTEGER"), ("block_index", "INTEGER"),
+        ("form", "TEXT"), ("item_id", "TEXT"), ("recommendation_correctness", "TEXT"), ("final_value", "TEXT"),
+        ("accuracy", "INTEGER"), ("followed", "INTEGER"), ("verified", "INTEGER"), ("source_pattern", "TEXT"),
+        ("dwell_a_s", "REAL"), ("dwell_b_s", "REAL"), ("opens_a", "INTEGER"), ("opens_b", "INTEGER"),
+        ("decision_time_s", "REAL"), ("total_time_s", "REAL"), ("source_open_at_fork", "TEXT"), ("focus_lost_s", "REAL")),
+    "block_instruments": (
+        ("participant_code", "TEXT"), ("session_id", "TEXT"), ("block_index", "INTEGER"), ("form", "TEXT"),
+        ("tlx_mental", "INTEGER"), ("tlx_physical", "INTEGER"), ("tlx_temporal", "INTEGER"), ("tlx_performance", "INTEGER"),
+        ("tlx_effort", "INTEGER"), ("tlx_frustration", "INTEGER"), ("intrusion", "INTEGER"), ("manip_response", "TEXT"),
+        ("manip_correct", "INTEGER"), ("timestamp_utc", "TEXT")),
+    "session": (
+        ("participant_code", "TEXT"), ("session_id", "TEXT"), ("participant_number", "INTEGER"), ("pilot", "INTEGER"),
+        ("order_group", "INTEGER"), ("rotation_id", "INTEGER"), ("block_order", "TEXT"), ("standing", "TEXT"),
+        ("gender", "TEXT"), ("gender_self_describe", "TEXT"), ("course_of_study", "TEXT"), ("prior_falcon_use", "TEXT"),
+        ("ranking", "TEXT"), ("ranking_reason", "TEXT"), ("started_utc", "TEXT"), ("finished_utc", "TEXT")),
+}
+PRIMARY_KEYS = {"session": ("participant_code", "session_id")}
+UNIQUE_KEYS = {"events": ("session_id", "seq"), "task_summary": ("session_id", "item_id"),
+               "block_instruments": ("session_id", "block_index")}
+EVENT_COLS, SUMMARY_COLS, INSTRUMENT_COLS, SESSION_COLS = (
+    tuple(c for c, _ in TABLES[t]) for t in ("events", "task_summary", "block_instruments", "session"))
 
-SCHEMA = f"""
-CREATE TABLE IF NOT EXISTS events (
-    participant_code TEXT, session_id TEXT, block_order_group INTEGER, block_index INTEGER, form TEXT, item_id TEXT,
-    recommendation_correctness TEXT, event_type TEXT, event_detail TEXT, t_ms INTEGER,
-    timestamp_utc TEXT, source_open_duration_s REAL);
-CREATE TABLE IF NOT EXISTS task_summary (
-    participant_code TEXT, session_id TEXT, block_order_group INTEGER, block_index INTEGER, form TEXT, item_id TEXT,
-    recommendation_correctness TEXT, final_value TEXT, accuracy INTEGER, followed INTEGER,
-    verified INTEGER, source_pattern TEXT, dwell_a_s REAL, dwell_b_s REAL, opens_a INTEGER,
-    opens_b INTEGER, decision_time_s REAL, total_time_s REAL, source_open_at_fork TEXT, focus_lost_s REAL);
-CREATE TABLE IF NOT EXISTS block_instruments (
-    participant_code TEXT, session_id TEXT, block_index INTEGER, form TEXT,
-    tlx_mental INTEGER, tlx_physical INTEGER, tlx_temporal INTEGER, tlx_performance INTEGER, tlx_effort INTEGER,
-    tlx_frustration INTEGER, intrusion INTEGER, manip_response TEXT, manip_correct INTEGER, timestamp_utc TEXT);
-CREATE TABLE IF NOT EXISTS session (
-    participant_code TEXT, session_id TEXT, participant_number INTEGER, pilot INTEGER, order_group INTEGER,
-    rotation_id INTEGER, block_order TEXT, standing TEXT, gender TEXT, course_of_study TEXT, prior_falcon_use TEXT,
-    ranking TEXT, ranking_reason TEXT, started_utc TEXT, finished_utc TEXT, gender_self_describe TEXT,
-    PRIMARY KEY (participant_code, session_id));
-"""
+
+def _schema():
+    stmts = []
+    for table, cols in TABLES.items():
+        defs = [f"{c} {typ}" for c, typ in cols]
+        if table in PRIMARY_KEYS:
+            defs.append(f"PRIMARY KEY ({', '.join(PRIMARY_KEYS[table])})")
+        stmts.append(f"CREATE TABLE IF NOT EXISTS {table} ({', '.join(defs)});")
+    return "\n".join(stmts)
 
 
 def _connect():
     SESSIONS_DB.parent.mkdir(parents=True, exist_ok=True)
     con = sqlite3.connect(SESSIONS_DB)
-    con.executescript(SCHEMA)
+    con.executescript(_schema())
     # columns added after the first release (a database created before them is upgraded in place)
-    have = {r[1] for r in con.execute("PRAGMA table_info(task_summary)")}
-    for col, typ in (("source_open_at_fork", "TEXT"), ("focus_lost_s", "REAL")):
-        if col not in have:
-            con.execute(f"ALTER TABLE task_summary ADD COLUMN {col} {typ}")
-    if "gender_self_describe" not in {r[1] for r in con.execute("PRAGMA table_info(session)")}:
-        con.execute("ALTER TABLE session ADD COLUMN gender_self_describe TEXT")
+    for table, cols in TABLES.items():
+        have = {r[1] for r in con.execute(f"PRAGMA table_info({table})")}
+        for col, typ in cols:
+            if col not in have:
+                con.execute(f"ALTER TABLE {table} ADD COLUMN {col} {typ}")
+    for table, cols in UNIQUE_KEYS.items():
+        con.execute(f"CREATE UNIQUE INDEX IF NOT EXISTS {table}_{'_'.join(cols)} ON {table} ({', '.join(cols)})")
     return con
 
 
+class PayloadError(ValueError):
+    pass
+
+
+def _check(row, cols, what):
+    if not isinstance(row, dict):
+        raise PayloadError(f"{what}: expected an object")
+    extra = set(row) - set(cols)
+    if extra:
+        raise PayloadError(f"{what}: unknown keys: {', '.join(sorted(extra))}")
+    for k in ("participant_code", "session_id"):
+        if not row.get(k):
+            raise PayloadError(f"{what}: {k} is required")
+    return row
+
+
+@contextlib.contextmanager
+def _db():
+    with _db_lock, contextlib.closing(_connect()) as con, con:
+        yield con
+
+
 def _insert(con, table, cols, row):
-    con.execute(f"INSERT INTO {table} ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})",
+    con.execute(f"INSERT OR IGNORE INTO {table} ({','.join(cols)}) VALUES ({','.join('?' * len(cols))})",
                 tuple(row.get(c) for c in cols))
 
 
@@ -77,34 +105,35 @@ def log_events(events, summary=None):
     Event columns follow the runbook schema (participant_code, block_index, form,
     item_id, recommendation_correctness, event_type, event_detail, timestamp, and
     source_open_duration_s on source_close)."""
-    with _db_lock:
-        con = _connect()
-        con.executemany(f"INSERT INTO events ({','.join(EVENT_COLS)}) VALUES ({','.join('?' * len(EVENT_COLS))})",
-                        [tuple(e.get(c) for c in EVENT_COLS) for e in events])
+    for e in events:
+        _check(e, EVENT_COLS, "event")
+        if type(e.get("seq")) is not int:
+            raise PayloadError("event: seq must be an integer")
+    if summary:
+        _check(summary, SUMMARY_COLS, "summary")
+    with _db() as con:
+        before = con.total_changes
+        for e in events:
+            _insert(con, "events", EVENT_COLS, e)
         if summary:
             _insert(con, "task_summary", SUMMARY_COLS, summary)
-        con.commit()
-        con.close()
-    return len(events)
+        return con.total_changes - before
 
 
 def log_instruments(row):
     """One row per block: raw NASA-TLX, the intrusion item and the manipulation check (paper, Measures)."""
-    with _db_lock:
-        con = _connect()
+    _check(row, INSTRUMENT_COLS, "instruments")
+    with _db() as con:
         _insert(con, "block_instruments", INSTRUMENT_COLS, row)
-        con.commit()
-        con.close()
 
 
 def upsert_session(row):
     """Session row: written at the start (demographics, assignment) and completed at the end (ranking)."""
-    row = dict(row)
+    row = dict(_check(row, SESSION_COLS, "session"))
     for k in ("ranking", "block_order"):
         if isinstance(row.get(k), (list, dict)):
             row[k] = json.dumps(row[k], ensure_ascii=False)
-    with _db_lock:
-        con = _connect()
+    with _db() as con:
         cur = con.execute("SELECT 1 FROM session WHERE participant_code=? AND session_id=?",
                           (row.get("participant_code"), row.get("session_id")))
         if cur.fetchone():
@@ -113,8 +142,21 @@ def upsert_session(row):
                         tuple(row[c] for c in cols) + (row["participant_code"], row["session_id"]))
         else:
             _insert(con, "session", SESSION_COLS, row)
-        con.commit()
-        con.close()
+
+
+def session_history(participant_code):
+    with _db() as con:
+        rows = con.execute("SELECT session_id, pilot, started_utc, finished_utc FROM session WHERE participant_code=? "
+                           "ORDER BY started_utc", (participant_code,)).fetchall()
+        out = []
+        for sid, pilot, started, finished in rows:
+            max_seq = con.execute("SELECT COALESCE(MAX(seq), 0) FROM events WHERE session_id=?", (sid,)).fetchone()[0]
+            tasks = [r[0] for r in con.execute("SELECT item_id FROM task_summary WHERE session_id=? ORDER BY item_id", (sid,))]
+            blocks = [r[0] for r in con.execute(
+                "SELECT block_index FROM block_instruments WHERE session_id=? ORDER BY block_index", (sid,))]
+            out.append({"session_id": sid, "pilot": pilot, "started_utc": started, "finished_utc": finished,
+                        "max_seq": max_seq, "tasks_done": tasks, "blocks_done": blocks})
+    return out
 
 
 _agent_lock = threading.Lock()  # one model call stream at a time keeps outputs deterministic
@@ -201,6 +243,10 @@ class Handler(BaseHTTPRequestHandler):
                 recs, sets, _ = _tasks()
                 n = rotation.participant_number(q.get("participant", ""))
                 return self._send(200, rotation.resolve(rotation.plan(n, sets), recs))
+            if url.path == "/api/session":
+                if not q.get("participant_code"):
+                    raise ValueError("participant_code is required")
+                return self._send(200, {"sessions": session_history(q["participant_code"])})
             if url.path == "/api/worksheet":
                 recs, sets, _ = _tasks()
                 return self._send(200, rotation.worksheet(sets, recs, int(q.get("n", 15))))
@@ -227,6 +273,9 @@ class Handler(BaseHTTPRequestHandler):
                     rec = agent.run(body["question"].strip(), (body.get("situation") or "").strip() or None)
                 return self._send(200, rec)
             if url.path == "/api/events":
+                extra = set(body) - {"events", "summary"}
+                if extra:
+                    raise PayloadError(f"events body: unknown keys: {', '.join(sorted(extra))}")
                 n = log_events(body.get("events", []), body.get("summary"))
                 return self._send(200, {"logged": n})
             if url.path == "/api/instruments":
@@ -242,6 +291,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(404, {"error": "not found"})
         except llm.OllamaError as e:
             return self._send(503, {"error": str(e)})
+        except ValueError as e:
+            return self._send(400, {"error": str(e)})
         except Exception as e:
             traceback.print_exc()
             return self._send(500, {"error": str(e)})

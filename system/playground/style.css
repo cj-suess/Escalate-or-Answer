@@ -98,6 +98,7 @@ table.qa td, table.qa th, .trace td, .trace th { border-bottom: 1px solid var(--
 
 /* ---------------------------------------------------------- session screens (entry, break, instruments, closing) */
 .progress { font-size: 13px; }
+.save-state.warn { font-size: 13px; padding: 2px 8px; background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: 6px; }
 .screen { max-width: 1180px; }
 .entry-card { max-width: 720px; margin: 10px auto; }
 .entry-card.wide { max-width: 980px; }
