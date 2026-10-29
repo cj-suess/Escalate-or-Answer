@@ -1,1 +1,26 @@
+# agent and session notes
 docs/handoff.md
+.claude/settings.local.json
+.claude/worktrees/
+.superpowers/
+
+# OS and editor files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Python environments and caches
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# LaTeX build output
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.blg
